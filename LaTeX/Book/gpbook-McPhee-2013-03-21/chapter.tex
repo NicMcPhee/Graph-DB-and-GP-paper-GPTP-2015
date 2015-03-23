@@ -26,8 +26,79 @@ keywords to your chapter, these words should also be indexed
 \section{Note to early reviewers}
 
 \emph{
-This is definitely still very much a work in progress, and we apologize for its incompleteness. We're still working through small bits of the many, many gigabytes of data that we have access to, looking for good stories to tell. Hopefully, however, this will give a sense of our goals, plan, and some of our early results. We'd certainly love feedback on which of these stories you feel are the most interesting, informative, and ultimately helpful for the community, as well as any suggestions you have regarding the telling of the stories.
+This is definitely still very much a work in progress, and we apologize for its incompleteness. 
+We're still working through small bits of the many, many gigabytes of data that we have access to, 
+looking for good stories to tell. Hopefully, however, this will give a sense of our goals, plan, 
+and some of our early results. We'd certainly love feedback on which of these stories you feel are 
+the most interesting, informative, and ultimately helpful for the community, as well as any 
+suggestions you have regarding the telling of the stories.
 }
+
+\section{Introduction}
+\label{sec:introduction}
+
+It is common practice in most empirical evolutionary computation (EC) 
+research\marginpar{It would be nice to scrape, say, the GECCO 2014 proceedings and get some 
+	numbers to back this up.} to perform numerous (possibly hundreds) of runs, and then simply 
+report a handful of aggregate statistics at the end that are expected to summarize and represent 
+the (hopefully) complex interactions and dynamics of those many runs. Tables present values such 
+as mean or median best fitnesses at the end of runs, collapsing the complexities of dozens or 
+hundreds of runs into a single number, possibly with a standard deviation or (even better) a 
+confidence interval to give a sense of the distribution. Often more informative are plots, which can, 
+for example, show how these numbers change over time during the runs, possibly giving a sense of 
+the system dynamics. These plots, however, often aggregate runs in a way that obscure important 
+moments that, if explored, might reveal valuable insight into the evolutionary dynamics being 
+reported.\marginpar{Perhaps include a sample plot and show how it hides things? One of Tom's 
+	diversity or cluster plots? A synthetic plot? Maybe that's just not necessary?}
+
+While this sort of aggregate reporting is often valuable, allowing for important comparative
+analysis of, for example, the impact of different genetic operators, it typically fails to provide
+any sense of the \emph{why}. Yes, Treatment A led to better aggregate performance than 
+Treatment B -- but what happened in the runs that led to that result? Any success at the end of a
+run is ultimately the intricate combination of hundreds or thousands of selections, recombinations
+and mutations, and if Treatment A is in some sense ``better'' than Treatment B, it must ultimately
+be because it affected all those genealogical and genetic events in some significant way, biasing them
+towards events that made success more likely. 
+
+Unfortunately, published research very rarely includes information that might shed light on 
+these \emph{why} events. We rarely see evolved programs, for example, or any kind of post-run analysis
+of those programs, and there is almost never any data or discussion of the genealogical history that
+might help us understand how a successful program actually came to be. 
+
+Sometimes this isn't included
+for reasons of space and time; evolved programs, for example, are often extremely large and complex,
+and a meaningful presentation and discussion of such a program could easily take up more space than
+authors have available given the typical space limitations in published work.
+
+Our suspicion, however, is that this sort of \emph{why} analysis often isn't reported because it isn't 
+even \emph{done}, in no small part because it's hard. As EC researchers we're in the
+``happy'' position of being able to collect anything and everything that happens in a run, but that 
+leaves us with two problems: How to \emph{store} the data, and how to \emph{analyze} the data
+after it's stored. Decreasing data storage costs have done much to mitigate the first problem.
+If, however, one collects a very rich data set it's still easy to quickly generate terabytes of data,
+and even if one has a place to put the data, one still needs reasonable tools to analyze the data.
+
+Databases provide a natural tool for storing and accessing the data, but traditional relational
+databases are poorly suited for a variety of queries that are important for the genealogical analysis
+we need for exploring the evolutionary dynamics of our EC runs. If, for example, we have a 
+\texttt{ParentChild} table, it's easy enough to find Alice's parents, but finding Alice's grandparents,
+siblings, or cousins requires multiple joins. Moving further out in Alice's tree of relatives
+requires complex and computationally expensive recursive joins, making this approach increasingly
+infeasible. In exploring the dynamics of an EC run, for example, we're going to want to be able to
+make connections across dozens or even hundreds of generations, which simply isn't feasible with a
+relational database. (See, for example, \cite{Robinson:GraphDB:Book} for more on these 
+feasability/efficiency issues.) \marginpar{Do we want/need a section on why relational DBs don't
+	work, or is it enough to say this and move on?}
+
+In this chapter we illustrate the use of graph databases as an alternative storage and analysis tool for
+evolutionary computation runs. In \cite{donatuccianalysis} we have demonstrated that graph databases
+can be an effective tool for analyzing complex genetic programming (GP) dynamics, which led directly
+to a proposed change to standard sub-tree crossover in tree-based GP, \cite{mcphee:GECCO15}.
+Here we will use the open source Neo4J graph database tool\footnote{\url{http://neo4j.com/}} 
+to explore data from a
+collection of PushGP runs on several problems drawn from a benchmark collection of introductory 
+programming problems taken from \cite{helmuth:GECCO15}.
+
 \section{Section Heading}
 \label{sec:1}
 % Always give a unique label
@@ -50,7 +121,8 @@ let every heading be followed by at least a short passage of text.
 Further on please use the \LaTeX\ automatism for all your
 cross-references and citations.
 
-Please note that the first line of text that follows a heading is not indented, whereas the first lines of all subsequent paragraphs are.
+Please note that the first line of text that follows a heading is not indented, whereas the first 
+lines of all subsequent paragraphs are.
 
 Use the standard \verb|equation| environment to typeset your equations, e.g.
 %
@@ -264,9 +336,6 @@ Proof text goes here.
 \begin{acknowledgement}
 If you want to include acknowledgments of assistance and the like at the end of an individual chapter please use the \verb|acknowledgement| environment -- it will automatically render Springer's preferred layout.
 \end{acknowledgement}
-%
-\paragraph{Referencing}
-This is how to reference. \cite{Kadie}
 
 \bibliographystyle{spbasic}
 \bibliography{gp-bibliography,chapter}
