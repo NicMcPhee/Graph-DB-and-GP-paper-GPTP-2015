@@ -69,11 +69,25 @@ to explore data from a
 collection of PushGP runs on several problems drawn from a benchmark collection of introductory 
 programming problems taken from \cite{helmuth:GECCO15}.
 
-\emph{More stuff would have to be added here.}
+\emph{More stuff would have to be added here, including a roadmap.}
 
 \section{Motivation}
 \label{sec:motivation}
 
+Consider the job of a paleontologist, who regularly reconstructs not just individuals but also
+species and entire phylogenetic trees on the basis of handful of teeth and bones, or even just
+impressions left in prehistoric mud. They rarely have DNA, so any evolutionary relationship is
+inherently speculative, subject to constant debate and revision. Even with detailed DNA sequences,
+the construction of phylogenetic trees for existing species is a challenge.\marginpar{A reference
+	for all of this phylogenetic reconstruction stuff would be useful.}
+
+In evolutionary computation, however, we have \emph{everything}, at least in principle. Every
+selection, every mating, every mutation, and every crossover happens in our code and on our watch.
+Yet we typically throw almost all that data away, reporting just aggregate statistics and summary
+plots, completely failing to take advantage of our privileged position, a position most 
+paleontologists would presumably eye with considerable envy. Not only does this seem an inherent
+waste, these aggregations typically obscure critical moments in the dynamics of runs which might
+speak volumes if explored.
 \marginpar{Perhaps include a sample plot and show how it hides things? One of Tom's 
 	diversity or cluster plots? A synthetic plot? Maybe that's just not necessary?}
 
@@ -84,7 +98,7 @@ Treatment B -- but what happened in the runs that led to that result? Any succes
 run is ultimately the intricate combination of hundreds or thousands of selections, recombinations
 and mutations, and if Treatment A is in some sense ``better'' than Treatment B, it must ultimately
 be because it affected all those genealogical and genetic events in some significant way, biasing them
-towards events that made success more likely. 
+towards events that made success more likely.
 
 Unfortunately, published research very rarely includes information that might shed light on 
 these \emph{why} events. We rarely see evolved programs, for example, or any kind of post-run analysis
@@ -102,6 +116,16 @@ leaves us with two problems: How to \emph{store} the data, and how to \emph{anal
 after it's stored. Decreasing data storage costs have done much to mitigate the first problem.
 If, however, one collects a very rich data set it's still easy to quickly generate terabytes of data,
 and even if one has a place to put the data, one still needs reasonable tools to analyze the data.
+
+Databases are the obvious tool for the storage task, but most common database structures and tools
+don't lend themselves to the kinds of analysis that we want and need in evolutionary computation work.
+Most relational and document-based databases, for example require things like complex and expensive 
+recursive joins to trace significant hereditary lines, making this approach increasingly
+infeasible. In exploring the dynamics of an EC run, for example, we're going to want to be able to
+make connections across dozens or even hundreds of generations, which simply isn't plausible with a
+relational database. (See \cite{Robinson:GraphDB:Book} for more on these 
+feasability/efficiency issues.)
+
 
 \section{Section Heading}
 \label{sec:1}
