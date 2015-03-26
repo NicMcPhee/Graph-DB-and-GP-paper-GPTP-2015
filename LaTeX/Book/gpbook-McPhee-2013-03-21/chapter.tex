@@ -51,6 +51,29 @@ moments that, if explored, might reveal valuable insight into the evolutionary d
 reported.\marginpar{Perhaps include a sample plot and show how it hides things? One of Tom's 
 	diversity or cluster plots? A synthetic plot? Maybe that's just not necessary?}
 
+Databases provide a natural tool for storing and accessing the data, but traditional relational
+databases are poorly suited for a variety of queries that are important for the genealogical analysis
+we need for exploring the evolutionary dynamics of our EC runs. If, for example, we have a 
+\texttt{ParentChild} table, it's easy enough to find Alice's parents, but finding Alice's grandparents,
+siblings, or cousins requires multiple joins. Moving further out in Alice's tree of relatives
+requires complex and computationally expensive recursive joins, making this approach increasingly
+infeasible. In exploring the dynamics of an EC run, for example, we're going to want to be able to
+make connections across dozens or even hundreds of generations, which simply isn't feasible with a
+relational database. (See, for example, \cite{Robinson:GraphDB:Book} for more on these 
+feasability/efficiency issues.)
+
+In this chapter we illustrate the use of graph databases as an alternative storage and analysis tool for
+evolutionary computation runs. In \cite{donatuccianalysis} we have demonstrated that graph databases
+can be an effective tool for analyzing complex genetic programming (GP) dynamics, which led directly
+to a proposed change to standard sub-tree crossover in tree-based GP, \cite{mcphee:GECCO15}.
+Here we will use the open source Neo4J graph database tool\footnote{\url{http://neo4j.com/}} 
+to explore data from a
+collection of PushGP runs on several problems drawn from a benchmark collection of introductory 
+programming problems taken from \cite{helmuth:GECCO15}.
+
+\section{Motivation}
+\label{sec:motivation}
+
 While this sort of aggregate reporting is often valuable, allowing for important comparative
 analysis of, for example, the impact of different genetic operators, it typically fails to provide
 any sense of the \emph{why}. Yes, Treatment A led to better aggregate performance than 
@@ -76,26 +99,6 @@ leaves us with two problems: How to \emph{store} the data, and how to \emph{anal
 after it's stored. Decreasing data storage costs have done much to mitigate the first problem.
 If, however, one collects a very rich data set it's still easy to quickly generate terabytes of data,
 and even if one has a place to put the data, one still needs reasonable tools to analyze the data.
-
-Databases provide a natural tool for storing and accessing the data, but traditional relational
-databases are poorly suited for a variety of queries that are important for the genealogical analysis
-we need for exploring the evolutionary dynamics of our EC runs. If, for example, we have a 
-\texttt{ParentChild} table, it's easy enough to find Alice's parents, but finding Alice's grandparents,
-siblings, or cousins requires multiple joins. Moving further out in Alice's tree of relatives
-requires complex and computationally expensive recursive joins, making this approach increasingly
-infeasible. In exploring the dynamics of an EC run, for example, we're going to want to be able to
-make connections across dozens or even hundreds of generations, which simply isn't feasible with a
-relational database. (See, for example, \cite{Robinson:GraphDB:Book} for more on these 
-feasability/efficiency issues.)
-
-In this chapter we illustrate the use of graph databases as an alternative storage and analysis tool for
-evolutionary computation runs. In \cite{donatuccianalysis} we have demonstrated that graph databases
-can be an effective tool for analyzing complex genetic programming (GP) dynamics, which led directly
-to a proposed change to standard sub-tree crossover in tree-based GP, \cite{mcphee:GECCO15}.
-Here we will use the open source Neo4J graph database tool\footnote{\url{http://neo4j.com/}} 
-to explore data from a
-collection of PushGP runs on several problems drawn from a benchmark collection of introductory 
-programming problems taken from \cite{helmuth:GECCO15}.
 
 \section{Section Heading}
 \label{sec:1}
