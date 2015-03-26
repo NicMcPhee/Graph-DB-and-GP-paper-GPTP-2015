@@ -48,19 +48,17 @@ confidence interval to give a sense of the distribution. Often more informative 
 for example, show how these numbers change over time during the runs, possibly giving a sense of 
 the system dynamics. These plots, however, often aggregate runs in a way that obscure important 
 moments that, if explored, might reveal valuable insight into the evolutionary dynamics being 
-reported.\marginpar{Perhaps include a sample plot and show how it hides things? One of Tom's 
-	diversity or cluster plots? A synthetic plot? Maybe that's just not necessary?}
+reported.
 
-Databases provide a natural tool for storing and accessing the data, but traditional relational
+An alternative would be to collect, store, and analyze at least some of the rich panoply of 
+evolutionary and genealogical events that make up the vital low-details details of these runs. 
+Databases provide a natural tool for 
+storing and accessing the data, but traditional relational
 databases are poorly suited for a variety of queries that are important for the genealogical analysis
 we need for exploring the evolutionary dynamics of our EC runs. If, for example, we have a 
-\texttt{ParentChild} table, it's easy enough to find Alice's parents, but finding Alice's grandparents,
-siblings, or cousins requires multiple joins. Moving further out in Alice's tree of relatives
-requires complex and computationally expensive recursive joins, making this approach increasingly
-infeasible. In exploring the dynamics of an EC run, for example, we're going to want to be able to
-make connections across dozens or even hundreds of generations, which simply isn't feasible with a
-relational database. (See, for example, \cite{Robinson:GraphDB:Book} for more on these 
-feasability/efficiency issues.)
+\texttt{ParentChild} table, it's easy enough to find Alice's parents. Finding Alice's grandparents,
+siblings, or cousins, however, is less straightforward, with queries becomes increasingly difficult
+as we move farther out across the relationship tree.
 
 In this chapter we illustrate the use of graph databases as an alternative storage and analysis tool for
 evolutionary computation runs. In \cite{donatuccianalysis} we have demonstrated that graph databases
@@ -71,8 +69,13 @@ to explore data from a
 collection of PushGP runs on several problems drawn from a benchmark collection of introductory 
 programming problems taken from \cite{helmuth:GECCO15}.
 
+\emph{More stuff would have to be added here.}
+
 \section{Motivation}
 \label{sec:motivation}
+
+\marginpar{Perhaps include a sample plot and show how it hides things? One of Tom's 
+	diversity or cluster plots? A synthetic plot? Maybe that's just not necessary?}
 
 While this sort of aggregate reporting is often valuable, allowing for important comparative
 analysis of, for example, the impact of different genetic operators, it typically fails to provide
