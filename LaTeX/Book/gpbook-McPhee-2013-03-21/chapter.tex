@@ -39,7 +39,47 @@ confidence interval to give a sense of the distribution. Often more informative 
 for example, show how these numbers change over time during the runs, possibly giving a sense of 
 the system dynamics. These plots, however, often aggregate runs in a way that obscure important 
 moments that, if explored, might reveal valuable insight into the evolutionary dynamics being 
-reported.\marginpar{Perhaps include a sample plot and show how it hides things? One of Tom's 
+reported.
+
+An alternative would be to collect, store, and analyze at least some of the rich panoply of 
+evolutionary and genealogical events that make up the vital low-details details of these runs. 
+Databases provide a natural tool for 
+storing and accessing the data, but traditional relational
+databases are poorly suited for a variety of queries that are important for the genealogical analysis
+we need for exploring the evolutionary dynamics of our EC runs. If, for example, we have a 
+\texttt{ParentChild} table, it's easy enough to find Alice's parents. Finding Alice's grandparents,
+siblings, or cousins, however, is less straightforward, with queries becomes increasingly difficult
+as we move farther out across the relationship tree.
+
+In this chapter we illustrate the use of graph databases as an alternative storage and analysis tool for
+evolutionary computation runs. In \cite{donatuccianalysis} we have demonstrated that graph databases
+can be an effective tool for analyzing complex genetic programming (GP) dynamics, which led directly
+to a proposed change to standard sub-tree crossover in tree-based GP, \cite{mcphee:GECCO15}.
+Here we will use the open source Neo4J graph database tool\footnote{\url{http://neo4j.com/}} 
+to explore data from a
+collection of PushGP runs on several problems drawn from a benchmark collection of introductory 
+programming problems taken from \cite{helmuth:GECCO15}.
+
+\emph{More stuff would have to be added here, including a roadmap.}
+
+\section{Motivation}
+\label{sec:motivation}
+
+Consider the job of a paleontologist, who regularly reconstructs not just individuals but also
+species and entire phylogenetic trees on the basis of handful of teeth and bones, or even just
+impressions left in prehistoric mud. They rarely have DNA, so any evolutionary relationship is
+inherently speculative, subject to constant debate and revision. Even with detailed DNA sequences,
+the construction of phylogenetic trees for existing species is a challenge.\marginpar{A reference
+	for all of this phylogenetic reconstruction stuff would be useful.}
+
+In evolutionary computation, however, we have \emph{everything}, at least in principle. Every
+selection, every mating, every mutation, and every crossover happens in our code and on our watch.
+Yet we typically throw almost all that data away, reporting just aggregate statistics and summary
+plots, completely failing to take advantage of our privileged position, a position most 
+paleontologists would presumably eye with considerable envy. Not only does this seem an inherent
+waste, these aggregations typically obscure critical moments in the dynamics of runs which might
+speak volumes if explored.
+\marginpar{Perhaps include a sample plot and show how it hides things? One of Tom's 
 	diversity or cluster plots? A synthetic plot? Maybe that's just not necessary?}
 
 While this sort of aggregate reporting is often valuable, allowing for important comparative
@@ -49,7 +89,7 @@ Treatment B -- but what happened in the runs that led to that result? Any succes
 run is ultimately the intricate combination of hundreds or thousands of selections, recombinations
 and mutations, and if Treatment A is in some sense ``better'' than Treatment B, it must ultimately
 be because it affected all those genealogical and genetic events in some significant way, biasing them
-towards events that made success more likely. 
+towards events that made success more likely.
 
 Unfortunately, published research very rarely includes information that might shed light on 
 these \emph{why} events. We rarely see evolved programs, for example, or any kind of post-run analysis
@@ -68,25 +108,15 @@ after it's stored. Decreasing data storage costs have done much to mitigate the 
 If, however, one collects a very rich data set it's still easy to quickly generate terabytes of data,
 and even if one has a place to put the data, one still needs reasonable tools to analyze the data.
 
-Databases provide a natural tool for storing and accessing the data, but traditional relational
-databases are poorly suited for a variety of queries that are important for the genealogical analysis
-we need for exploring the evolutionary dynamics of our EC runs. If, for example, we have a 
-\texttt{ParentChild} table, it's easy enough to find Alice's parents, but finding Alice's grandparents,
-siblings, or cousins requires multiple joins. Moving further out in Alice's tree of relatives
-requires complex and computationally expensive recursive joins, making this approach increasingly
+Databases are the obvious tool for the storage task, but most common database structures and tools
+don't lend themselves to the kinds of analysis that we want and need in evolutionary computation work.
+Most relational and document-based databases, for example require things like complex and expensive 
+recursive joins to trace significant hereditary lines, making this approach increasingly
 infeasible. In exploring the dynamics of an EC run, for example, we're going to want to be able to
-make connections across dozens or even hundreds of generations, which simply isn't feasible with a
-relational database. (See, for example, \cite{Robinson:GraphDB:Book} for more on these 
+make connections across dozens or even hundreds of generations, which simply isn't plausible with a
+relational database. (See \cite{Robinson:GraphDB:Book} for more on these 
 feasability/efficiency issues.)
 
-In this chapter we illustrate the use of graph databases as an alternative storage and analysis tool for
-evolutionary computation runs. In \cite{donatuccianalysis} we have demonstrated that graph databases
-can be an effective tool for analyzing complex genetic programming (GP) dynamics, which led directly
-to a proposed change to standard sub-tree crossover in tree-based GP, \cite{mcphee:GECCO15}.
-Here we will use the open source Neo4J graph database tool\footnote{\url{http://neo4j.com/}} 
-to explore data from a
-collection of PushGP runs on several problems drawn from a benchmark collection of introductory 
-programming problems taken from \cite{helmuth:GECCO15}.
 
 \section{A little background on problems and tools}
 
