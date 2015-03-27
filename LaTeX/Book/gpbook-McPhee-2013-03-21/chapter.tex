@@ -260,11 +260,14 @@ we can observe right away:
 	the population) were ancestors of a winning individual.
 \end{itemize}
 
-Looking at Figure~\ref{fig:winnerAncestors} we can also see that a few individuals have more offspring
+\subsection{Surprising fecundity (especially given that total error)}
+\label{sec:surprisingFecundity}
+
+Looking at Figure~\ref{fig:winnerAncestors} we can see that a few individuals have more offspring
 represented than others. As we've already mentioned, individual 86261 has 45 successful offspring,
 and both individuals 82447 and 83047 have five offspring in the graph, i.e., five offspring that were
 ancestors of a winning individual in generation 87. Each of these is marked in 
-Figure~\ref{fig:winnerAncestors} with a shaded diamond. 
+Figure~\ref{fig:winnerAncestors} with a shaded diamond.
 
 Figure~\ref{fig:winnerAncestors},
 however, only tells us home many offspring an individual had that were themselves either a winner
@@ -379,6 +382,14 @@ any of the ``return'' test cases would likely select individual 85086.
 
 \emph{Say something about individual 86261.}
 
+How did we get the 45 winners?
+\begin{itemize}
+	\item 18 uniform-close-mutation alone
+	\item 17 alternation followed by uniform-mutation
+	\item 6 alternation alone
+	\item 4 uniform-mutation alone
+\end{itemize}
+
 %Most offspring throughout the entire run:
 %neo4j-sh (?)$ match (n)-[* 1]->(m) return id(n), count(distinct m) order by count(distinct m) desc limit 40;
 %+---------------------------+
@@ -427,14 +438,6 @@ any of the ``return'' test cases would likely select individual 85086.
 %+---------------------------+
 %40 rows
 %765 ms
-
-How did we get the 45 winners?
-\begin{itemize}
-	\item 18 uniform-close-mutation alone
-	\item 17 alternation followed by uniform-mutation
-	\item 6 alternation alone
-	\item 4 uniform-mutation alone
-\end{itemize}
 
 % Number of n-th grandchildren:
 
@@ -658,9 +661,10 @@ Notes
 %63 rows
 %180066 ms
 
-\subsection{Surprising fecundity (especially given that total error)}
-\label{sec:surprisingFecundity}
+\section{So what did we learn in all this?}
+\label{sec:whatDidWeLearn}
 
+\emph{Connect the following back to Section~\ref{sec:surprisingFecundity}.}
 
 Lexicase selection (\cite{helmuth:IEEE}) was designed in significant part with the intent of 
 increasing and maintaining diversity. The key assumption was that it would distribute the selection 
@@ -674,7 +678,6 @@ large numbers of offspring, as the selections are being spread out across these 
 of individuals. In exploring one lexicase run on the Replace Space With Newlines problem, however,
 we discovered that while in general this story held true, there were moments in the course of the run
 where the reality was \emph{wildly} different.
-
 
 \section{Section Heading}
 \label{sec:1}
