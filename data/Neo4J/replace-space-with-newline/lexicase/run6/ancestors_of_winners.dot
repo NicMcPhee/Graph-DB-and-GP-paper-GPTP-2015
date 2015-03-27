@@ -1,20 +1,20 @@
 digraph G {
-	79031 -> 80220 [penwidth=3, style=dashed];
+	79031 -> 80220;
 	79172 -> 80986;
 	79180 -> 80428;
 	79313 -> 80287;
 	79391 -> 80299;
 	79395 -> 80374;
-	79464 -> 80156 [penwidth=3, style=dashed];
+	79464 -> 80156;
 	79531 -> 80943;
 	79531 -> 80293;
 	79676 -> 80671;
 	79860 -> 80287;
 	79865 -> 80428;
 	79899 -> 80671;
-	79907 -> 80220 [penwidth=3, style=dashed];
+	79907 -> 80220;
 	79920 -> 80374;
-	80156 -> 81691 [penwidth=3, style=dashed];
+	80156 -> 81691;
 	80220 -> 81691 [penwidth=3, style=dashed];
 	80220 [shape=diamond, fontsize=20]
 	80220 -> 81317;
@@ -44,7 +44,7 @@ digraph G {
 	82447 -> 83664;
 	82447 -> 83619;
 	82447 -> 83273;
-	82447 -> 83124;
+	82447 -> 83124 [penwidth=3, style=dashed];
 	82447 -> 83047;
 	82667 -> 83487;
 	82676 -> 83273;
@@ -56,7 +56,7 @@ digraph G {
 	83047 -> 84114;
 	83047 -> 84157;
 	83047 -> 84213;
-	83124 -> 84319;
+	83124 -> 84319 [penwidth=3, style=dashed];
 	83124 [shape=diamond, fontsize=20]
 	83124 -> 84213;
 	83273 -> 84157;
@@ -69,27 +69,27 @@ digraph G {
 	84213 -> 85407;
 	84319 -> 85057;
 	84319 [shape=diamond, fontsize=20]
-	84319 -> 85086;
+	84319 -> 85086 [penwidth=3, style=dashed];
 	84542 -> 85086;
 	84584 -> 85820;
 	84604 -> 85534;
 	85057 -> 86261;
 	85086 [shape=diamond, fontsize=20]
-	85086 -> 86261;
+	85086 -> 86261 [penwidth=3, style=dashed];
 	85407 -> 86272;
 	85534 -> 86049;
 	85561 -> 86672;
 	85820 -> 86672;
-	87719 [shape=rectangle, style=filled, fillcolor="lightgrey", fontsize=20]
-	87941 [shape=rectangle, style=filled, fillcolor="lightgrey", fontsize=20]
-	87947 [shape=rectangle, style=filled, fillcolor="lightgrey", fontsize=20]
+	87719 [shape=rectangle, fontsize=40]
+	87941 [shape=rectangle, fontsize=40]
+	87947 [shape=rectangle, fontsize=40]
 	86049 -> 87719;
 	86272 -> 87941;
 	86672 -> 87947;
 
-	"42 Winners" [shape=rectangle, style=filled, fillcolor="lightgrey", fontsize=40]
+	"42 other Winners" [shape=rectangle, fontsize=40]
 	86261 [shape=diamond, style=filled, fillcolor="lightgrey", fontsize=40]
-	86261 -> "42 Winners" [penwidth=5];
+	86261 -> "42 other Winners" [penwidth=5];
 	86261 -> 87719;
 	86261 -> 87941;
 	86261 -> 87947;
