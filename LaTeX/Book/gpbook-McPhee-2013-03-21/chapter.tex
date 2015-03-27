@@ -149,9 +149,9 @@ Cypher%~\cite{GraphDatabases:2013}
 
 %This query produces the results in Figure \ref{fig:exampleQuery}.
 \begin{figure}[tb]
- \centering
- %\includegraphics[height=0.30 \textwidth]{parents}
- \caption{Results of Example Query}
+ \sidecaption[t]
+ \includegraphics[width=0.8\textwidth]{figures/sample_neo4j_query.pdf}
+ \caption{Graphical representation of the results of a sample Cypher query}
  \label{fig:exampleQuery}
 \end{figure}
 
@@ -354,7 +354,11 @@ came as quite a shock. In particular individual 85086 has a total error of 100,0
 the parent of 924 of the 1,000 individuals in the next generation, has a total error of 4,034, placing
 it below $3/4$ of the population in its generation by that aggregate measure.
 
-\begin{table}[tb]
+\begin{table}[t]
+	%\sidecaption[t]
+	\caption{The total error and rank (by total error) in the population in that individual's generation
+		for the sequence of ``diamond'' individuals from in Figure~\ref{fig:winnerAncestors}.}
+	\label{table:winnerFitnesses}
 	\begin{center}
 	\begin{tabular}{rrr}
 		Individual & $\quad$ Total error & $\quad$ Rank in population \\
@@ -368,10 +372,6 @@ it below $3/4$ of the population in its generation by that aggregate measure.
 		86261 & 4,034 & 765
 	\end{tabular}
 	\end{center}
-	% \sidecaption[t]
-	\caption{The total error and rank (by total error) in the population in that individual's generation
-		for the sequence of ``diamond'' individuals from in Figure~\ref{fig:winnerAncestors}.}
-	\label{table:winnerFitnesses}
 \end{table}
 
 So how could individuals with such terrible total fitness end up being selected so often as parents?
