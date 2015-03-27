@@ -171,6 +171,8 @@ Say a little about
 Say enough about lexicase so people have some sense of why it might be interesting and different
 from, e.g., tournament selection.
 
+Mention timing out and errors penalties.
+
 \subsection{Replace-space-with-newline}
 
 Say enough about this problem so that people can understand the error vectors.
@@ -183,7 +185,7 @@ error on all 200 of the training cases. Tournament selection with tournament siz
 had 13 successes out of 100 runs, and IFS only had 17 successes out of 100 runs, so it seems that
 lexicase selection provides a significant advantage here.
 
-\subsection{Hey, we won! But \emph{why}?}
+\subsection{Hey, we won! But how did we get there?}
 
 % This is run 6, lexicase, replace-space-with-newline.
 
@@ -380,15 +382,97 @@ Table~\ref{table:winnerFitnesses}, however, has at least a few non-zero errors o
 test cases, meaning that any lexicase ordering that places a few key printing test cases before
 any of the ``return'' test cases would likely select individual 85086.
 
-\emph{Say something about individual 86261.}
+What about individual 86261, with it's 934 offspring? It is perfect (has error zero) on 194 of the 200
+test cases, with it's total error of 4,034 coming from the remaining 6 test cases. On four of these it,
+like individual 85086, fails to return a value and gets the penalty of 1,000; it has an error of 17 on
+the other two. Thus it gets 97\% of the test cases correct, but happens to be \emph{heavily} penalized
+for its behavior on 4 of the 6 it gets wrong. In a system that aggregates the errors, its rank of 765
+out of 1,000 would mean that it would probably have no offspring. With lexicase selection, however,
+it's success on the 194 test cases means that it is selected (from this population) almost every time.
+In fact only 152 of the 1,000 individuals in the final generation had a parent who \emph{wasn't}
+86261, and only 116 other individuals in generation 86 had an offspring in the next generation. While
+four of those had 10 or more offspring in the last generation, none of those four actually
+gave rise to a winner. The three parents of winners other than 86261 (individuals 86272, 86049, 
+and 86672 in Figure~\ref{fig:winnerAncestors}) had very few offspring (1, 2, and 2 respectively),
+suggesting that they may not have contributed much (or anything) to their successful progeny, and 
+the success of their offspring was due more to the good fortune of mating with 86261 than anything else.
 
-How did we get the 45 winners?
-\begin{itemize}
-	\item 18 uniform-close-mutation alone
-	\item 17 alternation followed by uniform-mutation
-	\item 6 alternation alone
-	\item 4 uniform-mutation alone
-\end{itemize}
+%neo4j-sh (?)$ match (n)-[* 1]->(m {generation: "87"}) return id(n), count(distinct m) order by count(distinct m) desc limit 40;
+%+---------------------------+
+%| id(n) | count(distinct m) |
+%+---------------------------+
+%| 86261 | 934               |
+%| 86507 | 27                |
+%| 86166 | 16                |
+%| 86793 | 12                |
+%| 86487 | 10                |
+%| 86320 | 6                 |
+%| 86608 | 6                 |
+%| 86605 | 6                 |
+%| 86434 | 4                 |
+%| 86657 | 4                 |
+%| 86211 | 4                 |
+%| 86778 | 3                 |
+%| 86736 | 3                 |
+%| 86499 | 3                 |
+%| 86356 | 3                 |
+%| 86136 | 3                 |
+%| 86562 | 3                 |
+%| 86329 | 3                 |
+%| 86516 | 3                 |
+%| 86873 | 3                 |
+%| 86150 | 2                 |
+%| 86132 | 2                 |
+%| 86213 | 2                 |
+%| 86626 | 2                 |
+%| 86052 | 2                 |
+%| 86850 | 2                 |
+%| 86949 | 2                 |
+%| 86713 | 2                 |
+%| 86130 | 2                 |
+%| 86049 | 2                 |
+%| 86775 | 2                 |
+%| 86495 | 2                 |
+%| 86475 | 2                 |
+%| 86241 | 2                 |
+%| 86815 | 2                 |
+%| 86770 | 2                 |
+%| 86975 | 2                 |
+%| 86257 | 2                 |
+%| 86933 | 2                 |
+%| 86756 | 2                 |
+%+---------------------------+
+%40 rows
+%766 ms
+
+\subsection{How exactly did we get here?}
+\label{sec:howDidWeGetHere}
+
+Now that we know quite a lot about who gave rise to those 45 winners, what genetic operations
+brought them about? The largest group was 18 of the 45 which came about through 
+uniform-close-mutation alone, \emph{all} of which were mutations of individual 86261. This indicates
+that success can be achieved via a fairly simple modification to 86261's genome that only modifies 
+where some code blocks end.
+
+The other large group was 17 winners that arose via alternation followed by uniform-mutation. 14 of
+these were the result of a self-cross of 86261 and itself, with the other three being crosses between
+86261 and the other three parents of winners (86272, 86049, and 86672). There were also two smaller
+groups of winners, 6 which were the result of alternation alone (all self-crosses of 86261), and 4
+from uniform-mutation alone applied to 86261.
+
+An obvious question then is What changed in moving from 86261 to the final solutions. The genomes and
+programs involved are fairly complex (over 200 instructions), and as mentioned in
+the introduction, a full analysis of the genomes and behaviors of the the individuals involved is 
+beyond the scope of this paper. It is possible, however, and our graph database analysis has clearly
+identified individuals whose genomes and programs deserve additional study. 
+
+Based on our graph database work, we can also propose a hypothesis that this additional study could
+explore. 86261's total error of 4,034 comes in large part from failing to return a value on four 
+test cases. A distinct possibility is that 86261 simply times out on those
+four test cases. The efficacy of uniform-close-mutation suggests that there might be some sequence of 
+instructions that are being executed repeatedly via a loop or recursion, and there are 
+uniform-close-mutations that shorten that block in ways that allow it to complete all the test
+cases within the time limit without changing the value returned.
 
 %Most offspring throughout the entire run:
 %neo4j-sh (?)$ match (n)-[* 1]->(m) return id(n), count(distinct m) order by count(distinct m) desc limit 40;
@@ -574,20 +658,20 @@ How did we get the 45 winners?
 %+--------------------------+
 %26 rows
 %1966949 ms
-
-Notes
-\begin{itemize}
-	\item Individual 81691 is on a critical path from 80220 to 82447, but didn't actually have a ton 
-	of children (17 total, only one of which was an ancestor of a winner).
-	\item 82447 has 396 paths to a winner. 83047 only has 69, even though they both have 5 offspring
-	that are ancestors of winners. Maybe that's not a big deal because 82447 is a generation ``older''
-	and gets more paths that way? I'm not sure, though -- if there had just been the one path from
-	82447 to 83047, then their numbers would be the same (e.g., 81691 and 82447).
-	\item There are six distinct paths from 82447 to 86261, more than any other node that isn't an
-	ancestor of 82447.
-	\item Individuals 83124, 83619, and 83047 collectively had 392 offspring of the 1,000 individuals
-	in generation 84.
-\end{itemize}
+%
+%Notes
+%\begin{itemize}
+%	\item Individual 81691 is on a critical path from 80220 to 82447, but didn't actually have a ton 
+%	of children (17 total, only one of which was an ancestor of a winner).
+%	\item 82447 has 396 paths to a winner. 83047 only has 69, even though they both have 5 offspring
+%	that are ancestors of winners. Maybe that's not a big deal because 82447 is a generation ``older''
+%	and gets more paths that way? I'm not sure, though -- if there had just been the one path from
+%	82447 to 83047, then their numbers would be the same (e.g., 81691 and 82447).
+%	\item There are six distinct paths from 82447 to 86261, more than any other node that isn't an
+%	ancestor of 82447.
+%	\item Individuals 83124, 83619, and 83047 collectively had 392 offspring of the 1,000 individuals
+%	in generation 84.
+%\end{itemize}
 
 % Count total paths from a node to a winner, sorting by the number of paths.
 %neo4j-sh (?)$ match (a)-[r *1..8]->(w {total_error: "0"}) return distinct id(a), count(r) order by count(r) desc; 
