@@ -241,70 +241,13 @@ common type of selection such as tournament selection; in most uses of tournamen
 for example, no individual can be in more than a relative handful of tournaments, and thus can't be
 a parent terribly often no matter how fit they are.
 
-While no other node in Figure~\ref{fig:winnerAncestors} has nearly as many children as 86261 did,
-there are several that had very high reproduction rates, putting them well above what would be 
-possible with something like tournament selection. Individual 82447, for example, had
-443 offspring, including the 5 illustrated in Figure~\ref{fig:winnerAncestors}. In fact there were
-eight individuals in Figure~\ref{fig:winnerAncestors} that have more than 100 offspring; each of
-these is indicated with a diamond shape instead of the standard ellipse. This highlights a particularly
-interesting ancestry chain from 82447 through 83124, 84319, 85086 to 86261, each of which had more
-than 100 offspring. Here the test case results for each of these individuals must be quite
-``special'' in the sense that they are be able to solve an large set of test cases that other
-individuals simply aren't able to solve.\marginpar{It would be interesting to explore the details
-	of those error values, but not right now.}
-
-If we look at the total error in of the individuals in Figure~\ref{fig:winnerAncestors}, we again
-find some significant surprises that tell us quite a lot about lexicase selection. In particular, if
-we look at the total error for each individual along the (mostly) diamond path from 80220 through
-82447 to 86261 (displayed in Table~\ref{table:winnerFitnesses}), the fitness of the first five
-individuals in the chain aren't too surprising. One (individual 82447) has the best total error in
-that generation, all the others are in or nearly in the top quarter of the population. The fitnesses 
-of the last two (the grandparent and parent of \emph{every} one of the 45 solutions), however, 
-came as quite a shock. In particular individual 85086 has a total error of 100,000, placing it
-\emph{very near the bottom of the population by total error} (rank 971). Individual 86261, which was
-the parent of 924 of the 1,000 individuals in the next generation, has a total error of 4,034, placing
-it below $3/4$ of the population in its generation by that aggregate measure.
-
-\begin{table}[tb]
-	\begin{center}
-	\begin{tabular}{rrr}
-		Individual & $\quad$ Total error & $\quad$ Rank in population \\
-		\hline
-		80220 & 321 & 147 \\
-		81691 & 441 & 268 \\
-		82447 & 107 & 1 \\
-		83124 & 157 & 85 \\
-		84319 & 240 & 188 \\
-		85086 & 100,000 & 971 \\
-		86261 & 4,034 & 765
-	\end{tabular}
-	\end{center}
-	% \sidecaption[t]
-	\caption{The total error and rank (by total error) in the population in that individual's generation
-		for the sequence of ``diamond'' individuals from in Figure~\ref{fig:winnerAncestors}.}
-	\label{table:winnerFitnesses}
-\end{table}
-
-So how could individuals with such terrible total fitness end up being selected so often as parents?
-Exploring the specific test case errors reveals that individual 85086 is perfect on half of the test
-cases (all those that involve printing), but gets a penalty error of 1,000 on the other half, presumably
-because it never actually returns a value. Every one of its ancestors in 
-Table~\ref{table:winnerFitnesses}, however, has at least a few non-zero errors on the printing
-test cases, meaning that any lexicase ordering that places a few key printing test cases before
-any of the ``return'' test cases would likely select individual 85086.
-
-\emph{Say something about individual 86261.}
-
-\emph{The dashed lines indicate individuals with lots of different paths to a winner, i.e., they
-	are the ancestor of a winner in several different ways. we still need to write that up.}
-
 \begin{Query}
 	\begin{verbatim}
-MATCH (p)-->(c)-[*0..7]->(w {total_error: 0}) 
-MATCH (p)-->(n) 
-RETURN DISTINCT id(p), count(DISTINCT n) 
-ORDER BY count(distinct n) DESC
-LIMIT 20;
+	MATCH (p)-->(c)-[*0..7]->(w {total_error: 0}) 
+	MATCH (p)-->(n) 
+	RETURN DISTINCT id(p), count(DISTINCT n) 
+	ORDER BY count(distinct n) DESC
+	LIMIT 20;
 	\end{verbatim}
 	\caption{Cypher query to find, for each ancestor \texttt{p} of a winner, how many distinct offspring 
 		\texttt{n} that ancestor \texttt{p}, regardless of whether \texttt{n} is itself an
@@ -341,6 +284,60 @@ LIMIT 20;
 %+---------------------------+
 %20 rows
 %162649 ms
+
+While no other node in Figure~\ref{fig:winnerAncestors} has nearly as many children as 86261 did,
+there are several that had very high reproduction rates, putting them well above what would be 
+possible with something like tournament selection. Individual 82447, for example, had
+443 offspring, including the 5 illustrated in Figure~\ref{fig:winnerAncestors}. In fact there were
+eight individuals in Figure~\ref{fig:winnerAncestors} that have more than 100 offspring; each of
+these is indicated with a diamond shape instead of the standard ellipse. This highlights a particularly
+interesting ancestry chain from 80220 through 81691, 82447, 83124, 84319, 85086 to 86261, marked with
+dashed edges in Figure~\ref{fig:winnerAncestors}. With the exception of 81691, which ``only'' had 17
+offspring, each of these seven individuals had more
+than 100 offspring, and thus had a fairly dominate role in shaping the generation that followed them. 
+
+If we look at the total error in of the individuals in Figure~\ref{fig:winnerAncestors}, we again
+find some significant surprises that tell us quite a lot about lexicase selection. In particular, if
+we look at the total error for each individual along the dashed path from 80220 through
+82447 to 86261, the fitness of the first five
+individuals in the chain aren't too surprising. One (individual 82447) has the best total error in
+that generation and all but 81691 (the individual with only 17 offspring) are in the top fifth of the 
+population when ranked by total fitness. The fitnesses 
+of the last two (the grandparent and parent of \emph{every} one of the 45 solutions), however, 
+came as quite a shock. In particular individual 85086 has a total error of 100,000, placing it
+\emph{very near the bottom of the population by total error} (rank 971). Individual 86261, which was
+the parent of 924 of the 1,000 individuals in the next generation, has a total error of 4,034, placing
+it below $3/4$ of the population in its generation by that aggregate measure.
+
+\begin{table}[tb]
+	\begin{center}
+	\begin{tabular}{rrr}
+		Individual & $\quad$ Total error & $\quad$ Rank in population \\
+		\hline
+		80220 & 321 & 147 \\
+		81691 & 441 & 268 \\
+		82447 & 107 & 1 \\
+		83124 & 157 & 85 \\
+		84319 & 240 & 188 \\
+		85086 & 100,000 & 971 \\
+		86261 & 4,034 & 765
+	\end{tabular}
+	\end{center}
+	% \sidecaption[t]
+	\caption{The total error and rank (by total error) in the population in that individual's generation
+		for the sequence of ``diamond'' individuals from in Figure~\ref{fig:winnerAncestors}.}
+	\label{table:winnerFitnesses}
+\end{table}
+
+So how could individuals with such terrible total fitness end up being selected so often as parents?
+Exploring the specific test case errors reveals that individual 85086 is perfect on half of the test
+cases (all those that involve printing), but gets a penalty error of 1,000 on the other half, presumably
+because it never actually returns a value. Every one of its ancestors in 
+Table~\ref{table:winnerFitnesses}, however, has at least a few non-zero errors on the printing
+test cases, meaning that any lexicase ordering that places a few key printing test cases before
+any of the ``return'' test cases would likely select individual 85086.
+
+\emph{Say something about individual 86261.}
 
 %Most offspring throughout the entire run:
 %neo4j-sh (?)$ match (n)-[* 1]->(m) return id(n), count(distinct m) order by count(distinct m) desc limit 40;
