@@ -92,7 +92,31 @@ programming problems taken from \cite{helmuth:GECCO15}.
 
 \subsection{Neo4J and Cypher}
 
-Give an example or three of Cypher.
+Graph databases~%\cite{GraphDatabases:2013}
+ are a relatively new approach, where data is stored as a collection of nodes and relationships in a graph, with a specialized query language that makes it easy to ask questions about complex relationships. This section further describes Neo4j, its query language Cypher, and the various advantages they hold over relational databases in recording and accessing information that relies heavily on recursion.
+
+Neo4j is a form of data management system based upon a graph. Information is stored by means of vertices and edges, commonly referred to as nodes and relationships, respectively~%\cite{GraphDatabases:2013}
+. In our work, nodes represent individuals, and relationships represent the transformations between individuals. As a GP system generates individuals, new nodes and relationships can be added to the database for later analysis.
+
+Cypher%~\cite{GraphDatabases:2013}
+ allows this data to be readily extracted from the Neo4j database. There are three fundamental elements to queries in Cypher. The \texttt{START} clause specifies a starting location in the database, indicating the node or nodes where the query will begin. The \texttt{RETURN} clause specifies which nodes, relationships, or properties should be returned to the user. The \texttt{MATCH} clause is the main section of a query, specifying what patterns in the graph the query will discover. To write the \texttt{MATCH} clause, nodes and relationships are drawn with ASCII characters. A node is indicated by parenthesis \texttt{( )}, directed relationships are indicated with \texttt{-->} or \texttt{<--} depending on the direction of the relationship, and undirected relationships are indicated with \texttt{--}. Brackets \texttt{[ ]} between the dashes can be used to specify relationship names prefixed by a colon. In the example query below, the \texttt{START} clause indicates that the query should start with node 43, called \texttt{parent}, the \texttt{MATCH} clause finds all nodes that are children of the starting node, and the \texttt{RETURN} clause yields the starting node and all nodes that are children of that node.
+
+\begin{verbatim}
+    START parent=node(43)
+    MATCH (parent)-[:PARENTOF]->(child)
+    RETURN parent, child;
+\end{verbatim}
+
+%This query produces the results in Figure \ref{fig:exampleQuery}.
+\begin{figure}[tb]
+ \centering
+ %\includegraphics[height=0.30 \textwidth]{parents}
+ \caption{Results of Example Query}
+ \label{fig:exampleQuery}
+\end{figure}
+
+Performance is the key advantage in our research of graph databases over relational databases. As the data set grows, recursive queries such as those needed to explore graph relationships become highly inefficient when using relational databases, as numerous joins are needed. In graph databases, however, the portion of the data set that must be searched is limited because the query will only search along an available path connected by relationships, allowing queries to remain efficient~%\cite{GraphDatabases:2013}.
+
 
 \subsection{PushGP and lexicase selection}
 
