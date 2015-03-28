@@ -226,6 +226,7 @@ Query~\ref{query:winnerAncestors}.\footnote{We could certainly
 	single edges, but I don't know if we want to talk about that.}
 
 \begin{Query}
+	\noalign{\smallskip}
 	\begin{verbatim}
 	MATCH (p)-->(c)-[*0..7]->(w {total_error: 0}) 
 	RETURN DISTINCT id(p), id(c);
@@ -292,6 +293,7 @@ for example, no individual can be in more than a relative handful of tournaments
 a parent terribly often no matter how fit they are.
 
 \begin{Query}
+	\noalign{\smallskip}
 	\begin{verbatim}
 	MATCH (p)-->(c)-[*0..7]->(w {total_error: 0}) 
 	MATCH (p)-->(n) 
