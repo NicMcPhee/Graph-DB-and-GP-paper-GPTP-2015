@@ -92,7 +92,7 @@ speak volumes if explored.
 	diversity or cluster plots? A synthetic plot? Maybe that's just not necessary?}
 
 While this sort of aggregate reporting is often valuable, allowing for important comparative
-analysis of, for example, the impact of different genetic operators, it typically fails to provide
+analysis of the impact of different genetic operators, it typically fails to provide
 any sense of the \emph{why}. Yes, Treatment A led to better aggregate performance than 
 Treatment B -- but what happened in the runs that led to that result? Any success at the end of a
 run is ultimately the intricate combination of hundreds or thousands of selections, recombinations
@@ -202,7 +202,7 @@ better we can learn useful things about both the problem and the tools we're app
 
 \begin{sidewaysfigure}
 	\vspace{0.6\columnwidth}
-	\includegraphics[width=0.88\columnwidth]{figures/ancestors_of_winners.pdf}
+	\includegraphics[width=0.88\columnwidth]{figures/ancestors_of_winners_colons.pdf}
 	\caption{Ancestry of the 45 ``winners'' from run 6 of lexicase, replace-space-with-newline. Nodes
 		with diamonds instead of ellipses had an unusually large number of offspring. Shaded nodes
 		had an unusual number of offspring that were ancestors of winners. The dashed lines highlight
@@ -255,11 +255,11 @@ we can observe right away:
 	1,000 individual. This tells us that constructing a winner from the individuals in generation 86
 	wasn't entirely trivial, but it also wasn't a huge challenge and happened multiple times.
 	\item The 45 winners only had four distinct ancestors in the preceding generation.
-	\item All 45 winners had a single individual (86261, marked with a large shaded diamond near
+	\item All 45 winners had a single individual (86:261, marked with a large shaded diamond near
 	the center bottom) as at least one of their parents, and 42 of
-	them had 86261 as their \emph{only} parent, i.e., they were mutations of 86261, or were the result
-	of self-crosses of 86261. To simplify the graph, we've combined those 42 individuals into a
-	single node labeled ``42 other Winners''.
+	them had 86:261 as their \emph{only} parent, i.e., they were mutations of 86:261, or were the result
+	of self-crosses of 86:261. To simplify the graph, we've combined those 42 individuals into a
+	single node labeled ``42 Other Winners''.
 	\item The number of ancestors of winners doesn't grow quickly as we move back in time. We have to
 	go back to generation 80 to find 10 individuals (or 1\% of the population) that are ancestors of
 	winners, and in generation 79 there are still only 14 ancestors of winners. In fact, we have to
@@ -271,8 +271,8 @@ we can observe right away:
 \label{sec:surprisingFecundity}
 
 Looking at Figure~\ref{fig:winnerAncestors} we can see that a few individuals have more offspring
-represented than others. As we've already mentioned, individual 86261 has 45 successful offspring,
-and both individuals 82447 and 83047 have five offspring in the graph, i.e., five offspring that were
+represented than others. As we've already mentioned, individual 86:261 has 45 successful offspring,
+and both individuals 82:447 and 83:047 have five offspring in the graph, i.e., five offspring that were
 ancestors of a winning individual in generation 87. Each of these is marked in 
 Figure~\ref{fig:winnerAncestors} with a shaded diamond.
 
@@ -282,7 +282,7 @@ or an ancestor of a winner, as no other nodes are displayed. One
 might, however, wonder how many total offspring an individual has
 regardless of whether they were a winner or not. Query~\ref{query:numChildren} identifies the most
 fecund ancestors of winners in these last nine generations. That reveals several results that were
-quite surprising to at least some of the authors, the most remarkable being that individual 86261 
+quite surprising to at least some of the authors, the most remarkable being that individual 86:261 
 was a parent of 934 of the 1,000 individuals in generation 87! Given that lexicase selection was
 designed in significant part of spread selection events out across the population, this makes it
 clear that there are times when lexicase does the opposite, and instead puts nearly all its eggs in
@@ -335,27 +335,27 @@ a parent terribly often no matter how fit they are.
 %20 rows
 %162649 ms
 
-While no other node in Figure~\ref{fig:winnerAncestors} has nearly as many children as 86261 did,
+While no other node in Figure~\ref{fig:winnerAncestors} has nearly as many children as 86:261 did,
 there are several that also had very high reproduction rates, putting them well above what would be 
-possible with something like tournament selection. Individual 82447, for example, had
+possible with something like tournament selection. Individual 82:447, for example, had
 443 offspring, including the 5 illustrated in Figure~\ref{fig:winnerAncestors}. In fact there were
 eight individuals in Figure~\ref{fig:winnerAncestors} that have more than 100 offspring; each of
 these is indicated with a diamond shape instead of the standard ellipse. This highlights a particularly
-interesting ancestry chain from 80220 through 81691, 82447, 83124, 84319, 85086 to 86261, marked with
-dashed edges in Figure~\ref{fig:winnerAncestors}. With the exception of 81691, which ``only'' had 17
+interesting ancestry chain from 80:220 through 81:691, 82:447, 83:124, 84:319, 85:086 to 86:261, marked with
+dashed edges in Figure~\ref{fig:winnerAncestors}. With the exception of 81:691, which ``only'' had 17
 offspring, each of these seven individuals had more
 than 100 offspring, and thus had a fairly dominate role in shaping the generation that followed them. 
 
 If we look at the total error in of the individuals in Figure~\ref{fig:winnerAncestors}, we again
 find some significant surprises that tell us quite a lot about lexicase selection. In particular, if
-we look at the total error for each individual along the dashed path from 80220 through
-82447 to 86261, the fitness of the first five
-individuals in the chain aren't too surprising. One (individual 82447) has the best total error in
-that generation and all but 81691 (the individual with only 17 offspring) are in the top fifth of the 
+we look at the total error for each individual along the dashed path from 80:220 through
+82:447 to 86:261, the fitness of the first five
+individuals in the chain aren't too surprising. One (individual 82:447) has the best total error in
+that generation and all but 81:691 (the individual with only 17 offspring) are in the top fifth of the 
 population when ranked by total fitness. The fitnesses 
 of the last two (the grandparent and parent of \emph{every} one of the 45 solutions), however, 
-came as quite a shock. In particular, individual 85086 has a total error of 100,000, placing it
-\emph{very near the bottom of the population by total error} (rank 971). Individual 86261, which was
+came as quite a shock. In particular, individual 85:086 has a total error of 100,000, placing it
+\emph{very near the bottom of the population by total error} (rank 971). Individual 86:261, which was
 the parent of 924 of the 1,000 individuals in the next generation, has a total error of 4,034, placing
 it below $3/4$ of the population in its generation by that aggregate measure.
 
@@ -368,39 +368,39 @@ it below $3/4$ of the population in its generation by that aggregate measure.
 	\begin{tabular}{rrr}
 		Individual & $\quad$ Total error & $\quad$ Rank in population \\
 		\hline
-		80220 & 321 & 147 \\
-		81691 & 441 & 268 \\
-		82447 & 107 & 1 \\
-		83124 & 157 & 85 \\
-		84319 & 240 & 188 \\
-		85086 & 100,000 & 971 \\
-		86261 & 4,034 & 765
+		80:220 & 321 & 147 \\
+		81:691 & 441 & 268 \\
+		82:447 & 107 & 1 \\
+		83:124 & 157 & 85 \\
+		84:319 & 240 & 188 \\
+		85:086 & 100,000 & 971 \\
+		86:261 & 4,034 & 765
 	\end{tabular}
 	\end{center}
 \end{table}
 
 So how could individuals with such terrible total fitness end up being selected so often as parents?
-Exploring the specific test case errors reveals that individual 85086 is perfect on half of the test
+Exploring the specific test case errors reveals that individual 85:086 is perfect on half of the test
 cases (all those that involve printing), but gets a penalty error of 1,000 on the other half, presumably
 because it never actually returns a value. Every one of its ancestors in 
 Table~\ref{table:winnerFitnesses}, however, has at least a few non-zero errors on the printing
 test cases, meaning that any lexicase ordering that places a few key printing test cases before
-any of the ``return'' test cases would likely select individual 85086.
+any of the ``return'' test cases would likely select individual 85:086.
 
-What about individual 86261, with it's 934 offspring? It is perfect (has error zero) on 194 of the 200
+What about individual 86:261, with it's 934 offspring? It is perfect (has error zero) on 194 of the 200
 test cases, with it's total error of 4,034 coming from the remaining 6 test cases. On four of these it,
-like individual 85086, fails to return a value and gets the penalty of 1,000; it has an error of 17 on
+like individual 85:086, fails to return a value and gets the penalty of 1,000; it has an error of 17 on
 the other two. Thus it gets 97\% of the test cases correct, but happens to be \emph{heavily} penalized
 for its behavior on 4 of the 6 it gets wrong. In a system that aggregates the errors, its rank of 765
 out of 1,000 would mean that it would probably have no offspring. With lexicase selection, however,
 it's success on the 194 test cases means that it is selected (from this population) almost every time.
 In fact only 152 of the 1,000 individuals in the final generation had a parent who \emph{wasn't}
-86261, and only 116 other individuals in generation 86 had an offspring in the next generation. While
+86:261, and only 116 other individuals in generation 86 had an offspring in the next generation. While
 four of those had 10 or more offspring in the last generation, none of those four actually
-gave rise to a winner. The three parents of winners other than 86261 (individuals 86272, 86049, 
-and 86672 in Figure~\ref{fig:winnerAncestors}) had very few offspring (1, 2, and 2 respectively),
+gave rise to a winner. The three parents of winners other than 86:261 (individuals 86:272, 86:049, 
+and 86:672 in Figure~\ref{fig:winnerAncestors}) had very few offspring (1, 2, and 2 respectively),
 suggesting that they may not have contributed much (or anything) to their successful progeny, and 
-the success of their offspring was due more to the good fortune of mating with 86261 than anything else.
+the success of their offspring was due more to the good fortune of mating with 86:261 than anything else.
 
 %neo4j-sh (?)$ match (n)-[* 1]->(m {generation: "87"}) return id(n), count(distinct m) order by count(distinct m) desc limit 40;
 %+---------------------------+
@@ -503,25 +503,25 @@ the success of their offspring was due more to the good fortune of mating with 8
 
 Now that we know quite a lot about who gave rise to those 45 winners, what genetic operations
 brought them about? The largest group was 18 of the 45 which came about through 
-uniform-close-mutation alone, \emph{all} of which were mutations of individual 86261. This indicates
-that success can be achieved via a fairly simple modification to 86261's genome that only modifies 
+uniform-close-mutation alone, \emph{all} of which were mutations of individual 86:261. This indicates
+that success can be achieved via a fairly simple modification to 86:261's genome that only modifies 
 where some code blocks end.
 
 The other large group was 17 winners that arose via alternation followed by uniform-mutation. 14 of
-these were the result of a self-cross of 86261 and itself, with the other three being crosses between
-86261 and the other three parents of winners (86272, 86049, and 86672). There were also two smaller
-groups of winners, 6 which were the result of alternation alone (all self-crosses of 86261), and 4
-from uniform-mutation alone applied to 86261.
+these were the result of a self-cross of 86:261 and itself, with the other three being crosses between
+86:261 and the other three parents of winners (86:272, 86:049, and 86:672). There were also two smaller
+groups of winners, 6 which were the result of alternation alone (all self-crosses of 86:261), and 4
+from uniform-mutation alone applied to 86:261.
 
-An obvious question then is what changed in moving from 86261 to the final solutions. The genomes and
+An obvious question then is what changed in moving from 86:261 to the final solutions. The genomes and
 programs involved are fairly complex (over 200 instructions), and as mentioned in
 the introduction, a full analysis of the genomes and behaviors of the the individuals involved is 
 beyond the scope of this paper. It is possible, however, and our graph database analysis has clearly
 identified individuals whose genomes and programs deserve additional study. 
 
 Based on our graph database work, we can also propose a hypothesis that this additional study could
-explore. 86261's total error of 4,034 comes in large part from failing to return a value on four 
-test cases. A distinct possibility is that 86261 simply times out on those
+explore. 86:261's total error of 4,034 comes in large part from failing to return a value on four 
+test cases. A distinct possibility is that 86:261 simply times out on those
 four test cases. The efficacy of uniform-close-mutation suggests that there might be some sequence of 
 instructions that are being executed repeatedly via a loop or recursion, and there are 
 uniform-close-mutations that shorten that block in ways that allow it to complete all the test
