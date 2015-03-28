@@ -87,9 +87,9 @@ digraph G {
 	86272 -> 87941;
 	86672 -> 87947;
 
-	"42 other Winners" [shape=rectangle, fontsize=40]
+	"42 Other Winners" [shape=rectangle, fontsize=40]
 	86261 [shape=diamond, style=filled, fillcolor="lightgrey", fontsize=40]
-	86261 -> "42 other Winners" [penwidth=5];
+	86261 -> "42 Other Winners" [penwidth=5];
 	86261 -> 87719;
 	86261 -> 87941;
 	86261 -> 87947;
