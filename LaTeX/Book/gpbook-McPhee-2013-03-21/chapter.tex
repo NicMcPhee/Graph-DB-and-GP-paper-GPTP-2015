@@ -122,12 +122,12 @@ after it's stored.
 Assuming one has access to the necessary gigabytes or terabytes of storage, 
 databases are the obvious tool for the collection of the data. Most common database structures and tools,
 however,
-don't lend themselves to the kinds of analysis that we want and need in evolutionary computation work see Section \ref{subsec:Neo4j}. %Most relational and document-based databases, for example require things like complex and expensive 
-%recursive joins to trace significant hereditary lines, making this approach increasingly infeasible.
+don't lend themselves to the kinds of analysis that we want and need in evolutionary computation work. Most relational and document-based databases, for example require things like complex and expensive 
+recursive joins to trace significant hereditary lines, making this approach increasingly unfeasible.
  In exploring the dynamics of an EC run, we're going to want to be able to
 make connections across dozens or even hundreds of generations, which simply isn't plausible with a
-relational database. (See \cite{Robinson:GraphDB:Book} for more on these 
-feasability/efficiency issues.) While we decided to utilize Neo4j as our graph database, there are other graph databases that would be an effective tool to use as well such as blank or blank. 
+relational database. (See~\cite{Robinson:GraphDB:Book} for more on these 
+feasability/efficiency issues.) While we decided to utilize Neo4j as our graph database, there are other graph databases that would be an effective tool to use as well see~\cite{wiki:GraphDB}. 
 
 \emph{Say a little about how graph databases rock on this and that's why we're using them here. Also
 	mention that Neo4J isn't the only option out there; it just happens to be the one that we're
@@ -160,7 +160,7 @@ Cypher%~\cite{GraphDatabases:2013}
  \label{fig:exampleQuery}
 \end{figure}
 
-Performance is the key advantage in our research of graph databases over relational databases. As the data set grows, recursive queries such as those needed to explore graph relationships become highly inefficient when using relational databases, as numerous joins are needed. Therefore, tracing hereditary lines in EC runs becomes increasingly unfeasible. In graph databases, however, the portion of the data set that must be searched is limited because the query will only search along an available path connected by relationships, allowing queries to remain efficient~%\cite{GraphDatabases:2013}.
+Performance is the key advantage in our research of graph databases over relational databases. As the data set grows, recursive queries such as those needed to explore graph relationships become highly inefficient when using relational databases, as numerous joins are needed. In graph databases, however, the portion of the data set that must be searched is limited because the query will only search along an available path connected by relationships, allowing queries to remain efficient~%\cite{GraphDatabases:2013}.
 
 
 \subsection{PushGP and lexicase selection}
@@ -862,6 +862,10 @@ cases within the time limit without changing the value returned.
 %+-------------------------+
 %| g   | count(distinct p) |
 %+-------------------------+
+%| 123 | 224               |
+%| 124 | 222               |
+%| 125 | 228               |
+%| 126 | 218  
 %| 127 | 212               |
 %| 128 | 206               |
 %| 129 | 187               |
@@ -991,6 +995,21 @@ where the reality was \emph{wildly} different.
 % Always give a unique label
 % and use \ref{<label>} for cross-references
 % and \cite{<label>} for bibliographic references
+
+%logs/log30.txt
+%logs/log41.txt
+%logs/log50.txt
+%logs/log52.txt
+%logs/log60.txt
+%logs/log62.txt
+%logs/log64.txt
+%logs/log68.txt
+%logs/log6.txt
+%logs/log74.txt
+%logs/log82.txt
+%logs/log94.txt
+%logs/log96.txt
+
 Instead of simply listing headings of different levels we recommend to
 let every heading be followed by at least a short passage of text.
 Further on please use the \LaTeX\ automatism for all your
