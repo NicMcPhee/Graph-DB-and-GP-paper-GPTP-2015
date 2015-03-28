@@ -194,8 +194,8 @@ lexicase selection provides a significant advantage here.
 
 % This is run 6, lexicase, replace-space-with-newline.
 
-It's interesting the lexicase did so well, but that leaves us with the crucial question of \emph{why}? 
-So we chose one successful run to explore in more detail. It's important to note
+Interestingly enough, lexicase performed very well, but this leaves us with the crucial question of \emph{why}? 
+In order to answer this question, we chose one successful run to explore in more detail. However, it's important to note
 here that we're making no claims that this is a ``representative'' run (whatever that would even
 mean); it's an \emph{interesting} run, though, and our hope is that by understanding its dynamics
 better we can learn useful things about both the problem and the tools we're applying.
@@ -211,9 +211,9 @@ better we can learn useful things about both the problem and the tools we're app
 	\label{fig:winnerAncestors}
 \end{sidewaysfigure}
 
-An obvious place to start is at the end when the GP system solved the problem. So we used Neo4J
-to find all the ancestors of any ``winning'' individual, i.e., individual with a total error of 
-on all 200 test cases. Using Cypher (Neo4J's query language), we can easily ask for this subset
+An obvious place to start analyzing is at the end when the GP system created individuals that solved the problem. So we used Neo4J to find all the ancestors of any ``winning'' individual, i.e., individual with a total error of 
+on all 200 test cases. Using Cypher%(Neo4J's query language)
+, we can easily ask for this subset
 of the population going back to generation 79 using the query in 
 Query~\ref{query:winnerAncestors}.\footnote{We could certainly 
 	have gone back farther in time, but the graph would have become impossible to read as the
@@ -254,16 +254,16 @@ we can observe right away:
 	\item There are 45 distinct winners in the final generation, or 4.5\% of the population of
 	1,000 individual. This tells us that constructing a winner from the individuals in generation 86
 	wasn't entirely trivial, but it also wasn't a huge challenge and happened multiple times.
-	\item Those 45 winners only had four distinct ancestors in the preceding generation.
+	\item The 45 winners only had four distinct ancestors in the preceding generation.
 	\item All 45 winners had a single individual (86261, marked with a large shaded diamond near
 	the center bottom) as at least one of their parents, and 42 of
 	them had 86261 as their \emph{only} parent, i.e., they were mutations of 86261, or were the result
 	of self-crosses of 86261. To simplify the graph, we've combined those 42 individuals into a
-	single node labelled ``42 Winners''.
+	single node labeled ``42 other Winners''.
 	\item The number of ancestors of winners doesn't grow quickly as we move back in time. We have to
 	go back to generation 80 to find 10 individuals (or 1\% of the population) that are ancestors of
-	winners, and in generation 79 there are still only 14 ancestors of winners. In fact we have to
-	go back all the way to generation 63 to find a time where over 100 individuals (or over 10\% of 
+	winners, and in generation 79 there are still only 14 ancestors of winners. In fact, we have to
+	go trace the ancestry all the way to generation 63 to find a time where over 100 individuals (or over 10\% of 
 	the population) were ancestors of a winning individual.
 \end{itemize}
 
@@ -277,13 +277,13 @@ ancestors of a winning individual in generation 87. Each of these is marked in
 Figure~\ref{fig:winnerAncestors} with a shaded diamond.
 
 Figure~\ref{fig:winnerAncestors},
-however, only tells us home many offspring an individual had that were themselves either a winner
-or an ancestor of a winner, as no other nodes are displayed. 
+however, only tells us how many offspring an individual had that were themselves either a winner
+or an ancestor of a winner, as no other nodes are displayed. One
 might, however, wonder how many total offspring an individual has
 regardless of whether they were a winner or not. Query~\ref{query:numChildren} identifies the most
 fecund ancestors of winners in these last nine generations. That reveals several results that were
 quite surprising to at least some of the authors, the most remarkable being that individual 86261 
-was a parent of 934 of the 1,000 individiuals in generation 87! Given that lexicase selection was
+was a parent of 934 of the 1,000 individuals in generation 87! Given that lexicase selection was
 designed in significant part of spread selection events out across the population, this makes it
 clear that there are times when lexicase does the opposite, and instead puts nearly all its eggs in
 a single basket. This level of selection focus would simply be impossible using almost any other
@@ -336,7 +336,7 @@ a parent terribly often no matter how fit they are.
 %162649 ms
 
 While no other node in Figure~\ref{fig:winnerAncestors} has nearly as many children as 86261 did,
-there are several that had very high reproduction rates, putting them well above what would be 
+there are several that also had very high reproduction rates, putting them well above what would be 
 possible with something like tournament selection. Individual 82447, for example, had
 443 offspring, including the 5 illustrated in Figure~\ref{fig:winnerAncestors}. In fact there were
 eight individuals in Figure~\ref{fig:winnerAncestors} that have more than 100 offspring; each of
@@ -354,7 +354,7 @@ individuals in the chain aren't too surprising. One (individual 82447) has the b
 that generation and all but 81691 (the individual with only 17 offspring) are in the top fifth of the 
 population when ranked by total fitness. The fitnesses 
 of the last two (the grandparent and parent of \emph{every} one of the 45 solutions), however, 
-came as quite a shock. In particular individual 85086 has a total error of 100,000, placing it
+came as quite a shock. In particular, individual 85086 has a total error of 100,000, placing it
 \emph{very near the bottom of the population by total error} (rank 971). Individual 86261, which was
 the parent of 924 of the 1,000 individuals in the next generation, has a total error of 4,034, placing
 it below $3/4$ of the population in its generation by that aggregate measure.
@@ -465,7 +465,7 @@ these were the result of a self-cross of 86261 and itself, with the other three 
 groups of winners, 6 which were the result of alternation alone (all self-crosses of 86261), and 4
 from uniform-mutation alone applied to 86261.
 
-An obvious question then is What changed in moving from 86261 to the final solutions. The genomes and
+An obvious question then is what changed in moving from 86261 to the final solutions. The genomes and
 programs involved are fairly complex (over 200 instructions), and as mentioned in
 the introduction, a full analysis of the genomes and behaviors of the the individuals involved is 
 beyond the scope of this paper. It is possible, however, and our graph database analysis has clearly
