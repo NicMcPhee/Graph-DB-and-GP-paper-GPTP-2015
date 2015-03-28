@@ -46,12 +46,11 @@ evolutionary and genealogical events that make up the vital low-details details 
 Databases provide a natural tool for 
 storing and accessing the data, but traditional relational
 databases are poorly suited for a variety of queries that are important for the genealogical analysis
-we need for exploring the evolutionary dynamics of our EC runs. If, for example, we have a 
-\texttt{ParentChild} table, it's easy enough to find Alice's parents. Finding Alice's grandparents,
-siblings, or cousins, however, is less straightforward, with queries becomes increasingly difficult
-as we move farther out across the relationship tree.
-
-In this chapter we illustrate the use of graph databases as an alternative storage and analysis tool for
+we need for exploring the evolutionary dynamics of our EC runs. \marginpar{Removed this bit since we talk about it in the neo4j subsection now. Is this a good combination of paragraphs?} %If, for example, we have a 
+%\texttt{ParentChild} table, it's easy enough to find Alice's parents. Finding Alice's grandparents,
+%siblings, or cousins, however, is less straightforward, with queries becomes increasingly difficult
+%as we move farther out across the relationship tree.
+In this chapter, we illustrate the use of graph databases as an alternative storage and analysis tool for
 evolutionary computation runs. In \cite{donatuccianalysis} we have demonstrated that graph databases
 can be an effective tool for analyzing complex genetic programming (GP) dynamics, which led directly
 to a proposed change to standard sub-tree crossover in tree-based GP, \cite{mcphee:GECCO15}.
@@ -111,7 +110,7 @@ and a meaningful presentation and discussion of such a program could easily take
 authors have available given the typical space limitations in published work.
 Our suspicion, however, is that another reason this sort of \emph{why} analysis often isn't 
 reported is because it isn't done, in no small part because it's hard. As EC researchers we're in the
-``priviledged'' position of being able to collect anything and everything that happens in a run, 
+``privileged'' position of being able to collect anything and everything that happens in a run, 
 but that's a potentially huge amount of data, and leaves us with two substantial problems: 
 How to \emph{store} the data, and how to \emph{analyze} the data
 after it's stored. 
@@ -123,13 +122,12 @@ after it's stored.
 Assuming one has access to the necessary gigabytes or terabytes of storage, 
 databases are the obvious tool for the collection of the data. Most common database structures and tools,
 however,
-don't lend themselves to the kinds of analysis that we want and need in evolutionary computation work.
-Most relational and document-based databases, for example require things like complex and expensive 
-recursive joins to trace significant hereditary lines, making this approach increasingly
-infeasible. In exploring the dynamics of an EC run, we're going to want to be able to
+don't lend themselves to the kinds of analysis that we want and need in evolutionary computation work see Section \ref{subsec:Neo4j}. %Most relational and document-based databases, for example require things like complex and expensive 
+%recursive joins to trace significant hereditary lines, making this approach increasingly infeasible.
+ In exploring the dynamics of an EC run, we're going to want to be able to
 make connections across dozens or even hundreds of generations, which simply isn't plausible with a
 relational database. (See \cite{Robinson:GraphDB:Book} for more on these 
-feasability/efficiency issues.)
+feasability/efficiency issues.) While we decided to utilize Neo4j as our graph database, there are other graph databases that would be an effective tool to use as well such as blank or blank. 
 
 \emph{Say a little about how graph databases rock on this and that's why we're using them here. Also
 	mention that Neo4J isn't the only option out there; it just happens to be the one that we're
@@ -138,7 +136,7 @@ feasability/efficiency issues.)
 \section{A little background on problems and tools}
 
 \subsection{Neo4J and Cypher}
-
+\label{subsec:Neo4j}
 Graph databases~%\cite{GraphDatabases:2013}
  are a relatively new approach, where data is stored as a collection of nodes and relationships in a graph, with a specialized query language that makes it easy to ask questions about complex relationships. This section further describes Neo4j, its query language Cypher, and the various advantages they hold over relational databases in recording and accessing information that relies heavily on recursion.
 
@@ -162,7 +160,7 @@ Cypher%~\cite{GraphDatabases:2013}
  \label{fig:exampleQuery}
 \end{figure}
 
-Performance is the key advantage in our research of graph databases over relational databases. As the data set grows, recursive queries such as those needed to explore graph relationships become highly inefficient when using relational databases, as numerous joins are needed. In graph databases, however, the portion of the data set that must be searched is limited because the query will only search along an available path connected by relationships, allowing queries to remain efficient~%\cite{GraphDatabases:2013}.
+Performance is the key advantage in our research of graph databases over relational databases. As the data set grows, recursive queries such as those needed to explore graph relationships become highly inefficient when using relational databases, as numerous joins are needed. Therefore, tracing hereditary lines in EC runs becomes increasingly unfeasible. In graph databases, however, the portion of the data set that must be searched is limited because the query will only search along an available path connected by relationships, allowing queries to remain efficient~%\cite{GraphDatabases:2013}.
 
 
 \subsection{PushGP and lexicase selection}
