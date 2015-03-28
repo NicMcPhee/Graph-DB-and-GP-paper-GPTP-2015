@@ -367,7 +367,7 @@ it below $3/4$ of the population in its generation by that aggregate measure.
 	\begin{center}
 	\begin{tabular}{rrr}
 		Individual & $\quad$ Total error & $\quad$ Rank in population \\
-		\hline
+		\hline\noalign{\smallskip}
 		80220 & 321 & 147 \\
 		81691 & 441 & 268 \\
 		82447 & 107 & 1 \\
@@ -904,32 +904,6 @@ An immediate difference that we noticed between the two runs was the number of i
 Another major difference was the selection pressure of the style of selections. In lexicase selection, one parent can dominate the selection if it performs well for a majority of the test cases as we saw in section~\ref{sec:surprisingFecundity} where individual 86:261 was a parent for all but  approximately 70 individuals in the final generation. However, tournament selection never can have this level of selection pressure. Throughout the entire run, a single parent only produced 24 children at maximum. Comparing this to the lexicase selection there were over 40 parents that produced at least 100 children. This is an extreme difference in selection pressure between the two types of selections. 
 
 Beside selection pressure, we noticed another crucial difference between the types of individuals selected for reproduction. With tournament selection, there is a biased towards individuals that have the lowest fitness. However, this is not the case in lexicase.  As long as an individual performs extremely well for many cases but not all, it is still possible to be selected for reproduction. In Table~ \ref{table:winnerFitnesses}, individual 85:086 has an error of 100,000. This late into the run, it would be very unlikely that tournament would select this individual to reproduce. In fact, we see this in the tournament run where there isn't a individual selected in the winning ancestry that has a total error of more than 132. Additionally, we noticed that the winning ancestry six generation back contained individuals with a total error of either 83 or 132. 
-
-% Use the \index{} command to code your index words
-% Make sure to inlcude the indexed word inside and outside of the brackets if you want the text to show up in your paragraph:
-% e.g. This book is about \index{genetic programming}genetic programming. 
-% If the text is not entered outside the brackets it will appear as: This book is about .
-%
-% For tables use
-%
-\begin{table}
-\caption{Please write your table caption here}
-\label{tab:1}       % Give a unique label
-%
-% Follow this input for your own table layout
-%
-\begin{tabular}{p{2cm}p{2.4cm}p{2cm}p{4.9cm}}
-\hline\noalign{\smallskip}
-Classes & Subclass & Length & Action Mechanism  \\
-\noalign{\smallskip}\svhline\noalign{\smallskip}
-Translation & mRNA$^a$  & 22 (19--25) & Translation repression, mRNA cleavage\\
-Translation & mRNA cleavage & 21 & mRNA cleavage\\
-Translation & mRNA  & 21--22 & mRNA cleavage\\
-Translation & mRNA  & 24--26 & Histone and DNA Modification\\
-\noalign{\smallskip}\hline\noalign{\smallskip}
-\end{tabular}
-$^a$ Table foot note (with superscript)
-\end{table}
 
 \begin{acknowledgement}
 	Thanks to all the cool people!\marginpar{We need to make this real.}
