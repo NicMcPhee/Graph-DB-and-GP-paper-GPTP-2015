@@ -867,18 +867,8 @@ of individuals. In exploring one lexicase run on the Replace Space With Newlines
 we discovered that while in general this story held true, there were moments in the course of the run
 where the reality was \emph{wildly} different.
 
-\section{Big plot for tournament}
 
-\emph{David – this presumably belongs in the section you're working on. I just dropped it here
-	for now so we don't run into each other and end up with a merge conflict.}
 
-\begin{sidewaysfigure}
-	\vspace{0.6\columnwidth}
-	\includegraphics[width=\columnwidth]{figures/ancestors_of_winner_rswn_tourney_run74.pdf}
-	\caption{Ancestry of the sole ``winners'' from run 74 of tournament selection, 
-		replace-space-with-newline.}
-	\label{fig:winnerAncestorsTourneyRun74}
-\end{sidewaysfigure}
 
 \section{Tournament Selection vs. Lexicase Selection}
 \label{sec:1}
@@ -897,13 +887,97 @@ where the reality was \emph{wildly} different.
 %logs/log94.txt
 %logs/log96.txt
 
+\begin{sidewaysfigure}
+	\vspace{0.6\columnwidth}
+	\includegraphics[width=\columnwidth]{figures/ancestors_of_winner_rswn_tourney_run74.pdf}
+	\caption{Ancestry of the sole ``winners'' from run 74 of tournament selection, 
+		replace-space-with-newline.}
+	\label{fig:winnerAncestorsTourneyRun74}
+\end{sidewaysfigure}
+
 In addition to studying lexicase selection, we wanted to collect data from replace-space-with-new-line with tournament selection in order to compare lexicase versus tournament. As previously stated in section~\ref{meetLexicase}, lexicase  produced at least one individual with an error of zero in 55 of 100 runs while tournament selection only produced 13 of 100 successful runs. Of these 13 successful tournament runs, we selected one run to study based on the error diversity in the population over time that seemed to exhibit the similar error diversity trait as a majority of the other successful runs. Similarly, in selecting the lexicase run, we noticed that there were interesting dips in the amount of clusters over time and selected a lexicase run that emphasized that trait. 
 
 An immediate difference that we noticed between the two runs was the number of individuals that solved the problem in the final generation. In lexicase, there were 45 different individuals that solved the problem while there was only a single individual in the tournament run that had an error of zero. 
 
-Another major difference was the selection pressure of the style of selections. In lexicase selection, one parent can dominate the selection if it performs well for a majority of the test cases as we saw in section~\ref{sec:surprisingFecundity} where individual 86:261 was a parent for all but  approximately 70 individuals in the final generation. However, tournament selection never can have this level of selection pressure. Throughout the entire run, a single parent only produced 24 children at maximum. Comparing this to the lexicase selection there were over 40 parents that produced at least 100 children. This is an extreme difference in selection pressure between the two types of selections. 
+Figure \ref{fig:winnerAncestorsTourneyRun74} shows the ancestry of the winning individual from generation 150 back to generation 145. It was not possible to show individuals farther back than generation 145 because of an interesting property of tournaments. Table~\ref{table:branching} shows the number of parents n generations away that contributed to the development of the winning individuals. The further away from the winning individual, the number of parents that contributed to the winner in tournament selection increased rapidly. In contrast, lexicase grew much more slowly presumably due to the fact that parents produce a surprisingly amount of children. This means that the ancestry of tournament selection becomes incredibility more complex and branches out extensively. At 10 generations back, there were approximately three times the amount of contributing parents in tournament as lexicase. 
 
-Beside selection pressure, we noticed another crucial difference between the types of individuals selected for reproduction. With tournament selection, there is a biased towards individuals that have the lowest fitness. However, this is not the case in lexicase.  As long as an individual performs extremely well for many cases but not all, it is still possible to be selected for reproduction. In Table~ \ref{table:winnerFitnesses}, individual 85:086 has an error of 100,000. This late into the run, it would be very unlikely that tournament would select this individual to reproduce. In fact, we see this in the tournament run where there isn't a individual selected in the winning ancestry that has a total error of more than 132. Additionally, we noticed that the winning ancestry six generation back contained individuals with a total error of either 83 or 132. 
+\begin{table}[t]
+	%\sidecaption[t]
+	\caption{The number of parents contributing to a winning individual n generations away.}
+	\label{table:branching}
+	\begin{center}
+	\begin{tabular}{rrr}
+		Generations Away From Winner & $\quad$ Number of Tournament Parents & $\quad$ Number of Lexicase Parents  \\
+		\hline\noalign{\smallskip}
+		18 & 297 & 58\\
+		17 & 236 & 52\\
+		16 & 180 & 46\\
+		15 & 152 & 49\\
+		14 & 209 & 45\\
+		13 & 212 & 46\\
+		12 & 146 & 41\\
+		11 & 97 & 29\\
+		10 & 63 & 22\\
+		9 & 42  & 14\\
+		8 & 33  & 14\\
+		7 & 30  & 10\\
+		6 & 20  & 9\\
+		5 & 13  & 7\\
+		4 & 10  & 6\\
+		3 & 6  & 7\\		
+		2 & 4  & 6\\
+		1 & 2  & 4\\
+	\end{tabular}
+	\end{center}
+\end{table}
+
+
+
+\begin{table}[t]
+	%\sidecaption[t]
+	\caption{The top twenty children producing parents in tournament and lexicase throughout the entire run.}
+	\label{table:numChildren}
+	\begin{center}
+	\begin{tabular}{rrr}
+		Top 20 Parents & $\quad$ Tournament (Children Produced) & $\quad$ Lexicase (Children Produced)  \\
+		\hline\noalign{\smallskip}
+		1 & 24 & 934 \\
+		2 & 23 & 657 \\
+		3 & 23 & 594 \\
+		4 & 21 & 590 \\
+		5 & 20 & 433 \\
+		6 & 20 & 326 \\
+		7 & 19 & 297 \\
+		8 & 19 & 294 \\
+		9 & 19 & 285 \\
+		10 & 18 & 283 \\
+		11 & 18 & 279 \\
+		12 & 18 & 271 \\
+		13 & 18 & 234 \\
+		14 & 18 & 220 \\
+		15 & 18 & 212 \\
+		16 & 18 & 205 \\
+		17 & 18 & 203 \\
+		18 & 17 & 202 \\
+		19 & 17 & 200 \\
+		20 & 17 & 189 \\
+	\end{tabular}
+	\end{center}
+\end{table}
+
+
+
+
+Another major difference was the selection pressure of the style of selections. In lexicase selection, one parent can dominate the selection if it performs well for a majority of the test cases as we saw in section~\ref{sec:surprisingFecundity} where individual 86:261 was a parent for all but  approximately 70 individuals in the final generation. However, tournament selection never can have this level of selection pressure. Throughout the entire run, see Table~\ref{table:numChildren}, a single parent only produced 24 children at maximum. Most of the other top producing parents produced children around the upper teens. Comparing this to the lexicase selection there were over 19 of the 20 top parents produced over 200 children. This is an extreme difference in selection pressure between the two types of selections. This also reinforces the property that tournaments tend to branch out quickly and have a larger number of contributing parents. 
+
+Beside selection pressure, we noticed another crucial difference between the types of individuals selected for reproduction. With tournament selection, there is a biased towards individuals that have the lowest fitness. However, this is not the case in lexicase.  As long as an individual performs extremely well for many cases but not all, it is still possible to be selected for reproduction. In Table~ \ref{table:winnerFitnesses}, individual 85:086 has an error of 100,000. This late into the run, it would be very unlikely that tournament would select this individual to reproduce. In fact, we see this in the tournament run where there isn't a individual selected in the winning ancestry that has a total error of more than 132. Additionally, we noticed that within the last 20 generations of the parents that reproduced, there were only at most five distinct total errors within each generation. \marginpar{awkward wording... table?} Tracing the winning ancestry back six generation back, we found that ancestors back contained individuals with a total error of either 83 or 132. This seems to mean that tournament seems to keep slamming the best individuals together until it miraculously produces a child better than it whereas lexicase identifies qualities that are necessary to produce a better children and utilizes those parents. This might contribute to the fact that lexicase had much more successes than tournament. 
+
+
+\begin{itemize}
+	\item Tournament winner was produced with alternation and uniform-mutation (mutation could have possibly caused the problem to be solved)
+	\item Many alternations and mutations in the last generations along the winning ancestry produced children that had 0 error difference from the better parent. 
+\end{itemize}
+
 
 %Crossover mutation events get us to end?
 
@@ -919,3 +993,174 @@ Beside selection pressure, we noticed another crucial difference between the typ
 
 \bibliographystyle{spbasic}
 \bibliography{gp-bibliography,chapter}
+
+%tourn 74
+%neo4j-sh (?)$ match (a)-[r *1..8]->(w {total_error: 0}) return distinct id(a), count(r) order by count(r) desc;
+
+
+%+-------------------+
+%| id(a)  | count(r) |
+%+-------------------+
+%| 142906 | 6        |
+%| 142362 | 5        |
+%| 142318 | 4        |
+%| 142611 | 4        |
+%| 142297 | 4        |
+%| 142721 | 4        |
+%| 142861 | 3        |
+%| 142637 | 3        |
+%| 143815 | 3        |
+%| 142346 | 3        |
+%| 144535 | 3        |
+%| 143098 | 3        |
+%| 142129 | 3        |
+%| 143803 | 2        |
+%| 142795 | 2        |
+%| 143414 | 2        |
+%| 142095 | 2        |
+%| 143103 | 2        |
+%| 143004 | 2        |
+%| 145184 | 2        |
+%| 142238 | 2        |
+%| 144795 | 2        |
+%| 142145 | 2        |
+%| 143984 | 2        |
+%| 142707 | 2        |
+%| 142470 | 2        |
+%| 142715 | 2        |
+%| 144312 | 2        |
+%| 143373 | 2        |
+%| 143014 | 2        |
+%| 143301 | 2        |
+%| 142676 | 2        |
+%| 144805 | 2        |
+%| 142634 | 2        |
+%| 148217 | 1        |
+%| 147275 | 1        |
+%| 143875 | 1        |
+%| 143821 | 1        |
+%| 147724 | 1        |
+%| 144981 | 1        |
+%| 142505 | 1        |
+%| 142550 | 1        |
+%| 142774 | 1        |
+%| 144963 | 1        |
+%| 145744 | 1        |
+%| 143109 | 1        |
+%| 144715 | 1        |
+%| 147068 | 1        |
+%| 143076 | 1        |
+%| 142376 | 1        |
+%| 144323 | 1        |
+%| 142872 | 1        |
+%| 144855 | 1        |
+%| 145268 | 1        |
+%| 143276 | 1        |
+%| 143886 | 1        |
+%| 143934 | 1        |
+%| 144562 | 1        |
+%| 145997 | 1        |
+%| 146437 | 1        |
+%| 148052 | 1        |
+%| 148016 | 1        |
+%| 145955 | 1        |
+%| 143407 | 1        |
+%| 142259 | 1        |
+%| 143829 | 1        |
+%| 144430 | 1        |
+%| 145390 | 1        |
+%| 145471 | 1        |
+%| 142863 | 1        |
+%| 142109 | 1        |
+%| 144917 | 1        |
+%| 145285 | 1        |
+%| 147609 | 1        |
+%| 146954 | 1        |
+%| 147510 | 1        |
+%| 144334 | 1        |
+%| 143754 | 1        |
+%| 146257 | 1        |
+%| 143395 | 1        |
+%| 144633 | 1        |
+%| 145907 | 1        |
+%| 144893 | 1        |
+%| 146203 | 1        |
+%| 142668 | 1        |
+%| 146852 | 1        |
+%| 142106 | 1        |
+%| 144259 | 1        |
+%| 146834 | 1        |
+%| 142420 | 1        |
+%| 149588 | 1        |
+%| 143957 | 1        |
+%| 144477 | 1        |
+%| 145455 | 1        |
+%| 146388 | 1        |
+%| 146110 | 1        |
+%| 144121 | 1        |
+%| 146292 | 1        |
+%| 143430 | 1        |
+%| 142282 | 1        |
+%| 146573 | 1        |
+%| 142428 | 1        |
+%| 143514 | 1        |
+%| 142826 | 1        |
+%| 143140 | 1        |
+%| 143759 | 1        |
+%| 148983 | 1        |
+%| 143035 | 1        |
+%| 143950 | 1        |
+%| 145269 | 1        |
+%| 144820 | 1        |
+%| 147111 | 1        |
+%| 144132 | 1        |
+%| 145460 | 1        |
+%| 149650 | 1        |
+%| 143316 | 1        |
+%| 143567 | 1        |
+%| 145765 | 1        |
+%+-------------------+
+
+%g	count(distinct p)	count(distinct p.total_error)
+%130	700	1
+%131	667	1
+%132	693	1
+%133	690	2
+%134	679	2
+%135	633	2
+%136	443	2
+%137	634	2
+%138	699	1
+%139	704	1
+%140	722	2
+%141	711	2
+%142	661	2
+%143	531	2
+%144	456	5
+%145	652	3
+%146	645	2
+%147	506	3
+%148	454	4
+%149	575	4
+
+%id, relationship
+%149650	alternation, uniform_mutation
+%149588	alternation, uniform_mutation
+%148983	alternation
+%148217	alternation
+%148052	alternation
+%148016	alternation
+%147724	uniform_close_mutation
+%147609	uniform_close_mutation
+%147510	alternation, uniform_mutation
+%147275	alternation
+%147111	alternation
+%147068	alternation, uniform_mutation
+%146954	alternation, uniform_mutation
+%146852	alternation, uniform_mutation
+%146834	alternation
+%146573	uniform_mutation
+%146437	alternation, uniform_mutation
+%146388	uniform_mutation
+%146292	alternation, uniform_mutation
+%146257	alternation
