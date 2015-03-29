@@ -25,6 +25,24 @@ keywords to your chapter, these words should also be indexed
 \index{these words should also be indexed}
 \\
 
+\emph{\textbf{Notes to GPTP readers:} This is still a work in progress. There is just SO much
+	data available, and we're still sifting, picking, and choosing. There are occassional questions 
+	and comments in the margin that are in some sense to addressed to ourselves, but feedback from
+	you on any of these would be greatly appreciated. There are two other ``big'' questions we'd
+	love feedback on:}
+\begin{itemize}
+	\item How might we better name/refer to the individuals in the discussion in places like
+	Section~\ref{sec:lexicaseRun}? Names like ``86:261'' just don't trip off the tongue and are
+	pretty hard to keep straight in the narrative. Would things like ``86:A'', ``86:B'', etc., be
+	better? Introducing ``real'' names, like ``86:Alice'' or ``Alice:86'' be better? Some other
+	terribly clever idea we didn't think of?
+	\item Which of these stories are more or less interesting/useful? Given how much material
+	it there that we \emph{could} discuss, having some guidance on what you personally were
+	excited by would certainly be appreciated.
+\end{itemize}
+
+\emph{Many thanks for your time and feedback!}
+
 \section{Introduction}
 \label{sec:introduction}
 
@@ -46,10 +64,7 @@ evolutionary and genealogical events that make up the vital low-details details 
 Databases provide a natural tool for 
 storing and accessing the data, but traditional relational
 databases are poorly suited for a variety of queries that are important for the genealogical analysis
-we need for exploring the evolutionary dynamics of our EC runs. \marginpar{Removed this bit since we talk about it in the neo4j subsection now. Is this a good combination of paragraphs?} %If, for example, we have a 
-%\texttt{ParentChild} table, it's easy enough to find Alice's parents. Finding Alice's grandparents,
-%siblings, or cousins, however, is less straightforward, with queries becomes increasingly difficult
-%as we move farther out across the relationship tree.
+we need for exploring the evolutionary dynamics of our EC runs.
 In this chapter, we illustrate the use of graph databases as an alternative storage and analysis tool for
 evolutionary computation runs. In \cite{donatuccianalysis} we have demonstrated that graph databases
 can be an effective tool for analyzing complex genetic programming (GP) dynamics, which led directly
@@ -57,17 +72,27 @@ to a proposed change to standard sub-tree crossover in tree-based GP, \cite{mcph
 Here we will use the open source Neo4J graph database tool\footnote{\url{http://neo4j.com/}} 
 to explore data from a
 collection of PushGP runs on several problems drawn from a benchmark collection of introductory 
-programming problems taken from \cite{helmuth:GECCO15}.
+programming problems taken from \cite{Helmuth:2015:GECCO}.
 
-Note that this is \emph{not} going to be a presentation of ``traditional'' ``hypothesis-driven'' 
-research. It will be based on an \emph{assumption}, namely that something interesting happens in
+Note that this is \emph{not} going to be a presentation of ``traditional hypothesis-driven 
+research''. It will be based on an \emph{assumption}, namely that something interesting happens in
 these runs, and that we can learn useful things by exploring them in more detail, but the presentation
 will be fairly discursive, reflecting our back-and-forth experience of wrestling with the data. Our
 initial queries start from fairly obvious questions (e.g., ``Why did we succeed here?''), but from
-there we have a dialog with data, letting the answers to early questions shape and guide our 
+there we engage in a dialog with data, letting the answers to early questions shape and guide our 
 subsequent exploration. We are presenting not the tidy, sterile summary of our adventures, but
 the messier (but we think more informative in this context) journal of what Pickering would call
 our ``mangle of practice'' (\cite{smith2008mangle, pickering:AJS:1993}).
+
+Because we're going to be focusing on the use of a graph database to explore this data, there will
+on occasion be avenues of exploration that we won't pursue here because they would properly involve
+different tools. This exploration raises obvious and important questions about the relationships between,
+for example, parent and child genomes. These would be best addressed using things like 
+difference-merge tools from software engineering, or sequence alignment tools from genomics.
+Entire papers could be written on the use of those tools in this context, but we'll consider that
+beyond the scope of this paper. Our queries in the graph database will, however, provide a much more 
+focused collection of comparisons to make using those other tools, allowing us to concentrate on the
+steps that are likely to have mattered most in the success of a evolutionary run.
 
 \emph{More stuff would have to be added here, including a roadmap.}
 
@@ -114,76 +139,186 @@ reported is because it isn't done, in no small part because it's hard. As EC res
 but that's a potentially huge amount of data, and leaves us with two substantial problems: 
 How to \emph{store} the data, and how to \emph{analyze} the data
 after it's stored. 
-
-%Decreasing data storage costs have done much to mitigate the first problem.
-%If, however, one collects a very rich data set it's still easy to quickly generate terabytes of data,
-%and even if one has a place to put the data, one still needs reasonable tools to analyze the data.
+Decreasing data storage costs have done much to mitigate the first problem.
+If, however, one collects a very rich data set it's still easy to quickly generate terabytes of data,
+and even if one has a place to put the data, one still needs reasonable tools to analyze the data.
 
 Assuming one has access to the necessary gigabytes or terabytes of storage, 
 databases are the obvious tool for the collection of the data. Most common database structures and tools,
 however,
-don't lend themselves to the kinds of analysis that we want and need in evolutionary computation work. Most relational and document-based databases, for example require things like complex and expensive 
+don't lend themselves to the kinds of analysis that we want and need in evolutionary computation work. 
+Most relational and document-based databases, for example require things like complex and expensive 
 recursive joins to trace significant hereditary lines, making this approach increasingly unfeasible.
- In exploring the dynamics of an EC run, we're going to want to be able to
+In exploring the dynamics of an EC run, we're going to want to be able to
 make connections across dozens or even hundreds of generations, which simply isn't plausible with a
 relational database. (See~\cite{Robinson:GraphDB:Book} for more on these 
-feasability/efficiency issues.) While we decided to utilize Neo4j as our graph database, there are other graph databases that would be an effective tool to use as well see~\cite{wiki:GraphDB}. 
+feasability/efficiency issues.) While we use Neo4j as our graph database in this work, there are 
+numerous other 
+graph databases that would be an effective tool to use as well; see, for example,~\cite{wiki:GraphDB}. 
 
-\emph{Say a little about how graph databases rock on this and that's why we're using them here. Also
-	mention that Neo4J isn't the only option out there; it just happens to be the one that we're
-	using.}
+\section{A little background on tools and problems}
 
-\section{A little background on problems and tools}
+This section provides some background on some of the key subjects of this work:
+\begin{itemize}
+	\item The Neo4J graph database and its query language Cypher
+	\item The PushGP system
+	\item Lexicase selection
+	\item The replace-space-with-newline test problem
+\end{itemize} 
 
 \subsection{Neo4J and Cypher}
 \label{subsec:Neo4j}
-Graph databases~%\cite{GraphDatabases:2013}
- are a relatively new approach, where data is stored as a collection of nodes and relationships in a graph, with a specialized query language that makes it easy to ask questions about complex relationships. This section further describes Neo4j, its query language Cypher, and the various advantages they hold over relational databases in recording and accessing information that relies heavily on recursion.
 
-Neo4j is a form of data management system based upon a graph. Information is stored by means of vertices and edges, commonly referred to as nodes and relationships, respectively~%\cite{GraphDatabases:2013}
-. In our work, nodes represent individuals, and relationships represent the transformations between individuals. As a GP system generates individuals, new nodes and relationships can be added to the database for later analysis.
+Graph databases~\cite{Robinson:GraphDB:Book} are a relatively new approach, where data is stored 
+as a collection of nodes and relationships in a graph, with a specialized query language that makes 
+it easy to ask questions about complex relationships. This section further describes Neo4j, its query 
+language Cypher, and the various advantages they hold over relational databases in recording and 
+accessing information that relies heavily on recursion.
 
-Cypher%~\cite{GraphDatabases:2013}
- allows this data to be readily extracted from the Neo4j database. There are three fundamental elements to queries in Cypher. The \texttt{START} clause specifies a starting location in the database, indicating the node or nodes where the query will begin. The \texttt{RETURN} clause specifies which nodes, relationships, or properties should be returned to the user. The \texttt{MATCH} clause is the main section of a query, specifying what patterns in the graph the query will discover. To write the \texttt{MATCH} clause, nodes and relationships are drawn with ASCII characters. A node is indicated by parenthesis \texttt{( )}, directed relationships are indicated with \texttt{-->} or \texttt{<--} depending on the direction of the relationship, and undirected relationships are indicated with \texttt{--}. Brackets \texttt{[ ]} between the dashes can be used to specify relationship names prefixed by a colon. In the example query below, the \texttt{START} clause indicates that the query should start with node 43, called \texttt{parent}, the \texttt{MATCH} clause finds all nodes that are children of the starting node, and the \texttt{RETURN} clause yields the starting node and all nodes that are children of that node.
+Neo4j is a form of data management system based upon a graph. Information is stored by means of 
+vertices and edges, commonly referred to as nodes and relationships, 
+respectively. In our work, nodes represent individuals, and relationships represent the 
+transformations between individuals. As a GP system generates individuals, new nodes and 
+relationships can be added to the database for later analysis.
 
-\begin{verbatim}
-    START parent=node(43)
-    MATCH (parent)-[:PARENTOF]->(child)
-    RETURN parent, child;
-\end{verbatim}
+Cypher allows this data to be readily extracted from the Neo4j database. There are three 
+fundamental elements to queries in Cypher. The \texttt{START} clause specifies a starting location 
+in the database, indicating the node or nodes where the query will begin. The \texttt{RETURN} 
+clause specifies which nodes, relationships, or properties should be returned to the user. 
+The \texttt{MATCH} clause is the main section of a query, specifying what patterns in the 
+graph the query will discover. To write the \texttt{MATCH} clause, nodes and relationships 
+are drawn with ASCII characters. A node is indicated by parenthesis \texttt{( )}, directed 
+relationships are indicated with \texttt{-->} or \texttt{<--} depending on the direction of 
+the relationship, and undirected relationships are indicated with \texttt{--}. 
+Brackets \texttt{[ ]} between the dashes can be used to specify relationship names prefixed 
+by a colon. In the example in Query~\ref{query:example}, the \texttt{START} clause indicates 
+that the query should start with node 43, which we call \texttt{parent} so we can refer to it
+elsewhere in the query. The \texttt{MATCH} clause finds all nodes that are children of the 
+starting node \texttt{parent}, and the \texttt{RETURN} clause returns \texttt{parent} paired with
+all its child nodes. This is graphically represented in Figure~\ref{fig:exampleQuery}; the actual
+return is a text table with columns for all the different values in the \texttt{RETURN} clause.
 
-%This query produces the results in Figure \ref{fig:exampleQuery}.
+\begin{Query}[t]
+	\smallskip
+	\begin{verbatim}
+	    START parent=node(43)
+	    MATCH (parent)-[:PARENTOF]->(child)
+	    RETURN parent, child;
+	\end{verbatim}
+	\caption{An example Cypher query that finds all children of the node with ID 43.}
+	\label{query:example}
+\end{Query}
+
 \begin{figure}[tb]
  \sidecaption[t]
  \includegraphics[width=0.8\textwidth]{figures/sample_neo4j_query.pdf}
- \caption{Graphical representation of the results of a sample Cypher query}
+ \caption{Graphical representation of the results of a sample Cypher query in Query~\ref{query:example}.}
  \label{fig:exampleQuery}
 \end{figure}
 
-Performance is the key advantage in our research of graph databases over relational databases. As the data set grows, recursive queries such as those needed to explore graph relationships become highly inefficient when using relational databases, as numerous joins are needed. In graph databases, however, the portion of the data set that must be searched is limited because the query will only search along an available path connected by relationships, allowing queries to remain efficient~%\cite{GraphDatabases:2013}.
+\subsection{PushGP}
 
-
-\subsection{PushGP and lexicase selection}
-
-Say a little about
+PushGP~\citep{spector:2002:GPEM, 1068292} is a stack-based genetic programming system. The details
+of PushGP aren't crucial for this analysis as we're going to focus on the behavioral properties of
+individuals in this work, but it useful to know a few things:
 \begin{itemize}
-	\item Plush genomes
-	\item Push programs
-	\item Alternation
-	\item The two kinds of mutation
+	\item PushGP uses a linear genome which is converted into a linear program via as described below.
+	\item PushGP supports a variety of \emph{typed} stacked, with corresponding typed instructions.
+	The \texttt{string-pop} instruction, for example, pops the top of the \texttt{string} stack,
+	and the \texttt{integer-add} instruction takes the top two items from the \texttt{integer}
+	stack, adds them, and pushes the result back onto the \texttt{integer} stack.
+	\item There is a \texttt{code} stack which can hold blocks of instructions. This is what allows
+	PushGP programs to loop or recurse, as pushing a block of instructions onto the \texttt{code}
+	causes those instructions to be executed next.
 \end{itemize}
 
-Say enough about lexicase so people have some sense of why it might be interesting and different
-from, e.g., tournament selection.
+The PushGP system used here uses \emph{Plush genomes}, which are linear genomes consisting of 
+instructions paired with \emph{closed counts}. The close counts are natural numbers 
+indicating how many open code blocks should be closed after this instruction. Several instructions
+that are typically used with blocks of code in human programming, such as conditionals and loops,
+have an implicit ``open block'' that is translated into an explicit ``open block'' when the genome
+is converted to a Push program. The close counts, then, are necessary to allow the PushGP
+system to evolve the desired ``end block''s.
+
+In the runs explored here, there are three genetic operations:
+\begin{itemize}
+	\item alternation
+	\item uniform-mutation
+	\item uniform-close-mutation
+\end{itemize}
+Alternation is similar to an N-point crossover in genetic algorithms. The two parent genomes
+are traversed from left to right taking instructions from one or the other for the child, with
+a small probability at each instruction of switching which parent is being used as the instruction
+source. When an alternation event happens, there's a small amount of gaussian noise added to the
+instruction location; how much deviation is possible is controlled by an \emph{alignment deviation} 
+parameter.
+
+Uniform-mutation simply replaces each instruction with a randomly chosen instruction with some
+small probability. Uniform-close-mutation modifies each close count value with some small probability.
+The runs discussed here allowed for \emph{pipelining} of genetic operators, so we might have
+combinations like alternation followed by uniform-mutation.
 
 Mention timing out and errors penalties.
 
+For additional details and the particular parameters used in these runs see \cite{Helmuth:2015:GECCO}.
+
+\subsection{Lexicase selection}
+
+Pseudocode for the lexicase selection algorithm is outlined in 
+Algorithm~\ref{alg:lexicase}. In each parent selection event, the lexicase selection algorithm 
+first randomly orders the test cases. It then eliminates any individuals in the population 
+that do not have the best performance on the first test case. 
+Assuming that more than one individual remains, it then loops, eliminating any individuals from 
+the remaining candidates that do not have the best performance on the second test case. This 
+process continues until only one individual remains and is selected, or until all test cases 
+have been used, in which case it randomly selects one of the remaining individuals.
+
+\begin{algorithm}[tb]
+	\begin{algorithmic}
+		\STATE \texttt{candidates} $:=$ the entire population
+		\STATE \texttt{cases} $:=$ list of all the test cases in a random order
+		\WHILE{$|\texttt{candidates}|>1$ \AND $|\texttt{cases}|>0$}
+		\STATE \texttt{current}, \texttt{cases} := $\textrm{first}(\texttt{cases})$, $\textrm{rest}(\texttt{cases})$
+		\STATE \texttt{best\_performance} $:= \min \{ \textrm{perf}(i, \texttt{current}) \;|\; i \in \texttt{candidates} \}$
+		\STATE \texttt{candidates} := $\{ i \;|\; i \in \texttt{candidates} \;\land\; \textrm{perf}(i, \texttt{current}) = \texttt{best\_performance}\}$
+		\ENDWHILE
+		\RETURN random individual from \texttt{candidates}
+	\end{algorithmic}
+	\caption{Psuedocode for the lexicase selection algorithm. The use of $\min$ when computing 
+		\texttt{best\_performance} assumes that the goal is to minimize on each test case, which
+		is true in the work presented here, where the goal for all test cases is to minimize error.
+		This can be easily generalized to other settings.}
+	\label{alg:lexicase}
+\end{algorithm}
+
+The central properties of lexicase selection are that (a) it doesn't combine all the errors into a single
+fitness value and (b) because of the random ordering of test cases, every test case is likely to be
+most important (first to be considered) at least occasionally. With a population of 1,000 individuals
+and a problem with 200 test cases, for example, we would expect each test case to be first several
+times in each generation. The hope, then, is that this ensures some diversity in the population, with
+different (groups of) individuals being rewarded for their ability to perform well on different test
+cases.
+
 \subsection{Replace-space-with-newline}
 
-Say enough about this problem so that people can understand the error vectors.
+The replace-space-with-newline problem is an introductory programming benchmark problem taken
+from~\cite{helmuth:GECCO15}. In this problem the program is given an input string and required to
+both (a) print the string with all the spaces replaced by newlines and (b) return an integer that
+is the number of non-space characters in the input string. There are 100 different training instances 
+for this problem, each of which generates two test cases: One is the Levenshtein distances between
+the printed output and the target print string, and the other is the absolute difference between
+whatever value is on the top of the \texttt{integer} stack and the expected return value. A penalty
+value of 1,000 is assigned for test cases that were expecting a return value but found the
+\texttt{integer} stack empty.
+
+For tournament selection runs, all 200 of these error values were added together to form the
+total error, which was used as the fitness for the individuals. For lexicase selection the errors
+were kept separate which, as we shall see, frequently allowed individuals to be selected who did 
+well on some test cases, but very poorly on others.
 
 \section{Lexicase, meet Replace-space-with-newline}
-\label{meetLexicase}
+\label{sec:lexicaseRun}
+
 We did one hundred runs of the replace-space-with-newline problem using lexicase selection, and
 found that 55 of these succeeded in the sense that an individual was discovered that had zero
 error on all 200 of the training cases. Tournament selection with tournament size 7 only
@@ -226,7 +361,7 @@ Query~\ref{query:winnerAncestors}.\footnote{We could certainly
 	single edges, but I don't know if we want to talk about that.}
 
 \begin{Query}
-	\noalign{\smallskip}
+	\smallskip
 	\begin{verbatim}
 	MATCH (p)-->(c)-[*0..7]->(w {total_error: 0}) 
 	RETURN DISTINCT id(p), id(c);
@@ -293,7 +428,7 @@ for example, no individual can be in more than a relative handful of tournaments
 a parent terribly often no matter how fit they are.
 
 \begin{Query}
-	\noalign{\smallskip}
+	\smallskip
 	\begin{verbatim}
 	MATCH (p)-->(c)-[*0..7]->(w {total_error: 0}) 
 	MATCH (p)-->(n) 
@@ -856,7 +991,7 @@ cases within the time limit without changing the value returned.
 
 \emph{Connect the following back to Section~\ref{sec:surprisingFecundity}.}
 
-Lexicase selection (\cite{helmuth:IEEE}) was designed in significant part with the intent of 
+Lexicase selection \citep{Helmuth:2015:ieeeTEC} was designed in significant part with the intent of 
 increasing and maintaining diversity. The key assumption was that it would distribute the selection 
 events across a variety of groups of individuals, as the population separates into sections focusing
 on different subsets of the test cases. As \cite{helmuth:GPTP15} shows, this is to a significant
