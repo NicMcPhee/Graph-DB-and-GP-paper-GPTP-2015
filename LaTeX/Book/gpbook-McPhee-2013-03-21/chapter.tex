@@ -335,16 +335,17 @@ here that we're making no claims that this is a ``representative'' run (whatever
 mean); it's an \emph{interesting} run, though, and our hope is that by understanding its dynamics
 better we can learn useful things about both the problem and the tools we're applying.
 
-\begin{sidewaysfigure}
-	\vspace{0.6\columnwidth}
-	\includegraphics[width=0.88\columnwidth]{figures/ancestors_of_winners_colons.pdf}
+\begin{figure}[tp]
+	\begin{center}
+	\includegraphics[width=0.9\textwidth]{figures/ancestors_of_winners_colons.pdf}
+	\end{center}
 	\caption{Ancestry of the 45 ``winners'' from run 6 of lexicase, replace-space-with-newline. Nodes
 		with diamonds instead of ellipses had an unusually large number of offspring. Shaded nodes
 		had an unusual number of offspring that were ancestors of winners. The dashed lines highlight
 		individuals that had an unusually large number of distinct ancestry paths down to a winner.
 		See the text for more details}
 	\label{fig:winnerAncestors}
-\end{sidewaysfigure}
+\end{figure}
 
 An obvious place to start analyzing is at the end when the GP system created individuals that solved the problem. So we used Neo4J to find all the ancestors of any ``winning'' individual, i.e., individual with a total error of 
 on all 200 test cases. Using Cypher%(Neo4J's query language)
@@ -1005,7 +1006,7 @@ cases within the time limit without changing the value returned.
 
 \begin{sidewaysfigure}
 	\vspace{0.6\columnwidth}
-	\includegraphics[width=\columnwidth]{figures/ancestors_of_winner_rswn_tourney_run74.pdf}
+	\includegraphics[width=\columnwidth]{figures/ancestors_of_winner_rswn_tourney_run74_9gens.pdf}
 	\caption{Ancestry of the sole ``winners'' from run 74 of tournament selection, 
 		replace-space-with-newline.}
 	\label{fig:winnerAncestorsTourneyRun74}

@@ -1,4 +1,9 @@
 digraph G {
+	node [penwidth=0]
+	"Gen 79" -> "Gen 80" -> "Gen 81" -> "Gen 82" -> "Gen 83" -> "Gen 84" -> "Gen 85" -> "Gen 86" -> "Gen 87" [style=invis];
+
+	node[shape=point, width=0.15, height=0.15, fillcolor="white", penwidth=1];
+	edge[arrowsize=0.5];
 	"79:031" -> "80:220";
 	"79:172" -> "80:986";
 	"79:180" -> "80:428";
@@ -16,7 +21,7 @@ digraph G {
 	"79:920" -> "80:374";
 	"80:156" -> "81:691";
 	"80:220" -> "81:691" [penwidth=3, style=dashed];
-	"80:220" [shape=diamond, fontsize=20]
+	"80:220" [shape=diamond]
 	"80:220" -> "81:317";
 	"80:287" -> "81:347";
 	"80:287" -> "81:744";
@@ -35,7 +40,7 @@ digraph G {
 	"81:463" -> "82:966";
 	"81:609" -> "82:824";
 	"81:609" -> "82:393";
-	"82:447" [shape=diamond, style=filled, fillcolor="lightgrey", fontsize=20]
+	"82:447" [shape=diamond, style=filled, fillcolor="lightgrey"]
 	"81:691" -> "82:447" [penwidth=3, style=dashed];
 	"81:744" -> "82:423";
 	"81:955" -> "82:966";
@@ -50,52 +55,50 @@ digraph G {
 	"82:676" -> "83:273";
 	"82:824" -> "83:047";
 	"82:966" -> "83:124";
-	"83:047" [shape=diamond, style=filled, fillcolor="lightgrey", fontsize=20]
+	"83:047" [shape=diamond, style=filled, fillcolor="lightgrey"]
 	"83:047" -> "84:604";
 	"83:047" -> "84:542";
 	"83:047" -> "84:114";
 	"83:047" -> "84:157";
 	"83:047" -> "84:213";
 	"83:124" -> "84:319" [penwidth=3, style=dashed];
-	"83:124" [shape=diamond, fontsize=20]
+	"83:124" [shape=diamond]
 	"83:124" -> "84:213";
 	"83:273" -> "84:157";
 	"83:487" -> "84:584";
-	"83:619" [shape=diamond, fontsize=20]
+	"83:619" [shape=diamond]
 	"83:619" -> "84:542";
 	"83:664" -> "84:319";
 	"84:114" -> "85:561";
 	"84:157" -> "85:407";
 	"84:213" -> "85:407";
 	"84:319" -> "85:057";
-	"84:319" [shape=diamond, fontsize=20]
+	"84:319" [shape=diamond]
 	"84:319" -> "85:086" [penwidth=3, style=dashed];
 	"84:542" -> "85:086";
 	"84:584" -> "85:820";
 	"84:604" -> "85:534";
 	"85:057" -> "86:261";
-	"85:086" [shape=diamond, fontsize=20]
+	"85:086" [shape=diamond]
 	"85:086" -> "86:261" [penwidth=3, style=dashed];
 	"85:407" -> "86:272";
 	"85:534" -> "86:049";
 	"85:561" -> "86:672";
 	"85:820" -> "86:672";
-	"87:719" [shape=rectangle, fontsize=40]
-	"87:941" [shape=rectangle, fontsize=40]
-	"87:947" [shape=rectangle, fontsize=40]
+	"87:719" [shape=rectangle]
+	"87:941" [shape=rectangle]
+	"87:947" [shape=rectangle]
 	"86:049" -> "87:719";
 	"86:272" -> "87:941";
 	"86:672" -> "87:947";
 
-	"42 Other Winners" [shape=rectangle, fontsize=40]
-	"86:261" [shape=diamond, style=filled, fillcolor="lightgrey", fontsize=40]
+	"42 Other Winners" [shape=rectangle]
+	"86:261" [shape=diamond, style=filled, fillcolor="lightgrey"]
 	"86:261" -> "42 Other Winners" [penwidth=5];
 	"86:261" -> "87:719";
 	"86:261" -> "87:941";
 	"86:261" -> "87:947";
 
-	node [penwidth=0, fontsize=20]
-	"Gen 79" -> "Gen 80" -> "Gen 81" -> "Gen 82" -> "Gen 83" -> "Gen 84" -> "Gen 85" -> "Gen 86" -> "Gen 87" [style=invis];
 	{ rank=same; "Gen 79", "79:031" }
 	{ rank=same; "Gen 80", "80:428" }
 	{ rank=same; "Gen 81", "81:256" }
