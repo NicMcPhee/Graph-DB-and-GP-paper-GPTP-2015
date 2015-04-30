@@ -1,0 +1,356 @@
+\documentclass{beamer}
+
+\mode<presentation>
+{
+  \usetheme{CambridgeUS}
+  \setbeamercovered{transparent}
+}
+
+\usepackage[english]{babel}
+\usepackage[latin1]{inputenc}
+\usepackage{times}
+\usepackage[T1]{fontenc} 
+% Or whatever. Note that the encoding and the font should match. If T1
+% does not look nice, try deleting the line with the fontenc.
+\usepackage{amsmath}
+
+\newcommand{\linespace}{\vskip 0.25cm}
+
+% The text in square brackets is the short version of your title and will be used in the
+% header/footer depending on your theme.
+\title[Graph database analysis of GP dynamics]{Silico-paleontology with graph databases}
+%{Using Graph Databases to Explore Genetic Programming Run Dynamics}
+
+% Sub-titles are optional - uncomment and edit the next line if you want one.
+\subtitle{Rooting through the relics of digital evolution} 
+
+% The text in square brackets is the short version of your name(s) and will be used in the
+% header/footer depending on your theme.
+\author[McPhee \& Donatucci (w/ Dramdahl)]{Nic McPhee \& David Donatucci \\ (w/ M. Kirbie Dramdahl)}
+
+% The text in square brackets is the short version of your institution and will be used in the
+% header/footer depending on your theme.
+\institute[UMM]
+{
+  Division of Science and Mathematics \\
+  University of Minnesota, Morris \\
+  Morris, Minnesota, USA
+}
+
+% The text in square brackets is the short version of the date if you need that.
+\date[May 2015, GPTP, Ann Arbor MI] % (optional)
+{May 2015 \\ Genetic Programming Theory and Practice \\ University of Michigan \\ Ann Arbor, MI}
+
+% Delete this, if you do not want the table of contents to pop up at
+% the beginning of each subsection:
+\AtBeginSection[]
+{
+  \begin{frame}<beamer>
+    \frametitle{Outline}
+    \tableofcontents[currentsection, hideothersubsections]
+  \end{frame}
+}
+
+\begin{document}
+
+\begin{frame}
+  \titlepage
+\end{frame}
+
+% For a 20-25 minute senior seminar talk you probably want something like:
+% - Two or three major sections (other than the summary).
+% - At *most* three subsections per section.
+% - Talk about 30s to 2min per frame. So there should probably be between
+%   15 and 30 frames, all told.
+
+\section*{Overview}
+
+\subsection*{The Big Picture}
+
+\begin{frame}
+  \frametitle{The Big Picture}
+  
+  \begin{itemize}
+	\item Genetic programming demonstrated to be effective for a variety of applications.
+	\item Difficult to determine how this process works.
+	\item Databases allow examination of the internal interactions of a run.
+	\item Graph databases more efficient at this task than relational databases.
+	\item This knowledge may be used to improve genetic programming algorithms.
+  \end{itemize}
+
+\end{frame}
+
+\subsection*{Outline}
+
+\begin{frame}
+  \frametitle{Outline}
+  \tableofcontents[hideallsubsections]
+\end{frame}
+
+\section[Genetic Programming]{Genetic Programming}
+
+\subsection{GP Overview}
+
+\begin{frame}
+  \frametitle{Genetic Programming Overview}
+  \begin{center}
+  % \includegraphics[width=.60\textwidth]{mona_lisa.jpg} \\
+  \tiny{Roger Alsing \ \url{http://goo.gl/kqsEP} }
+
+  \end{center}
+ 
+  \begin{itemize}
+  	\item Genetic Programming is based upon biological principles.
+	\item Individuals form a population.
+	\item Transformations
+		\begin{itemize}
+		\item Crossover (XO)
+		\item Mutation
+		\item Reproduction
+		\item Elitism
+		\end{itemize}
+	\item Transformations occur over a specified number of generations.
+	\item Individuals are rated by their fitness.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{Transformations}
+\begin{columns}
+\begin{column}{0.55\textwidth}
+{\footnotesize
+		\begin{description}
+		\item[Crossover] sexual reproduction \\ (root and non-root)
+		\item[Mutation] subtrees altered
+		\item[Reproduction] asexual reproduction
+		\item[Elitism] reproduction based on fitness
+		\end{description}
+}
+\end{column}
+\begin{column}{0.45\textwidth}
+%{\tiny \ \ \ \ \ \ Root \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ Non-Root \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ Child}
+%\includegraphics[width=.95\textwidth]{subtreeCrossover.jpg} \\
+%{\tiny \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \url{geneticprogramming.us}}
+\end{column}
+\end{columns}
+\vspace*{-0.5cm}
+\begin{center}
+%\includegraphics[width=.9\textwidth]{XO_path_example.pdf}
+\end{center}
+\end{frame}
+
+\subsection{Symbolic Regression and Fitness}
+
+\begin{frame}
+	\frametitle{Symbolic Regression and Fitness}
+	
+	We are focusing on symbolic regression problems.
+	\begin{itemize}
+		\item Collection of test points as input.
+		\item Evolve mathematical formula to fit data.
+	\end{itemize}
+	
+	\linespace
+	
+	Fitness determines individual's distance from target function.
+	\begin{itemize}
+		\item Lower the fitness, the better the individual.
+		\item A fitness of zero would exactly match test data.
+	\end{itemize}
+	
+	\linespace 
+	
+	The goal of GP is to evolve an individual with as low a fitness as possible.
+	
+\end{frame}
+
+\section[Graph DB]{Graph Database}
+\subsection{Neo4j}
+
+\begin{frame}
+	\frametitle{Neo4j}
+	
+	
+	
+\begin{columns} 
+\begin{column}{0.60 \textwidth}
+Neo4j is a graph database.
+		\begin{itemize}
+		\item relatively new tool
+			\begin{itemize}
+			\item initial release 2007
+			\item popularized in 2010
+			\end{itemize}
+		\item information is stored using a graph
+		\item nodes and relationships
+		\item efficient recursive queries compared with traditional databases
+		\end{itemize}
+		\end{column}
+		\begin{column}{0.40\textwidth}
+   % \includegraphics[width=0.95\textwidth]{graphdb-neo4j.png}
+       \\
+    \only{\tiny{Neo4j \ \url{http://goo.gl/nzRWSV}}}
+  \end{column}
+  \end{columns}
+
+\end{frame}
+
+\subsection{Cypher}
+
+\begin{frame}
+	\frametitle{Cypher}
+	Neo4j's query language is Cypher.
+	\begin{columns}
+	\begin{column}{0.40\textwidth}
+
+	Fundamental elements of Cypher queries:
+		\begin{itemize}
+		\item START
+		\item RETURN
+		\item MATCH
+		\item WHERE
+		\end{itemize}
+	\end{column}
+	\begin{column}{0.60\textwidth}
+
+	% \includegraphics[width=.95\textwidth]{parents.pdf}
+	%\linebreak
+	\emph{
+START parent=node(43)
+\linebreak
+MATCH (parent)-[:PARENTOF]->(child)
+\linebreak
+\textbf{WHERE id(child) < 47}
+\linebreak
+RETURN parent, child;
+}
+
+	\end{column}	
+	\end{columns}
+\end{frame}
+
+\section[Setup]{Experimental Setup}
+
+\subsection{Configurations}
+
+\begin{frame}
+\frametitle{Run Configurations}
+\begin{description}[align=left, leftmargin=*]
+{\small
+\item[Target Function] sin(x)
+\item[Variables] x (range 0.0 to 6.2, incremented by steps of 0.1)
+\item[Constants] range between -5.0 and 5.0
+\item[Operations] addition (+), subtraction (-), multiplication (*), protected division (/)
+\item[Generation Number] 100
+\item[Population Size Per Gen] 1,000 (3 runs) and 10,000 (1 run)
+\item[Transform Percentages] crossover (90\%), mutation (1\%), reproduction (9\%)
+\item[Elitism] best 1\%
+\item[Fitness] absolute error between target function and individual function
+}
+\end{description}
+\end{frame}
+
+\section[Results]{Results}
+
+\subsection[Questions Asked]{Questions Asked}
+
+\begin{frame}
+\frametitle{Questions Asked}
+\begin{enumerate}
+\item \emph{What does the fitness of the ``winning'' individual's ancestry line look like over time?}
+\item \emph{How often does mutation improve fitness? Also, how often does crossover improve fitness, where the root parent is more fit than the non-root parent, and vice versa?}
+\item \emph{Does a group of individuals have a common root parent ancestor and what is the latest generation where such an ancestor occurs?}
+\item \emph{How many individuals in the initial generation have any root parent descendants in the final generation?}
+\end{enumerate}
+\end{frame}
+
+\subsection[Fitness Graph]{Fitness Over Time}
+
+\begin{frame}
+\frametitle{Fitness Over Time}
+\emph{What does the fitness of the ``winning'' individual's ancestry line look like over time?}
+\begin{center}
+% \includegraphics[width=0.85\textwidth]{Combined_fitness_over_time_no_dashed}
+\end{center}
+\end{frame}
+
+\subsection[Improved Transformations]{Improved Transformations}
+
+\begin{frame}
+\frametitle{Percentage of Improved Transformations}
+\emph{How often does mutation and crossover improve fitness?}
+\begin{center}
+{\tiny Results for Three 1,000 Individual Runs and One 10,000 Individual Run}
+% \includegraphics[width=0.95\textwidth]{All_percentages_over_time}
+\end{center}
+\end{frame}
+
+\subsection[Common Ancestor]{Common Ancestor}
+
+\begin{frame}
+\frametitle{Common Ancestor}
+\emph{Does a group of individuals have a common root parent ancestor and how many initial generation individuals have descendants in the final generation?}
+\begin{center}
+% \includegraphics[height=0.70\textheight]{subset_confluence_trimmed}
+\end{center}
+
+\end{frame}
+
+\section[Conclusions]{Conclusions}
+
+\begin{frame}
+\frametitle{Conclusions}
+
+\begin{itemize}
+\item We can gather internal data efficiently.
+\item Provides more in depth information than statistical summaries. 
+\item Support for hypotheses.
+\end{itemize}
+\linespace
+\linespace
+\linespace
+\linespace
+
+Future Work
+\begin{itemize}
+\item Trying different setup configurations.
+\item Enforcing the root parent to have better fitness in XO.
+\item Dynamically change parameters.
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+	\frametitle{Thanks!}
+	
+	Thank you for your time and attention!
+		
+	\linespace
+	\linespace
+	
+	Contacts:  
+	\begin{itemize}
+		\item \texttt{donat056@morris.umn.edu}
+		\item \texttt{dramd002@morris.umn.edu}
+		\item \texttt{mcphee@morris.umn.edu}
+	\end{itemize}
+	
+	\linespace
+	\linespace
+	
+	\begin{center}
+	{\huge Questions?}
+	\end{center}
+\end{frame}
+
+\section*{References}
+
+\begin{frame} 
+\frametitle{References}
+\nocite{*}
+\bibliographystyle{acm}
+{\tiny \bibliography{MICS_2014}}
+\end{frame} 
+
+\end{document}
+
+

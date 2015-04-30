@@ -107,5 +107,10 @@ sympy-plots-for-*.tex/
 
 # xindy
 *.xdy
+
+# TexStudio session files
+*.txss
+
+# The generated PDFs
 # gpbook.pdf
-gpbook.txss
+GraphDBandGP.pdf
