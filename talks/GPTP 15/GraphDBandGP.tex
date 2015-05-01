@@ -71,11 +71,11 @@
   \frametitle{The Big Picture}
   
   \begin{itemize}
-	\item Genetic programming demonstrated to be effective for a variety of applications.
-	\item Difficult to determine how this process works.
+	\item Genetic programming clearly \emph{works}.
+	\item But we rarely know \emph{why} or \emph{how}.
 	\item Databases allow examination of the internal interactions of a run.
-	\item Graph databases more efficient at this task than relational databases.
-	\item This knowledge may be used to improve genetic programming algorithms.
+	\item Graph databases better suited for this than relational databases.
+	\item Silico-paleontology can help us understand and improve our tools.
   \end{itemize}
 
 \end{frame}
@@ -87,82 +87,124 @@
   \tableofcontents[hideallsubsections]
 \end{frame}
 
-\section[Genetic Programming]{Genetic Programming}
+\section{What do we know? (And how do we talk about it?)}
 
-\subsection{GP Overview}
-
-\begin{frame}
-  \frametitle{Genetic Programming Overview}
-  \begin{center}
-  % \includegraphics[width=.60\textwidth]{mona_lisa.jpg} \\
-  \tiny{Roger Alsing \ \url{http://goo.gl/kqsEP} }
-
-  \end{center}
- 
-  \begin{itemize}
-  	\item Genetic Programming is based upon biological principles.
-	\item Individuals form a population.
-	\item Transformations
-		\begin{itemize}
-		\item Crossover (XO)
-		\item Mutation
-		\item Reproduction
-		\item Elitism
-		\end{itemize}
-	\item Transformations occur over a specified number of generations.
-	\item Individuals are rated by their fitness.
-  \end{itemize}
+\begin{frame}{We keep/see/share so little}
+	
+	\begin{columns}
+		\begin{column}{0.6 \linewidth}
+			EC research has the potential to generate \emph{huge} amounts of data.
+			\linespace
+			What do we normally do with that data?
+			\linespace
+			We normally throw it away -- \& paleontologists weep!
+			\linespace
+			\includegraphics[width = 0.8 \linewidth]{Figures/FossilsMedium.jpg} \\
+			\tiny{\url{https://www.flickr.com/photos/blmoregon/14566767645/}}
+		\end{column}
+		\begin{column}{0.4 \linewidth}
+			\includegraphics[height= 0.7 \textheight]{Figures/Abandoned_books.jpg} \\
+			\tiny{\url{https://www.flickr.com/photos/nicmcphee/1323950471}}
+		\end{column}
+	\end{columns}
 \end{frame}
 
-\begin{frame}
-\frametitle{Transformations}
+\begin{frame}{Oooh -- a table of results!}
+
 \begin{columns}
-\begin{column}{0.55\textwidth}
-{\footnotesize
-		\begin{description}
-		\item[Crossover] sexual reproduction \\ (root and non-root)
-		\item[Mutation] subtrees altered
-		\item[Reproduction] asexual reproduction
-		\item[Elitism] reproduction based on fitness
-		\end{description}
-}
+	\begin{column}{0.4 \linewidth}
+		\centering
+\begin{tabular}{lrrr}
+	& \multicolumn{3}{c}{Treatment} \\ \cline{2-4}
+	\textbf{Problem} & \textbf{L} & \textbf{T} & \textbf{I} \\
+	\hline
+	RSWN & 55 & 13 & 17 \\
+	SYL & 22 & 1 & 2 \\
+	SLB & 75 & 19 & 10 \\
+	NTZ & 57 & 15 & 7
+\end{tabular}
 \end{column}
-\begin{column}{0.45\textwidth}
-%{\tiny \ \ \ \ \ \ Root \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ Non-Root \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ Child}
-%\includegraphics[width=.95\textwidth]{subtreeCrossover.jpg} \\
-%{\tiny \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \url{geneticprogramming.us}}
+
+\begin{column}{0.55 \linewidth}
+	\begin{overprint}
+		\onslide<1>
+		These show successes on 4 problems for 3 different treatments
+		\linespace
+		L seems to be winning
+
+		\onslide<2>
+		But \emph{why?!?!?}		
+		\linespace
+		What's actually \emph{happening} in all those matings and crossovers and mutations that makes the difference?
+	\end{overprint}
 \end{column}
 \end{columns}
-\vspace*{-0.5cm}
-\begin{center}
-%\includegraphics[width=.9\textwidth]{XO_path_example.pdf}
-\end{center}
 \end{frame}
 
-\subsection{Symbolic Regression and Fitness}
-
-\begin{frame}
-	\frametitle{Symbolic Regression and Fitness}
+\begin{frame}{Let's draw pretty pictures}
 	
-	We are focusing on symbolic regression problems.
-	\begin{itemize}
-		\item Collection of test points as input.
-		\item Evolve mathematical formula to fit data.
-	\end{itemize}
-	
-	\linespace
-	
-	Fitness determines individual's distance from target function.
-	\begin{itemize}
-		\item Lower the fitness, the better the individual.
-		\item A fitness of zero would exactly match test data.
-	\end{itemize}
-	
-	\linespace 
-	
-	The goal of GP is to evolve an individual with as low a fitness as possible.
-	
+	\begin{columns}
+		\begin{column}{0.55 \linewidth}
+			\centering
+			\includegraphics[width = \linewidth]{Figures/rswn_diversity.pdf}
+		\end{column}
+		
+		\begin{column}{0.4 \linewidth}
+			\begin{overprint}
+				\onslide<1>
+				So much more data!
+				\linespace
+				Diversity over time across all the runs.
+				\linespace
+				L's diversity (top) is consistently higher than T (bottom).
+				\linespace
+				That might be important (and supports some hypotheses).
+				
+				\onslide<2>
+				Still, this mushes all the runs together.
+				\linespace
+				And that likely obscures interesting things.
+			\end{overprint}
+		\end{column}
+	\end{columns}
 \end{frame}
+
+\begin{frame}{Zooming in}
+	
+	\begin{columns}
+		\begin{column}{0.55 \linewidth}
+			\centering
+			\includegraphics[width = \linewidth]{Figures/run6_lexicase_rswn_diversity.pdf}
+		\end{column}
+		
+		\begin{column}{0.4 \linewidth}
+			\begin{overprint}
+				\onslide<1>
+				Focusing on one successful L run now.
+				\linespace
+				Three big diversity changes:
+				\begin{itemize}
+					\item First 15 generations have a sharp drop then steep rise
+					\item Around generation 40 a sharp drop and rise
+					\item Sharp drop at end just before a solution is found
+				\end{itemize}
+				
+				\onslide<2>
+				\emph{What's happening at those sections of the run?}
+				\linespace
+				We want to be able to dig through a run and see what happened.
+				\linespace
+				So we want to store and analyze \emph{all} the individuals and their relationships.
+				\linespace
+				Graph databases seem a natural tool for at least the relationship part.
+			\end{overprint}
+		\end{column}
+	\end{columns}
+\end{frame}
+
+%		\item Ancestry relationships are naturally modeled with a graph
+%		\item So a graph database seems a natural tool
+
 
 \section[Graph DB]{Graph Database}
 \subsection{Neo4j}
