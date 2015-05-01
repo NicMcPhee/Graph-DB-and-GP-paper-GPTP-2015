@@ -89,6 +89,8 @@
 
 \section{What do we know? (And how do we talk about it?)}
 
+\subsection{We throw so much away}
+
 \begin{frame}{We keep/see/share so little}
 	
 	\begin{columns}
@@ -108,6 +110,8 @@
 		\end{column}
 	\end{columns}
 \end{frame}
+
+\subsection{Summary results just summarize}
 
 \begin{frame}{Oooh -- a table of results!}
 
@@ -141,6 +145,8 @@
 \end{columns}
 \end{frame}
 
+\subsection{Plots are better (but can still obscure details)}
+
 \begin{frame}{Let's draw pretty pictures}
 	
 	\begin{columns}
@@ -169,6 +175,8 @@
 	\end{columns}
 \end{frame}
 
+\subsection{Can we zoom in to individual runs?}
+
 \begin{frame}{Zooming in}
 	
 	\begin{columns}
@@ -193,20 +201,35 @@
 				\emph{What's happening at those sections of the run?}
 				\linespace
 				We want to be able to dig through a run and see what happened.
-				\linespace
-				So we want to store and analyze \emph{all} the individuals and their relationships.
-				\linespace
-				Graph databases seem a natural tool for at least the relationship part.
 			\end{overprint}
 		\end{column}
 	\end{columns}
 \end{frame}
 
-%		\item Ancestry relationships are naturally modeled with a graph
-%		\item So a graph database seems a natural tool
+\section[Using a graph DB]{Using a graph database}
 
+\subsection{Goals}
 
-\section[Graph DB]{Graph Database}
+\begin{frame}{Goals}
+	\begin{columns}
+		\begin{column}{0.6 \linewidth}
+					We want to store and analyze \emph{all} the individuals and their relationships.
+					\linespace
+					Ancestry relationships are naturally modeled with a graph
+					\linespace
+					So graph databases seem a natural tool for the relationship part.
+					\linespace
+					\centering
+					\includegraphics[width=0.8 \linewidth]{Figures/FamilyTree.jpg} \\
+					\tiny{\url{https://www.flickr.com/photos/herry/3228640890}}
+		\end{column}
+		\begin{column}{0.4 \linewidth}
+			\includegraphics[height= 0.75 \textheight]{Figures/HeuristicLabGraph.pdf} \\
+			\tiny{\cite{Burlacu:2013:VGL:2464576.2482714}}
+		\end{column}		
+	\end{columns}
+\end{frame}
+
 \subsection{Neo4j}
 
 \begin{frame}
@@ -388,9 +411,9 @@ Future Work
 
 \begin{frame} 
 \frametitle{References}
-\nocite{*}
-\bibliographystyle{acm}
-{\tiny \bibliography{MICS_2014}}
+% \nocite{*}
+\bibliographystyle{alpha}
+{\tiny \bibliography{GraphDBandGP}}
 \end{frame} 
 
 \end{document}
