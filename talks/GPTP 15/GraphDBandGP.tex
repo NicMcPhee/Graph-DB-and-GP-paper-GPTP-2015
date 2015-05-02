@@ -232,29 +232,26 @@
 
 \subsection{Neo4j}
 
-\begin{frame}
-	\frametitle{Neo4j}
-	
-	
+\begin{frame}{Neo4j graph database}
 	
 \begin{columns} 
-\begin{column}{0.60 \textwidth}
-Neo4j is a graph database.
+\begin{column}{0.65 \textwidth}
 		\begin{itemize}
-		\item relatively new tool
+			\item Part of the new-ish NoSQL movement
 			\begin{itemize}
-			\item initial release 2007
-			\item popularized in 2010
+				\item Neo4j's initial release was 2007
+				\item Started to take off in 2010
 			\end{itemize}
-		\item information is stored using a graph
-		\item nodes and relationships
-		\item efficient recursive queries compared with traditional databases
+			\item Easy to represent complex relationships
+			\item Easy to \emph{search} for relationships
+			\item Efficient recursive queries, esp. compared to traditional databases
 		\end{itemize}
 		\end{column}
-		\begin{column}{0.40\textwidth}
-   % \includegraphics[width=0.95\textwidth]{graphdb-neo4j.png}
+		\begin{column}{0.35\textwidth}
+			\centering
+	   \includegraphics[width=0.95\textwidth]{Figures/graphdb-neo4j.png}
        \\
-    \only{\tiny{Neo4j \ \url{http://goo.gl/nzRWSV}}}
+    \tiny{\url{http://neo4j.com}}
   \end{column}
   \end{columns}
 
@@ -262,25 +259,30 @@ Neo4j is a graph database.
 
 \subsection{Cypher}
 
-\begin{frame}
-	\frametitle{Cypher}
-	Neo4j's query language is Cypher.
+\begin{frame}{Cypher query language}
 	\begin{columns}
-	\begin{column}{0.40\textwidth}
+		\begin{column}{0.4\textwidth}
+			Neo4j uses the \emph{Cypher} query language.
 
-	Fundamental elements of Cypher queries:
+			\linespace
+			
+			Fundamental elements of Cypher queries:
 		\begin{itemize}
-		\item START
-		\item RETURN
-		\item MATCH
-		\item WHERE
+			\item START
+			\item MATCH
+			\item WHERE
+			\item RETURN
 		\end{itemize}
+		
+		\linespace
+		
+		Uses "ASCII art" to describe relationships.
 	\end{column}
 	\begin{column}{0.60\textwidth}
 
-	% \includegraphics[width=.95\textwidth]{parents.pdf}
-	%\linebreak
-	\emph{
+	\includegraphics[width=.95\textwidth]{Figures/parents.pdf}
+	\linebreak
+	{
 START parent=node(43)
 \linebreak
 MATCH (parent)-[:PARENTOF]->(child)
@@ -292,6 +294,48 @@ RETURN parent, child;
 
 	\end{column}	
 	\end{columns}
+\end{frame}
+
+\begin{frame}{Can model (more) arbitrary paths}
+	Find all Nic's friends:
+	
+	\begin{center}
+		\texttt{(Nic)-[:FRIEND\_OF]->(p)}
+	\end{center}
+	
+	Find all the friends of Nic's friends:
+	
+	\begin{center}
+		\texttt{(Nic)-[:FRIEND\_OF*2]->(p)}
+	\end{center}
+	
+	Find everyone at most 5 steps from Nic:
+	
+	\begin{center}
+		\texttt{(Nic)-[:FRIEND\_OF*1..5]->(p)}
+	\end{center}
+	
+\end{frame}
+
+\begin{frame}{Can model (more) arbitrary paths}
+	Find all Nic's grandparents:
+	
+	\begin{center}
+		\texttt{(Nic)<-[:PARENT\_OF*2]-(gp)}
+	\end{center}
+	
+	Find all Nic's siblings:
+	
+	\begin{center}
+		\texttt{(Nic)<-[:PARENT\_OF]-()-[:PARENT\_OF]->(s)}
+	\end{center}
+	
+	Find all Nic's cousins (and siblings):
+	
+	\begin{center}
+		\texttt{(Nic)<-[:PARENT\_OF*2]-()-[:PARENT\_OF*2]->(c)}
+	\end{center}
+	
 \end{frame}
 
 \section[Setup]{Experimental Setup}
