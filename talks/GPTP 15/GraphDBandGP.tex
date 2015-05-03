@@ -338,25 +338,86 @@ RETURN parent, child;
 	
 \end{frame}
 
-\section[Setup]{Experimental Setup}
+\section{Let's go exploring!}
 
-\subsection{Configurations}
+\subsection{Setup}
 
-\begin{frame}
-\frametitle{Run Configurations}
-\begin{description}[align=left, leftmargin=*]
-{\small
-\item[Target Function] sin(x)
-\item[Variables] x (range 0.0 to 6.2, incremented by steps of 0.1)
-\item[Constants] range between -5.0 and 5.0
-\item[Operations] addition (+), subtraction (-), multiplication (*), protected division (/)
-\item[Generation Number] 100
-\item[Population Size Per Gen] 1,000 (3 runs) and 10,000 (1 run)
-\item[Transform Percentages] crossover (90\%), mutation (1\%), reproduction (9\%)
-\item[Elitism] best 1\%
-\item[Fitness] absolute error between target function and individual function
-}
-\end{description}
+\begin{frame}{What are we exploring?}
+Tom Helmuth provided a \emph{lot} of data:
+\begin{itemize}
+	\item A number of program synthesis problems taken from intro computing texts
+	\item Three different selection mechanisms: Lexicase, tournament, and implicit fitness sharing (IFS)
+	\item All using Clojush implementation of Lee Spector's PushGP system \url{https://github.com/lspector/Clojush}
+	\item Population size 1,000; $\leq 300$ generations
+\end{itemize}
+See \cite{Helmuth:GECCO15} for more.
+
+\linespace
+
+We used \texttt{batch-import} tool and custom scripts to import into Neo4j. 
+{\tiny \url{https://github.com/jexp/batch-import}} 
+\end{frame}
+
+\begin{frame}{Only just the beginning}
+	\begin{itemize}
+		\item We have data from hundreds of runs
+		\item Currently a very ``by hand'' process
+		\item Definitely learned valuable things about:
+		\begin{itemize}
+			\item The behavior of lexicase
+			\item Role of alternation (a type of crossover) in PushGP
+			\item Impact of test cases on evolutionary dynamics
+		\end{itemize}
+	\end{itemize}
+	
+	\linespace
+	
+	We'll look at results from two runs:
+	\begin{itemize}
+		\item Both successful on replace-space-with-newline problem
+		\item One using lexicase (sol'n found in 88 gens)
+		\item One using tournament selection (sol'n found in 151 gens)
+	\end{itemize}
+\end{frame}
+
+\subsection{Comparing the end-games}
+
+\begin{frame}{How did we construct a winner?}
+	How is a winner constructed at the end of a run?
+	
+	\linespace
+	
+	This query finds all ancestors of a winner (zero \texttt{total\_error}) going back at most 8 steps:\\
+	\texttt{$\quad$ MATCH (p)-->(c)-[*0..7]->(w {total\_error: 0}) \\
+$\quad$ RETURN DISTINCT id(p), id(c);}
+
+	\linespace
+	
+	8 steps is fairly arbitrary; returns a small enough set to visualize.
+\end{frame}
+
+\begin{frame}{Comparing the end-games}
+	\begin{columns}
+		\begin{column}{0.5 \linewidth}
+			Ancestry of winner(s) look very different
+			\begin{itemize}
+				\item Tournament selection (below): Single winner w/ high branching factor
+				\item Lexicase (right): 45 winners w/ much lower branching factor
+			\end{itemize}
+			\begin{center}
+				\includegraphics[width=\linewidth]{Figures/ancestors_of_winner_rswn_tourney_run74_9gens}
+			\end{center}
+		\end{column}
+		\begin{column}{0.5 \linewidth}
+			\begin{center}
+				\includegraphics[width=\linewidth]{Figures/ancestors_of_winners_colons}
+			\end{center}
+		\end{column}
+	\end{columns}
+\end{frame}
+
+\begin{frame}{Tournament selection}
+	\includegraphics[width=\linewidth]{Figures/ancestors_of_winner_rswn_tourney_run74_9gens}
 \end{frame}
 
 \section[Results]{Results}
@@ -431,7 +492,7 @@ Future Work
 \begin{frame}{Thanks!}
 	
 	Thank you for your time and attention!
-		
+
 	\linespace
 	
 	Thanks to M. Kirbie Dramdahl (University of Minnesota, Morris), and to Lee Spector's Computational Intelligence group (Hampshire College) for ideas and feedback.
@@ -457,8 +518,7 @@ Future Work
 
 \begin{frame} 
 \frametitle{References}
-% \nocite{*}
-\bibliographystyle{alpha}
+\bibliographystyle{apalike}
 {\tiny \bibliography{GraphDBandGP}}
 \end{frame} 
 
