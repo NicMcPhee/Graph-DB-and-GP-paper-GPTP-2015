@@ -387,8 +387,12 @@ We used \texttt{batch-import} tool and custom scripts to import into Neo4j.
 	
 	\linespace
 	
-	This query finds all ancestors of a winner (zero \texttt{total\_error}) going back at most 8 steps:\\
-	\texttt{$\quad$ MATCH (p)-->(c)-[*0..7]->(w {total\_error: 0}) \\
+	This query finds all ancestors of a winner (zero \texttt{total\_error}) going back at most 8 steps:
+	
+	\linespace
+	
+	\texttt{$\quad$ MATCH (w \{total\_error: 0\}) \\
+		$\quad$ MATCH (p)-$\,$->(c)-[*0..7]->(w) \\
 $\quad$ RETURN DISTINCT id(p), id(c);}
 
 	\linespace
