@@ -425,8 +425,56 @@ $\quad$ RETURN DISTINCT id(p), id(c);}
 		\begin{column}{0.5 \linewidth}
 			\includegraphics[height=0.9\textheight]{Figures/ancestors_of_winners_colons}
 		\end{column}
-		\begin{column}{0.5 \linewidth}
-			Some text
+		\begin{column}{0.45 \linewidth}
+			\begin{overprint}
+				\onslide<1>
+			A number of observations:
+			\begin{itemize}
+				\item 45(!) ``winning'' individuals
+				\item Individual ``86:261'' is (a) parent of all 45
+				\item Individual ``86:261'' is a parent of 934 (of 1,000) individuals in next generation
+			\end{itemize}
+			
+			\onslide<2>
+			Seriously?!? 934 offspring?!?
+			
+			\linespace
+			
+			Turns out to an be extreme case of a common phenomena with lexicase
+			
+			\linespace
+			
+			Nodes marked with diamonds all had at least 100 offspring
+			
+			\linespace
+			
+			Shaded diamonds also have at least 5 offspring that are ancestors of or are winners
+			
+			\onslide<3-4>
+			What's the total error (fitness) of ``86:261''?
+			\begin{itemize}
+				\item<4> 4,034(!)
+				\item<4> Bottom quartile!
+				\item<4> But had 934 offspring! \linespace
+				\item<4> Failed to return on 4 cases (error 1,000 each)
+				\item<4> Got 2 other answers wrong (error 17 each)
+				\item<4> Terrible total error, but perfect on 194 of 200 tests
+				\item<4> Great for lexicase!
+			\end{itemize}
+						
+			\onslide<5-6>
+			What's the total error (fitness) of ``85:086''?
+			\begin{itemize}
+				\item<6> \emph{100,000!}
+				\item<6> Rank 971 out of 1,000
+				\item<6> But had 180 offspring \linespace
+				\item<6> Got all the ``print'' cases
+				\item<6> Failed to return value for all 100 ``return'' cases (error 1,000 each)
+				\item<6> \emph{Terrible} total error, but perfect on 100 of 200 tests
+				\item<6> Fine for lexicase
+			\end{itemize}
+			
+			\end{overprint}
 		\end{column}
 	\end{columns}
 \end{frame}
