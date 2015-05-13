@@ -510,72 +510,27 @@ $\quad$ RETURN DISTINCT id(p), id(c);}
 		\end{center}
 \end{frame}
 
-\section[Results]{Results}
-
-\subsection[Questions Asked]{Questions Asked}
-
-\begin{frame}
-\frametitle{Questions Asked}
-\begin{enumerate}
-\item \emph{What does the fitness of the ``winning'' individual's ancestry line look like over time?}
-\item \emph{How often does mutation improve fitness? Also, how often does crossover improve fitness, where the root parent is more fit than the non-root parent, and vice versa?}
-\item \emph{Does a group of individuals have a common root parent ancestor and what is the latest generation where such an ancestor occurs?}
-\item \emph{How many individuals in the initial generation have any root parent descendants in the final generation?}
-\end{enumerate}
-\end{frame}
-
-\subsection[Fitness Graph]{Fitness Over Time}
-
-\begin{frame}
-\frametitle{Fitness Over Time}
-\emph{What does the fitness of the ``winning'' individual's ancestry line look like over time?}
-\begin{center}
-% \includegraphics[width=0.85\textwidth]{Combined_fitness_over_time_no_dashed}
-\end{center}
-\end{frame}
-
-\subsection[Improved Transformations]{Improved Transformations}
-
-\begin{frame}
-\frametitle{Percentage of Improved Transformations}
-\emph{How often does mutation and crossover improve fitness?}
-\begin{center}
-{\tiny Results for Three 1,000 Individual Runs and One 10,000 Individual Run}
-% \includegraphics[width=0.95\textwidth]{All_percentages_over_time}
-\end{center}
-\end{frame}
-
-\subsection[Common Ancestor]{Common Ancestor}
-
-\begin{frame}
-\frametitle{Common Ancestor}
-\emph{Does a group of individuals have a common root parent ancestor and how many initial generation individuals have descendants in the final generation?}
-\begin{center}
-% \includegraphics[height=0.70\textheight]{subset_confluence_trimmed}
-\end{center}
-
-\end{frame}
-
 \section[Conclusions]{Conclusions}
 
 \begin{frame}
 \frametitle{Conclusions}
 
+Still early days, but we can definitely see some useful things:
 \begin{itemize}
-\item We can gather internal data efficiently.
-\item Provides more in depth information than statistical summaries. 
-\item Support for hypotheses.
+\item Differences in ways selection mechanisms work
+\item Support for hypotheses (e.g., Tom's paper)
+\item Evidence for importance of crossover in PushGP
+\item Impact of test cases on evolutionary dynamics
 \end{itemize}
-\linespace
-\linespace
+
 \linespace
 \linespace
 
 Future Work
 \begin{itemize}
-\item Trying different setup configurations.
-\item Enforcing the root parent to have better fitness in XO.
-\item Dynamically change parameters.
+\item Automate more of the work
+\item Examine more runs/problems/etc.
+\item Explore how to include this ``on-line''
 \end{itemize}
 \end{frame}
 
