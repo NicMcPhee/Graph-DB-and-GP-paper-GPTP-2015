@@ -261,7 +261,7 @@
 
 \begin{frame}{Cypher query language}
 			Neo4j uses the \emph{Cypher} query language.
-
+			
 			\linespace
 			
 			~\\
@@ -282,7 +282,7 @@
 	\end{column}
 	\begin{column}[T]{0.5\textwidth}
 		Uses "ASCII art" to describe relationships.
-
+	
 	\linespace
 
 (p)-[:PARENT\_OF]->(c)
@@ -297,19 +297,19 @@
 	\begin{center}
 		\texttt{(Nic)<-[:PARENT\_OF]-(p)}
 	\end{center}
-	
+
 	Find all Nic's grandparents:
 	
 	\begin{center}
 		\texttt{(Nic)<-[:PARENT\_OF*2]-(gp)}
 	\end{center}
 	
-	Find everyone at most 5 steps from Nic:
-	
-	\begin{center}
+		Find everyone at most 5 steps from Nic:
+		
+		\begin{center}
 			\texttt{(Nic)<-[:PARENT\_OF*1..5]-(a)}
-	\end{center}
-	
+		\end{center}
+		
 	Find all Nic's siblings:
 	
 	\begin{center}
@@ -489,23 +489,23 @@ $\quad$ RETURN DISTINCT id(p), id(c);}
 		\end{center}
 \end{frame}
 
-\begin{frame}{Most fecund individuals}
+\begin{frame}{12 most fecund individuals}
 		\begin{center}
-			\begin{tabular}{rrr}
-				Fecundity rank & Lexicase & Tournament \\
+			\begin{tabular}{rr}
+				Lexicase & Tournament \\
 				\hline\noalign{\smallskip}
-				1 & 934 & 24 \\
-				2 & 657 & 23 \\
-				3 & 594 & 23 \\
-				4 & 590 & 21 \\
-				5 & 433 & 20 \\
-				6 & 326 & 20 \\
-				7 & 297 & 19 \\
-				8 & 294 & 19 \\
-				9 & 285 & 19 \\
-				10 & 283 & 18 \\
-				11 & 279 & 18 \\
-				12 & 271 & 18 \\
+				934 & 24 \\
+				657 & 23 \\
+				594 & 23 \\
+				590 & 21 \\
+				433 & 20 \\
+				326 & 20 \\
+				297 & 19 \\
+				294 & 19 \\
+				285 & 19 \\
+				283 & 18 \\
+				279 & 18 \\
+				271 & 18 \\
 			\end{tabular}
 		\end{center}
 \end{frame}
