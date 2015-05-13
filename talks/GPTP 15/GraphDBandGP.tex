@@ -260,11 +260,16 @@
 \subsection{Cypher}
 
 \begin{frame}{Cypher query language}
-	\begin{columns}
-		\begin{column}{0.4\textwidth}
 			Neo4j uses the \emph{Cypher} query language.
 
 			\linespace
+			
+			~\\
+			
+			\linespace
+
+	\begin{columns}
+		\begin{column}[T]{0.5\textwidth}
 			
 			Fundamental elements of Cypher queries:
 		\begin{itemize}
@@ -274,66 +279,41 @@
 			\item RETURN
 		\end{itemize}
 		
-		\linespace
-		
-		Uses "ASCII art" to describe relationships.
 	\end{column}
-	\begin{column}{0.60\textwidth}
+	\begin{column}[T]{0.5\textwidth}
+		Uses "ASCII art" to describe relationships.
 
-	\includegraphics[width=.95\textwidth]{Figures/parents.pdf}
-	\linebreak
-	{
-START parent=node(43)
-\linebreak
-MATCH (parent)-[:PARENTOF]->(child)
-\linebreak
-\textbf{WHERE id(child) < 47}
-\linebreak
-RETURN parent, child;
-}
+	\linespace
+
+(p)-[:PARENT\_OF]->(c)
 
 	\end{column}	
 	\end{columns}
 \end{frame}
 
 \begin{frame}{Can model (more) arbitrary paths}
-	Find all Nic's friends:
+	Find Nic's parents:
 	
 	\begin{center}
-		\texttt{(Nic)-[:FRIEND\_OF]->(p)}
+		\texttt{(Nic)<-[:PARENT\_OF]-(p)}
 	\end{center}
 	
-	Find all the friends of Nic's friends:
-	
-	\begin{center}
-		\texttt{(Nic)-[:FRIEND\_OF*2]->(p)}
-	\end{center}
-	
-	Find everyone at most 5 steps from Nic:
-	
-	\begin{center}
-		\texttt{(Nic)-[:FRIEND\_OF*1..5]->(p)}
-	\end{center}
-	
-\end{frame}
-
-\begin{frame}{Can model (more) arbitrary paths}
 	Find all Nic's grandparents:
 	
 	\begin{center}
 		\texttt{(Nic)<-[:PARENT\_OF*2]-(gp)}
 	\end{center}
 	
+	Find everyone at most 5 steps from Nic:
+	
+	\begin{center}
+			\texttt{(Nic)<-[:PARENT\_OF*1..5]-(a)}
+	\end{center}
+	
 	Find all Nic's siblings:
 	
 	\begin{center}
 		\texttt{(Nic)<-[:PARENT\_OF]-()-[:PARENT\_OF]->(s)}
-	\end{center}
-	
-	Find all Nic's cousins (and siblings):
-	
-	\begin{center}
-		\texttt{(Nic)<-[:PARENT\_OF*2]-()-[:PARENT\_OF*2]->(c)}
 	\end{center}
 	
 \end{frame}
@@ -391,7 +371,8 @@ We used \texttt{batch-import} tool and custom scripts to import into Neo4j.
 	
 	\linespace
 	
-	\texttt{$\quad$ MATCH (w \{total\_error: 0\}) \\
+	\texttt{$\quad$ MATCH (w) WHERE w.total\_error = 0 \\ % \{total\_error: 0\}) \\
+		% $\quad$ WHERE w.total\_error = 0 \\
 		$\quad$ MATCH (p)-$\,$->(c)-[*0..7]->(w) \\
 $\quad$ RETURN DISTINCT id(p), id(c);}
 
