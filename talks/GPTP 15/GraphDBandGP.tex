@@ -220,8 +220,8 @@
 					So graph databases seem a natural tool for the relationship part.
 					\linespace
 					\centering
-					\includegraphics[width=0.8 \linewidth]{Figures/FamilyTree.jpg} \\
-					\tiny{\url{https://www.flickr.com/photos/herry/3228640890}}
+					\includegraphics[width=0.8 \linewidth]{Figures/olemartin_family_tree.jpg} \\
+					\tiny{\url{www.hokstad.com/family-tree-using-graphviz-and-ruby}}
 		\end{column}
 		\begin{column}{0.4 \linewidth}
 			\includegraphics[height= 0.75 \textheight]{Figures/HeuristicLabGraph.pdf} \\
@@ -242,6 +242,10 @@
 				\item Neo4j's initial release was 2007
 				\item Started to take off in 2010
 			\end{itemize}
+			\linespace
+			\item Represent individuals as nodes
+			\item Represent parent-child relationships as edges
+			\linespace
 			\item Easy to represent complex relationships
 			\item Easy to \emph{search} for relationships
 			\item Efficient recursive queries, esp. compared to traditional databases
@@ -260,11 +264,16 @@
 \subsection{Cypher}
 
 \begin{frame}{Cypher query language}
-	\begin{columns}
-		\begin{column}{0.4\textwidth}
 			Neo4j uses the \emph{Cypher} query language.
-
+			
 			\linespace
+			
+			~\\
+			
+			\linespace
+
+	\begin{columns}
+		\begin{column}[T]{0.5\textwidth}
 			
 			Fundamental elements of Cypher queries:
 		\begin{itemize}
@@ -274,66 +283,44 @@
 			\item RETURN
 		\end{itemize}
 		
-		\linespace
-		
-		Uses "ASCII art" to describe relationships.
 	\end{column}
-	\begin{column}{0.60\textwidth}
-
-	\includegraphics[width=.95\textwidth]{Figures/parents.pdf}
-	\linebreak
-	{
-START parent=node(43)
-\linebreak
-MATCH (parent)-[:PARENTOF]->(child)
-\linebreak
-\textbf{WHERE id(child) < 47}
-\linebreak
-RETURN parent, child;
-}
+	\begin{column}[T]{0.5\textwidth}
+		Uses "ASCII art" to describe relationships:
+	
+	\linespace
+\begin{center}
+	(p)-$\,$->(c) \\
+	\linespace
+	(p)-[r:PARENT\_OF]->(c)
+\end{center}
 
 	\end{column}	
 	\end{columns}
 \end{frame}
 
-\begin{frame}{Can model (more) arbitrary paths}
-	Find all Nic's friends:
+\begin{frame}{Can model (complex) paths}
+	Find Nic's parents:
 	
 	\begin{center}
-		\texttt{(Nic)-[:FRIEND\_OF]->(p)}
+		\texttt{(Nic)<-[:PARENT\_OF]-(p)}
 	\end{center}
-	
-	Find all the friends of Nic's friends:
-	
-	\begin{center}
-		\texttt{(Nic)-[:FRIEND\_OF*2]->(p)}
-	\end{center}
-	
-	Find everyone at most 5 steps from Nic:
-	
-	\begin{center}
-		\texttt{(Nic)-[:FRIEND\_OF*1..5]->(p)}
-	\end{center}
-	
-\end{frame}
 
-\begin{frame}{Can model (more) arbitrary paths}
 	Find all Nic's grandparents:
 	
 	\begin{center}
 		\texttt{(Nic)<-[:PARENT\_OF*2]-(gp)}
 	\end{center}
 	
+		Find everyone at most 5 steps from Nic:
+		
+		\begin{center}
+			\texttt{(Nic)<-[:PARENT\_OF*1..5]-(a)}
+		\end{center}
+		
 	Find all Nic's siblings:
 	
 	\begin{center}
 		\texttt{(Nic)<-[:PARENT\_OF]-()-[:PARENT\_OF]->(s)}
-	\end{center}
-	
-	Find all Nic's cousins (and siblings):
-	
-	\begin{center}
-		\texttt{(Nic)<-[:PARENT\_OF*2]-()-[:PARENT\_OF*2]->(c)}
 	\end{center}
 	
 \end{frame}
@@ -391,7 +378,8 @@ We used \texttt{batch-import} tool and custom scripts to import into Neo4j.
 	
 	\linespace
 	
-	\texttt{$\quad$ MATCH (w \{total\_error: 0\}) \\
+	\texttt{$\quad$ MATCH (w) WHERE w.total\_error = 0 \\ % \{total\_error: 0\}) \\
+		% $\quad$ WHERE w.total\_error = 0 \\
 		$\quad$ MATCH (p)-$\,$->(c)-[*0..7]->(w) \\
 $\quad$ RETURN DISTINCT id(p), id(c);}
 
@@ -474,6 +462,13 @@ $\quad$ RETURN DISTINCT id(p), id(c);}
 				\item<6> Fine for lexicase
 			\end{itemize}
 			
+			\onslide<7>
+			High proportion of mutations:
+			\begin{itemize}
+				\item Roughly half the offspring in this graph created via mutation
+				\item Probably why there's less branching
+			\end{itemize}
+			
 			\end{overprint}
 		\end{column}
 	\end{columns}
@@ -481,52 +476,55 @@ $\quad$ RETURN DISTINCT id(p), id(c);}
 
 \begin{frame}{Tournament selection}
 	\includegraphics[width=\linewidth]{Figures/ancestors_of_winner_rswn_tourney_run74_9gens}
+	\vspace{-1cm}
+	\begin{itemize}
+		\item Much broader: 42 ancestors of a winner for tournament 9 gens back; 14 for lexicase
+		\item About two-thirds created via crossover, so more branching than lexicase
+	\end{itemize}
 \end{frame}
 
-\section[Results]{Results}
-
-\subsection[Questions Asked]{Questions Asked}
-
-\begin{frame}
-\frametitle{Questions Asked}
-\begin{enumerate}
-\item \emph{What does the fitness of the ``winning'' individual's ancestry line look like over time?}
-\item \emph{How often does mutation improve fitness? Also, how often does crossover improve fitness, where the root parent is more fit than the non-root parent, and vice versa?}
-\item \emph{Does a group of individuals have a common root parent ancestor and what is the latest generation where such an ancestor occurs?}
-\item \emph{How many individuals in the initial generation have any root parent descendants in the final generation?}
-\end{enumerate}
+\begin{frame}{Number ancestors of ``winners'' over time}
+		\begin{center}
+			\begin{tabular}{rrr}
+				Gens from winner & Lexicase & Tournament \\
+				\hline\noalign{\smallskip}                
+                1 & 4 & 2 \\
+                2 & 6 & 4 \\
+                3 & 7 & 6 \\
+                4 & 6 & 10 \\
+                5 & 7 & 13 \\
+                6 & 9 & 20 \\
+                7 & 10 & 30 \\
+                8 & 14 & 33 \\
+                9 & 14 & 42 \\
+                10 & 22 & 63 \\ 
+%                \ldots \\
+%                15 & 49 & 152 \\
+                \vdots & \vdots & \vdots \\ 
+                18 & 58 & 297 \\
+			\end{tabular}
+		\end{center}
 \end{frame}
 
-\subsection[Fitness Graph]{Fitness Over Time}
-
-\begin{frame}
-\frametitle{Fitness Over Time}
-\emph{What does the fitness of the ``winning'' individual's ancestry line look like over time?}
-\begin{center}
-% \includegraphics[width=0.85\textwidth]{Combined_fitness_over_time_no_dashed}
-\end{center}
-\end{frame}
-
-\subsection[Improved Transformations]{Improved Transformations}
-
-\begin{frame}
-\frametitle{Percentage of Improved Transformations}
-\emph{How often does mutation and crossover improve fitness?}
-\begin{center}
-{\tiny Results for Three 1,000 Individual Runs and One 10,000 Individual Run}
-% \includegraphics[width=0.95\textwidth]{All_percentages_over_time}
-\end{center}
-\end{frame}
-
-\subsection[Common Ancestor]{Common Ancestor}
-
-\begin{frame}
-\frametitle{Common Ancestor}
-\emph{Does a group of individuals have a common root parent ancestor and how many initial generation individuals have descendants in the final generation?}
-\begin{center}
-% \includegraphics[height=0.70\textheight]{subset_confluence_trimmed}
-\end{center}
-
+\begin{frame}{12 most fecund individuals}
+		\begin{center}
+			\begin{tabular}{rr}
+				Lexicase & Tournament \\
+				\hline\noalign{\smallskip}
+				934 & 24 \\
+				657 & 23 \\
+				594 & 23 \\
+				590 & 21 \\
+				433 & 20 \\
+				326 & 20 \\
+				297 & 19 \\
+				294 & 19 \\
+				285 & 19 \\
+				283 & 18 \\
+				279 & 18 \\
+				271 & 18 \\
+			\end{tabular}
+		\end{center}
 \end{frame}
 
 \section[Conclusions]{Conclusions}
@@ -534,21 +532,22 @@ $\quad$ RETURN DISTINCT id(p), id(c);}
 \begin{frame}
 \frametitle{Conclusions}
 
+Still early days, but we can definitely see some useful things:
 \begin{itemize}
-\item We can gather internal data efficiently.
-\item Provides more in depth information than statistical summaries. 
-\item Support for hypotheses.
+\item Differences in ways selection mechanisms work
+\item Support for hypotheses (e.g., Tom's paper)
+\item Evidence for importance of crossover in PushGP
+\item Impact of test cases on evolutionary dynamics
 \end{itemize}
-\linespace
-\linespace
+
 \linespace
 \linespace
 
 Future Work
 \begin{itemize}
-\item Trying different setup configurations.
-\item Enforcing the root parent to have better fitness in XO.
-\item Dynamically change parameters.
+\item Automate more of the work
+\item Examine more runs/problems/etc.
+\item Explore how to include this ``on-line''
 \end{itemize}
 \end{frame}
 
