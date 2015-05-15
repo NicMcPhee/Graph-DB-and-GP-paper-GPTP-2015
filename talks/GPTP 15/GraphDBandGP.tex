@@ -285,17 +285,20 @@
 		
 	\end{column}
 	\begin{column}[T]{0.5\textwidth}
-		Uses "ASCII art" to describe relationships.
+		Uses "ASCII art" to describe relationships:
 	
 	\linespace
-
-(p)-[:PARENT\_OF]->(c)
+\begin{center}
+	(p)-$\,$->(c) \\
+	\linespace
+	(p)-[r:PARENT\_OF]->(c)
+\end{center}
 
 	\end{column}	
 	\end{columns}
 \end{frame}
 
-\begin{frame}{Can model (more) arbitrary paths}
+\begin{frame}{Can model (complex) paths}
 	Find Nic's parents:
 	
 	\begin{center}
