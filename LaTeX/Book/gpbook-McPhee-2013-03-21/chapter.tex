@@ -1157,10 +1157,50 @@ successes than tournament selection.
 %Table of 20 with most offspring for both 
 %more various numbers in table
 
+\section{A few cumulative results}
+\label{sec:cumulativeResults}
+
+The bulk of this chapter has focussed on exploring two specific successful runs on the replace-space-with-newline problem,
+one using lexicase selection, and one using tournament selection. To better understand how well this application of graph
+databases scales, we also created two larger cumulative databases, each containing the complete genealogical record for all 
+100 runs on replace-space-with-newline using, respectively, lexicase and tournament selection. Given these cumulative 
+databases, we were then able to do broad queries against those collections of runs. These were typically inspired by 
+observations from the explorations of individual runs, with the broader queries helping us understand to what degree an 
+observation in an individual run was representative of behavior in other runs.
+
+An obvious question, for example, is how unusual is the individual we discovered in Section~\ref{sec:surprisingFecundity} 
+that had 934 offspring? Was that an aberration, or are these kinds of hyper-selected and hyper-fecund individuals a
+regular occurrence when using lexicase selection? Querying the combined database revealed that there were 71 individuals
+in the 100 lexicase runs that were selected more than 900 times, where the average number of selections in a given 
+generation was 1,700. So each of these 71 individuals received over half the total selections in its generation, and 
+consequently had numerous offspring; all had over 700 offspring out of the 1,000 created for the next generation. 22 of
+those 71 individuals had over 900 offspring, with the biggest winners being two individuals that had 990 and 991 
+offspring, respectively, after being selected over 1,600 times each. 
+
+These 71 individuals clearly represent a very small fraction of the over 18 million nodes encapsulated in these runs. 50 of
+the 100 runs, however, had at least one of these hyper-selected individuals with over 900 selections, so this kind of 
+hyper-selection is clearly a common component of the dynamics of these lexicase runs. This sort of hyper-selection 
+has a profound impact on the dynamics of a run, as almost ever individual in the subsequent generation is a child of
+the hyper-selected individual, and due to self-crosses that individual is often the \emph{only} parent of those children. Thus
+the genetics of that individual are likely to have an enormous influence on the make-up of the next generation, creating
+what is in effect a substantial population bottleneck. So while those 71 individuals only represent a tiny proportion of
+the cumulative population, they're likely to have a tremendous impact on the run dynamics, so the ability to find and
+explore these individuals is potentially very informative.
+
+One of the other surprises from our earlier exploration is how ``unfit'' some of those highly selected individuals were when
+viewed through the lens of total error. Turning now to these cumulative results, we find that 15 of these 71 hyper-selected
+individuals had total error at or below 10, and so would likely be selected by tournament selection (although never more 
+than a few dozen times). On the other end of the spectrum, however, 7 of these 71 hyper-selected individuals had total 
+error over 3,000 and would have been \emph{extremely} unlikely to ever be chosen using tournament selection. So here
+again we see a substantial difference between the dynamics of lexicase and tournament selection, especially given the
+impact these hyper-selected individuals have on their runs.
+
 \section{So what did we learn in all this?}
 \label{sec:whatDidWeLearn}
 
-\emph{Connect the following back to Section~\ref{sec:surprisingFecundity}.}
+\marginpar{Connect the following back to Section~\ref{sec:surprisingFecundity}.}
+
+\marginpar{Talk about scaling, and SPARQL}
 
 Lexicase selection \citep{Helmuth:2015:ieeeTEC} was designed in significant part with the intent of 
 increasing and maintaining diversity. The key assumption was that it would distribute the selection 
@@ -1175,180 +1215,18 @@ of individuals. In exploring one lexicase run on the Replace Space With Newlines
 we discovered that while in general this story held true, there were moments in the course of the run
 where the reality was \emph{wildly} different.
 
+These are substantial
+databases; the database containing the 100 lexicase runs, for example, contained over 18 million nodes and over 25
+million edges, with the full Neo4j database weighing in at 18GB. That said, the database runs fine on stock desktop 
+hardware, which is how all the results presented here were generated. We'd quickly start to need more specialized
+infrastructure to scale up further by, for example, combining the 
+lexicase and tournament selection runs into a single database containing the history of those 200 runs, or combining
+the thousands of runs we have from \citep{Helmuth:2015:GPTP}.
+
 \begin{acknowledgement}
-	Thanks to all the cool people!\marginpar{We need to make this real.}
+	\marginpar{We need to make this real.}
+	Thanks to all the cool people! CI-Lab, Tozier, NSF, Kirbie, etc.
 \end{acknowledgement}
 
 \bibliographystyle{spbasic}
 \bibliography{gp-bibliography,chapter}
-
-%tourn 74
-%neo4j-sh (?)$ match (a)-[r *1..8]->(w {total_error: 0}) return distinct id(a), count(r) order by count(r) desc;
-
-
-%+-------------------+
-%| id(a)  | count(r) |
-%+-------------------+
-%| 142906 | 6        |
-%| 142362 | 5        |
-%| 142318 | 4        |
-%| 142611 | 4        |
-%| 142297 | 4        |
-%| 142721 | 4        |
-%| 142861 | 3        |
-%| 142637 | 3        |
-%| 143815 | 3        |
-%| 142346 | 3        |
-%| 144535 | 3        |
-%| 143098 | 3        |
-%| 142129 | 3        |
-%| 143803 | 2        |
-%| 142795 | 2        |
-%| 143414 | 2        |
-%| 142095 | 2        |
-%| 143103 | 2        |
-%| 143004 | 2        |
-%| 145184 | 2        |
-%| 142238 | 2        |
-%| 144795 | 2        |
-%| 142145 | 2        |
-%| 143984 | 2        |
-%| 142707 | 2        |
-%| 142470 | 2        |
-%| 142715 | 2        |
-%| 144312 | 2        |
-%| 143373 | 2        |
-%| 143014 | 2        |
-%| 143301 | 2        |
-%| 142676 | 2        |
-%| 144805 | 2        |
-%| 142634 | 2        |
-%| 148217 | 1        |
-%| 147275 | 1        |
-%| 143875 | 1        |
-%| 143821 | 1        |
-%| 147724 | 1        |
-%| 144981 | 1        |
-%| 142505 | 1        |
-%| 142550 | 1        |
-%| 142774 | 1        |
-%| 144963 | 1        |
-%| 145744 | 1        |
-%| 143109 | 1        |
-%| 144715 | 1        |
-%| 147068 | 1        |
-%| 143076 | 1        |
-%| 142376 | 1        |
-%| 144323 | 1        |
-%| 142872 | 1        |
-%| 144855 | 1        |
-%| 145268 | 1        |
-%| 143276 | 1        |
-%| 143886 | 1        |
-%| 143934 | 1        |
-%| 144562 | 1        |
-%| 145997 | 1        |
-%| 146437 | 1        |
-%| 148052 | 1        |
-%| 148016 | 1        |
-%| 145955 | 1        |
-%| 143407 | 1        |
-%| 142259 | 1        |
-%| 143829 | 1        |
-%| 144430 | 1        |
-%| 145390 | 1        |
-%| 145471 | 1        |
-%| 142863 | 1        |
-%| 142109 | 1        |
-%| 144917 | 1        |
-%| 145285 | 1        |
-%| 147609 | 1        |
-%| 146954 | 1        |
-%| 147510 | 1        |
-%| 144334 | 1        |
-%| 143754 | 1        |
-%| 146257 | 1        |
-%| 143395 | 1        |
-%| 144633 | 1        |
-%| 145907 | 1        |
-%| 144893 | 1        |
-%| 146203 | 1        |
-%| 142668 | 1        |
-%| 146852 | 1        |
-%| 142106 | 1        |
-%| 144259 | 1        |
-%| 146834 | 1        |
-%| 142420 | 1        |
-%| 149588 | 1        |
-%| 143957 | 1        |
-%| 144477 | 1        |
-%| 145455 | 1        |
-%| 146388 | 1        |
-%| 146110 | 1        |
-%| 144121 | 1        |
-%| 146292 | 1        |
-%| 143430 | 1        |
-%| 142282 | 1        |
-%| 146573 | 1        |
-%| 142428 | 1        |
-%| 143514 | 1        |
-%| 142826 | 1        |
-%| 143140 | 1        |
-%| 143759 | 1        |
-%| 148983 | 1        |
-%| 143035 | 1        |
-%| 143950 | 1        |
-%| 145269 | 1        |
-%| 144820 | 1        |
-%| 147111 | 1        |
-%| 144132 | 1        |
-%| 145460 | 1        |
-%| 149650 | 1        |
-%| 143316 | 1        |
-%| 143567 | 1        |
-%| 145765 | 1        |
-%+-------------------+
-
-%g	count(distinct p)	count(distinct p.total_error)
-%130	700	1
-%131	667	1
-%132	693	1
-%133	690	2
-%134	679	2
-%135	633	2
-%136	443	2
-%137	634	2
-%138	699	1
-%139	704	1
-%140	722	2
-%141	711	2
-%142	661	2
-%143	531	2
-%144	456	5
-%145	652	3
-%146	645	2
-%147	506	3
-%148	454	4
-%149	575	4
-
-%id, relationship
-%149650	alternation, uniform_mutation
-%149588	alternation, uniform_mutation
-%148983	alternation
-%148217	alternation
-%148052	alternation
-%148016	alternation
-%147724	uniform_close_mutation
-%147609	uniform_close_mutation
-%147510	alternation, uniform_mutation
-%147275	alternation
-%147111	alternation
-%147068	alternation, uniform_mutation
-%146954	alternation, uniform_mutation
-%146852	alternation, uniform_mutation
-%146834	alternation
-%146573	uniform_mutation
-%146437	alternation, uniform_mutation
-%146388	uniform_mutation
-%146292	alternation, uniform_mutation
-%146257	alternation
