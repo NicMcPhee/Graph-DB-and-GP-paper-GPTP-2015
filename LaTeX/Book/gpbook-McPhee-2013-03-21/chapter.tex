@@ -66,13 +66,13 @@ storing and accessing the data, but traditional relational
 databases are poorly suited for a variety of queries that are important for the genealogical analysis
 we need for exploring the evolutionary dynamics of our EC runs.
 In this chapter, we illustrate the use of graph databases as an alternative storage and analysis tool for
-evolutionary computation runs. In \cite{donatuccianalysis} we have demonstrated that graph databases
-can be an effective tool for analyzing complex genetic programming (GP) dynamics, which led directly
-to a proposed change to standard sub-tree crossover in tree-based GP, \cite{mcphee:GECCO15}.
+evolutionary computation runs. We have previously demonstrated that graph databases
+can be an effective tool for analyzing complex genetic programming (GP) dynamics \citep{donatuccianalysis}, which led directly
+to a proposed change to standard sub-tree crossover in tree-based GP, \citep{mcphee:GECCO15}.
 Here we will use the open source Neo4J graph database tool\footnote{\url{http://neo4j.com/}} 
 to explore data from a
 collection of PushGP runs on several problems drawn from a benchmark collection of introductory 
-programming problems taken from \cite{Helmuth:2015:GECCO}.
+programming problems \citep{Helmuth:2015:GECCO}.
 
 Note that this is \emph{not} going to be a presentation of ``traditional hypothesis-driven 
 research''. It will be based on an \emph{assumption}, namely that something interesting happens in
@@ -80,9 +80,9 @@ these runs, and that we can learn useful things by exploring them in more detail
 will be fairly discursive, reflecting our back-and-forth experience of wrestling with the data. Our
 initial queries start from fairly obvious questions (e.g., ``Why did we succeed here?''), but from
 there we engage in a dialog with data, letting the answers to early questions shape and guide our 
-subsequent exploration. We are presenting not the tidy, sterile summary of our adventures, but
-the messier (but we think more informative in this context) journal of what Pickering would call
-our ``mangle of practice'' (\cite{smith2008mangle, pickering:AJS:1993}).
+subsequent exploration. We are not presenting a tidy, sterile summary of our adventures, but
+the messier (but we think more informative in this context) journal of what Pickering might call
+our ``mangle of practice'' \citep{smith2008mangle, pickering:AJS:1993}.
 
 Because we're going to be focusing on the use of a graph database to explore this data, there will
 on occasion be avenues of exploration that we won't pursue here because they would properly involve
@@ -151,10 +151,11 @@ Most relational and document-based databases, for example require things like co
 recursive joins to trace significant hereditary lines, making this approach increasingly unfeasible.
 In exploring the dynamics of an EC run, we're going to want to be able to
 make connections across dozens or even hundreds of generations, which simply isn't plausible with a
-relational database. (See~\cite{Robinson:GraphDB:Book} for more on these 
-feasability/efficiency issues.) While we use Neo4j as our graph database in this work, there are 
+relational database \citep{Robinson:GraphDB:Book}. 
+While we use Neo4j as our graph database in this work, there are 
 numerous other 
-graph databases that would be an effective tool to use as well; see, for example,~\cite{wiki:GraphDB}. 
+graph databases that could potentially be effective tools \citep{wiki:GraphDB}, and we make no claims at having
+exhaustively explored the range of possible database tools for this sort of work.
 
 \section{A little background on tools and problems}
 
@@ -169,7 +170,7 @@ This section provides some background on some of the key subjects of this work:
 \subsection{Neo4J and Cypher}
 \label{subsec:Neo4j}
 
-Graph databases~\cite{Robinson:GraphDB:Book} are a relatively new approach, where data is stored 
+Graph databases \citep{Robinson:GraphDB:Book} are a relatively new type of database tool, where data is stored 
 as a collection of nodes and relationships in a graph, with a specialized query language that makes 
 it easy to ask questions about complex relationships. This section further describes Neo4j, its query 
 language Cypher, and the various advantages they hold over relational databases in recording and 
@@ -218,7 +219,7 @@ return is a text table with columns for all the different values in the \texttt{
 
 \subsection{PushGP}
 
-PushGP~\citep{spector:2002:GPEM, 1068292} is a stack-based genetic programming system. The details
+PushGP \citep{spector:2002:GPEM, 1068292} is a stack-based genetic programming system. The details
 of PushGP aren't crucial for this analysis as we're going to focus on the behavioral properties of
 individuals in this work, but it useful to know a few things:
 \begin{itemize}
@@ -258,9 +259,7 @@ small probability. Uniform-close-mutation modifies each close count value with s
 The runs discussed here allowed for \emph{pipelining} of genetic operators, so we might have
 combinations like alternation followed by uniform-mutation.
 
-Mention timing out and errors penalties.
-
-For additional details and the particular parameters used in these runs see \cite{Helmuth:2015:GECCO}.
+For additional details and the particular parameters used in these runs see \citep{Helmuth:2015:GECCO}.
 
 \subsection{Lexicase selection}
 
@@ -302,7 +301,7 @@ cases.
 \subsection{Replace-space-with-newline}
 
 The replace-space-with-newline problem is an introductory programming benchmark problem taken
-from~\cite{Helmuth:2015:GECCO}. In this problem the program is given an input string and required to
+from~\citep{Helmuth:2015:GECCO}. In this problem the program is given an input string and required to
 both (a) print the string with all the spaces replaced by newlines and (b) return an integer that
 is the number of non-space characters in the input string. There are 100 different training instances 
 for this problem, each of which generates two test cases: One is the Levenshtein distances between
@@ -319,14 +318,14 @@ well on some test cases, but very poorly on others.
 \subsection{Our data}
 \label{sec:ourData}
 
-The data we explored in this paper is a subset of the data collected for \cite{Helmuth:2015:GPTP}. In particular
+The data we explored in this paper is a subset of the data collected for \citep{Helmuth:2015:GPTP}. In particular
 we have the full genealogical records for one hundred runs of the replace-space-with-newline problem using each 
 of lexicase selection, tournament
 selection with tournament size 7, and implicit fitness sharing (IFS) with tournaments of size 7. In those
 runs 57 of the 100 lexicase runs succeeded in the sense that an individual was discovered that had zero
 error on all 200 of the training cases. Tournament selection with tournament size 7 only
 had 13 successes out of 100 runs, and IFS with tournament size 7 only had 17 successes out of 100 runs, so it seems that
-lexicase selection provides a significant advantage on this problem. Similar results in \cite{Helmuth:2015:GECCO}
+lexicase selection provides a significant advantage on this problem. Similar results in \citep{Helmuth:2015:GECCO}
 indicate that lexicase is in fact generally much more successful than tournament or IFS across a broad range of
 software synthesis problems.
 
@@ -341,7 +340,7 @@ run to explore in more detail.
 We're making no claims that this is a ``representative'' run (whatever that would even
 mean); it's an \emph{interesting} run, though, and our hope is that by understanding its dynamics
 better we can learn useful things about both the problem and the tools we're applying. Looking at this run in some
-detail certainly unearthed several surprising results, and in Section~\ref{sec:cumulativeData}
+detail certainly unearthed several surprising results, and in Section~\ref{sec:cumulativeResults}
 we'll expand our view by looking at some cumulative results across all hundred runs.
 
 \subsection{Hey, we won! But how did we get there?}
@@ -1166,7 +1165,7 @@ successes than tournament selection.
 Lexicase selection \citep{Helmuth:2015:ieeeTEC} was designed in significant part with the intent of 
 increasing and maintaining diversity. The key assumption was that it would distribute the selection 
 events across a variety of groups of individuals, as the population separates into sections focusing
-on different subsets of the test cases. As \cite{helmuth:GPTP15} shows, this is to a significant
+on different subsets of the test cases. As \citep{helmuth:GPTP15} shows, this is to a significant
 degree a ``true'' (or at least reasonable) story, with lexicase generally leading to more diversity
 than either tournament selection or implicit fitness sharing.
 
