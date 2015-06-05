@@ -66,13 +66,13 @@ storing and accessing the data, but traditional relational
 databases are poorly suited for a variety of queries that are important for the genealogical analysis
 we need for exploring the evolutionary dynamics of our EC runs.
 In this chapter, we illustrate the use of graph databases as an alternative storage and analysis tool for
-evolutionary computation runs. In \cite{donatuccianalysis} we have demonstrated that graph databases
-can be an effective tool for analyzing complex genetic programming (GP) dynamics, which led directly
-to a proposed change to standard sub-tree crossover in tree-based GP, \cite{mcphee:GECCO15}.
+evolutionary computation runs. We have previously demonstrated that graph databases
+can be an effective tool for analyzing complex genetic programming (GP) dynamics \citep{donatuccianalysis}, which led directly
+to a proposed change to standard sub-tree crossover in tree-based GP, \citep{mcphee:GECCO15}.
 Here we will use the open source Neo4J graph database tool\footnote{\url{http://neo4j.com/}} 
 to explore data from a
 collection of PushGP runs on several problems drawn from a benchmark collection of introductory 
-programming problems taken from \cite{Helmuth:2015:GECCO}.
+programming problems \citep{Helmuth:2015:GECCO}.
 
 Note that this is \emph{not} going to be a presentation of ``traditional hypothesis-driven 
 research''. It will be based on an \emph{assumption}, namely that something interesting happens in
@@ -80,9 +80,9 @@ these runs, and that we can learn useful things by exploring them in more detail
 will be fairly discursive, reflecting our back-and-forth experience of wrestling with the data. Our
 initial queries start from fairly obvious questions (e.g., ``Why did we succeed here?''), but from
 there we engage in a dialog with data, letting the answers to early questions shape and guide our 
-subsequent exploration. We are presenting not the tidy, sterile summary of our adventures, but
-the messier (but we think more informative in this context) journal of what Pickering would call
-our ``mangle of practice'' (\cite{smith2008mangle, pickering:AJS:1993}).
+subsequent exploration. We are not presenting a tidy, sterile summary of our adventures, but
+the messier (but we think more informative in this context) journal of what Pickering might call
+our ``mangle of practice'' \citep{smith2008mangle, pickering:AJS:1993}.
 
 Because we're going to be focusing on the use of a graph database to explore this data, there will
 on occasion be avenues of exploration that we won't pursue here because they would properly involve
@@ -151,10 +151,11 @@ Most relational and document-based databases, for example require things like co
 recursive joins to trace significant hereditary lines, making this approach increasingly unfeasible.
 In exploring the dynamics of an EC run, we're going to want to be able to
 make connections across dozens or even hundreds of generations, which simply isn't plausible with a
-relational database. (See~\cite{Robinson:GraphDB:Book} for more on these 
-feasability/efficiency issues.) While we use Neo4j as our graph database in this work, there are 
+relational database \citep{Robinson:GraphDB:Book}. 
+While we use Neo4j as our graph database in this work, there are 
 numerous other 
-graph databases that would be an effective tool to use as well; see, for example,~\cite{wiki:GraphDB}. 
+graph databases that could potentially be effective tools \citep{wiki:GraphDB}, and we make no claims at having
+exhaustively explored the range of possible database tools for this sort of work.
 
 \section{A little background on tools and problems}
 
@@ -169,7 +170,7 @@ This section provides some background on some of the key subjects of this work:
 \subsection{Neo4J and Cypher}
 \label{subsec:Neo4j}
 
-Graph databases~\cite{Robinson:GraphDB:Book} are a relatively new approach, where data is stored 
+Graph databases \citep{Robinson:GraphDB:Book} are a relatively new type of database tool, where data is stored 
 as a collection of nodes and relationships in a graph, with a specialized query language that makes 
 it easy to ask questions about complex relationships. This section further describes Neo4j, its query 
 language Cypher, and the various advantages they hold over relational databases in recording and 
@@ -218,7 +219,7 @@ return is a text table with columns for all the different values in the \texttt{
 
 \subsection{PushGP}
 
-PushGP~\citep{spector:2002:GPEM, 1068292} is a stack-based genetic programming system. The details
+PushGP \citep{spector:2002:GPEM, 1068292} is a stack-based genetic programming system. The details
 of PushGP aren't crucial for this analysis as we're going to focus on the behavioral properties of
 individuals in this work, but it useful to know a few things:
 \begin{itemize}
@@ -258,9 +259,7 @@ small probability. Uniform-close-mutation modifies each close count value with s
 The runs discussed here allowed for \emph{pipelining} of genetic operators, so we might have
 combinations like alternation followed by uniform-mutation.
 
-Mention timing out and errors penalties.
-
-For additional details and the particular parameters used in these runs see \cite{Helmuth:2015:GECCO}.
+For additional details and the particular parameters used in these runs see \citep{Helmuth:2015:GECCO}.
 
 \subsection{Lexicase selection}
 
@@ -302,7 +301,7 @@ cases.
 \subsection{Replace-space-with-newline}
 
 The replace-space-with-newline problem is an introductory programming benchmark problem taken
-from~\cite{Helmuth:2015:GECCO}. In this problem the program is given an input string and required to
+from~\citep{Helmuth:2015:GECCO}. In this problem the program is given an input string and required to
 both (a) print the string with all the spaces replaced by newlines and (b) return an integer that
 is the number of non-space characters in the input string. There are 100 different training instances 
 for this problem, each of which generates two test cases: One is the Levenshtein distances between
@@ -319,14 +318,14 @@ well on some test cases, but very poorly on others.
 \subsection{Our data}
 \label{sec:ourData}
 
-The data we explored in this paper is a subset of the data collected for \cite{Helmuth:2015:GPTP}. In particular
+The data we explored in this paper is a subset of the data collected for \citep{Helmuth:2015:GPTP}. In particular
 we have the full genealogical records for one hundred runs of the replace-space-with-newline problem using each 
 of lexicase selection, tournament
 selection with tournament size 7, and implicit fitness sharing (IFS) with tournaments of size 7. In those
 runs 57 of the 100 lexicase runs succeeded in the sense that an individual was discovered that had zero
 error on all 200 of the training cases. Tournament selection with tournament size 7 only
 had 13 successes out of 100 runs, and IFS with tournament size 7 only had 17 successes out of 100 runs, so it seems that
-lexicase selection provides a significant advantage on this problem. Similar results in \cite{Helmuth:2015:GECCO}
+lexicase selection provides a significant advantage on this problem. Similar results in \citep{Helmuth:2015:GECCO}
 indicate that lexicase is in fact generally much more successful than tournament or IFS across a broad range of
 software synthesis problems.
 
@@ -341,7 +340,7 @@ run to explore in more detail.
 We're making no claims that this is a ``representative'' run (whatever that would even
 mean); it's an \emph{interesting} run, though, and our hope is that by understanding its dynamics
 better we can learn useful things about both the problem and the tools we're applying. Looking at this run in some
-detail certainly unearthed several surprising results, and in Section~\ref{sec:cumulativeData}
+detail certainly unearthed several surprising results, and in Section~\ref{sec:cumulativeResults}
 we'll expand our view by looking at some cumulative results across all hundred runs.
 
 \subsection{Hey, we won! But how did we get there?}
@@ -1158,15 +1157,55 @@ successes than tournament selection.
 %Table of 20 with most offspring for both 
 %more various numbers in table
 
+\section{A few cumulative results}
+\label{sec:cumulativeResults}
+
+The bulk of this chapter has focussed on exploring two specific successful runs on the replace-space-with-newline problem,
+one using lexicase selection, and one using tournament selection. To better understand how well this application of graph
+databases scales, we also created two larger cumulative databases, each containing the complete genealogical record for all 
+100 runs on replace-space-with-newline using, respectively, lexicase and tournament selection. Given these cumulative 
+databases, we were then able to do broad queries against those collections of runs. These were typically inspired by 
+observations from the explorations of individual runs, with the broader queries helping us understand to what degree an 
+observation in an individual run was representative of behavior in other runs.
+
+An obvious question, for example, is how unusual is the individual we discovered in Section~\ref{sec:surprisingFecundity} 
+that had 934 offspring? Was that an aberration, or are these kinds of hyper-selected and hyper-fecund individuals a
+regular occurrence when using lexicase selection? Querying the combined database revealed that there were 71 individuals
+in the 100 lexicase runs that were selected more than 900 times, where the average number of selections in a given 
+generation was 1,700. So each of these 71 individuals received over half the total selections in its generation, and 
+consequently had numerous offspring; all had over 700 offspring out of the 1,000 created for the next generation. 22 of
+those 71 individuals had over 900 offspring, with the biggest winners being two individuals that had 990 and 991 
+offspring, respectively, after being selected over 1,600 times each. 
+
+These 71 individuals clearly represent a very small fraction of the over 18 million nodes encapsulated in these runs. 50 of
+the 100 runs, however, had at least one of these hyper-selected individuals with over 900 selections, so this kind of 
+hyper-selection is clearly a common component of the dynamics of these lexicase runs. This sort of hyper-selection 
+has a profound impact on the dynamics of a run, as almost ever individual in the subsequent generation is a child of
+the hyper-selected individual, and due to self-crosses that individual is often the \emph{only} parent of those children. Thus
+the genetics of that individual are likely to have an enormous influence on the make-up of the next generation, creating
+what is in effect a substantial population bottleneck. So while those 71 individuals only represent a tiny proportion of
+the cumulative population, they're likely to have a tremendous impact on the run dynamics, so the ability to find and
+explore these individuals is potentially very informative.
+
+One of the other surprises from our earlier exploration is how ``unfit'' some of those highly selected individuals were when
+viewed through the lens of total error. Turning now to these cumulative results, we find that 15 of these 71 hyper-selected
+individuals had total error at or below 10, and so would likely be selected by tournament selection (although never more 
+than a few dozen times). On the other end of the spectrum, however, 7 of these 71 hyper-selected individuals had total 
+error over 3,000 and would have been \emph{extremely} unlikely to ever be chosen using tournament selection. So here
+again we see a substantial difference between the dynamics of lexicase and tournament selection, especially given the
+impact these hyper-selected individuals have on their runs.
+
 \section{So what did we learn in all this?}
 \label{sec:whatDidWeLearn}
 
-\emph{Connect the following back to Section~\ref{sec:surprisingFecundity}.}
+\marginpar{Connect the following back to Section~\ref{sec:surprisingFecundity}.}
+
+\marginpar{Talk about scaling, and SPARQL}
 
 Lexicase selection \citep{Helmuth:2015:ieeeTEC} was designed in significant part with the intent of 
 increasing and maintaining diversity. The key assumption was that it would distribute the selection 
 events across a variety of groups of individuals, as the population separates into sections focusing
-on different subsets of the test cases. As \cite{helmuth:GPTP15} shows, this is to a significant
+on different subsets of the test cases. As \citep{helmuth:GPTP15} shows, this is to a significant
 degree a ``true'' (or at least reasonable) story, with lexicase generally leading to more diversity
 than either tournament selection or implicit fitness sharing.
 
@@ -1176,180 +1215,18 @@ of individuals. In exploring one lexicase run on the Replace Space With Newlines
 we discovered that while in general this story held true, there were moments in the course of the run
 where the reality was \emph{wildly} different.
 
+These are substantial
+databases; the database containing the 100 lexicase runs, for example, contained over 18 million nodes and over 25
+million edges, with the full Neo4j database weighing in at 18GB. That said, the database runs fine on stock desktop 
+hardware, which is how all the results presented here were generated. We'd quickly start to need more specialized
+infrastructure to scale up further by, for example, combining the 
+lexicase and tournament selection runs into a single database containing the history of those 200 runs, or combining
+the thousands of runs we have from \citep{Helmuth:2015:GPTP}.
+
 \begin{acknowledgement}
-	Thanks to all the cool people!\marginpar{We need to make this real.}
+	\marginpar{We need to make this real.}
+	Thanks to all the cool people! CI-Lab, Tozier, NSF, Kirbie, etc.
 \end{acknowledgement}
 
 \bibliographystyle{spbasic}
 \bibliography{gp-bibliography,chapter}
-
-%tourn 74
-%neo4j-sh (?)$ match (a)-[r *1..8]->(w {total_error: 0}) return distinct id(a), count(r) order by count(r) desc;
-
-
-%+-------------------+
-%| id(a)  | count(r) |
-%+-------------------+
-%| 142906 | 6        |
-%| 142362 | 5        |
-%| 142318 | 4        |
-%| 142611 | 4        |
-%| 142297 | 4        |
-%| 142721 | 4        |
-%| 142861 | 3        |
-%| 142637 | 3        |
-%| 143815 | 3        |
-%| 142346 | 3        |
-%| 144535 | 3        |
-%| 143098 | 3        |
-%| 142129 | 3        |
-%| 143803 | 2        |
-%| 142795 | 2        |
-%| 143414 | 2        |
-%| 142095 | 2        |
-%| 143103 | 2        |
-%| 143004 | 2        |
-%| 145184 | 2        |
-%| 142238 | 2        |
-%| 144795 | 2        |
-%| 142145 | 2        |
-%| 143984 | 2        |
-%| 142707 | 2        |
-%| 142470 | 2        |
-%| 142715 | 2        |
-%| 144312 | 2        |
-%| 143373 | 2        |
-%| 143014 | 2        |
-%| 143301 | 2        |
-%| 142676 | 2        |
-%| 144805 | 2        |
-%| 142634 | 2        |
-%| 148217 | 1        |
-%| 147275 | 1        |
-%| 143875 | 1        |
-%| 143821 | 1        |
-%| 147724 | 1        |
-%| 144981 | 1        |
-%| 142505 | 1        |
-%| 142550 | 1        |
-%| 142774 | 1        |
-%| 144963 | 1        |
-%| 145744 | 1        |
-%| 143109 | 1        |
-%| 144715 | 1        |
-%| 147068 | 1        |
-%| 143076 | 1        |
-%| 142376 | 1        |
-%| 144323 | 1        |
-%| 142872 | 1        |
-%| 144855 | 1        |
-%| 145268 | 1        |
-%| 143276 | 1        |
-%| 143886 | 1        |
-%| 143934 | 1        |
-%| 144562 | 1        |
-%| 145997 | 1        |
-%| 146437 | 1        |
-%| 148052 | 1        |
-%| 148016 | 1        |
-%| 145955 | 1        |
-%| 143407 | 1        |
-%| 142259 | 1        |
-%| 143829 | 1        |
-%| 144430 | 1        |
-%| 145390 | 1        |
-%| 145471 | 1        |
-%| 142863 | 1        |
-%| 142109 | 1        |
-%| 144917 | 1        |
-%| 145285 | 1        |
-%| 147609 | 1        |
-%| 146954 | 1        |
-%| 147510 | 1        |
-%| 144334 | 1        |
-%| 143754 | 1        |
-%| 146257 | 1        |
-%| 143395 | 1        |
-%| 144633 | 1        |
-%| 145907 | 1        |
-%| 144893 | 1        |
-%| 146203 | 1        |
-%| 142668 | 1        |
-%| 146852 | 1        |
-%| 142106 | 1        |
-%| 144259 | 1        |
-%| 146834 | 1        |
-%| 142420 | 1        |
-%| 149588 | 1        |
-%| 143957 | 1        |
-%| 144477 | 1        |
-%| 145455 | 1        |
-%| 146388 | 1        |
-%| 146110 | 1        |
-%| 144121 | 1        |
-%| 146292 | 1        |
-%| 143430 | 1        |
-%| 142282 | 1        |
-%| 146573 | 1        |
-%| 142428 | 1        |
-%| 143514 | 1        |
-%| 142826 | 1        |
-%| 143140 | 1        |
-%| 143759 | 1        |
-%| 148983 | 1        |
-%| 143035 | 1        |
-%| 143950 | 1        |
-%| 145269 | 1        |
-%| 144820 | 1        |
-%| 147111 | 1        |
-%| 144132 | 1        |
-%| 145460 | 1        |
-%| 149650 | 1        |
-%| 143316 | 1        |
-%| 143567 | 1        |
-%| 145765 | 1        |
-%+-------------------+
-
-%g	count(distinct p)	count(distinct p.total_error)
-%130	700	1
-%131	667	1
-%132	693	1
-%133	690	2
-%134	679	2
-%135	633	2
-%136	443	2
-%137	634	2
-%138	699	1
-%139	704	1
-%140	722	2
-%141	711	2
-%142	661	2
-%143	531	2
-%144	456	5
-%145	652	3
-%146	645	2
-%147	506	3
-%148	454	4
-%149	575	4
-
-%id, relationship
-%149650	alternation, uniform_mutation
-%149588	alternation, uniform_mutation
-%148983	alternation
-%148217	alternation
-%148052	alternation
-%148016	alternation
-%147724	uniform_close_mutation
-%147609	uniform_close_mutation
-%147510	alternation, uniform_mutation
-%147275	alternation
-%147111	alternation
-%147068	alternation, uniform_mutation
-%146954	alternation, uniform_mutation
-%146852	alternation, uniform_mutation
-%146834	alternation
-%146573	uniform_mutation
-%146437	alternation, uniform_mutation
-%146388	uniform_mutation
-%146292	alternation, uniform_mutation
-%146257	alternation
