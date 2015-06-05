@@ -316,24 +316,35 @@ total error, which was used as the fitness for the individuals. For lexicase sel
 were kept separate which, as we shall see, frequently allowed individuals to be selected who did 
 well on some test cases, but very poorly on others.
 
+\subsection{Our data}
+\label{sec:ourData}
+
+The data we explored in this paper is a subset of the data collected for \cite{Helmuth:2015:GPTP}. In particular
+we have the full genealogical records for one hundred runs of the replace-space-with-newline problem using each 
+of lexicase selection, tournament
+selection with tournament size 7, and implicit fitness sharing (IFS) with tournaments of size 7. In those
+runs 57 of the 100 lexicase runs succeeded in the sense that an individual was discovered that had zero
+error on all 200 of the training cases. Tournament selection with tournament size 7 only
+had 13 successes out of 100 runs, and IFS with tournament size 7 only had 17 successes out of 100 runs, so it seems that
+lexicase selection provides a significant advantage on this problem. Similar results in \cite{Helmuth:2015:GECCO}
+indicate that lexicase is in fact generally much more successful than tournament or IFS across a broad range of
+software synthesis problems.
+
 \section{Lexicase, meet Replace-space-with-newline}
 \label{sec:lexicaseRun}
 
-We did one hundred runs of the replace-space-with-newline problem using lexicase selection, and
-found that 55 of these succeeded in the sense that an individual was discovered that had zero
-error on all 200 of the training cases. Tournament selection with tournament size 7 only
-had 13 successes out of 100 runs, and IFS only had 17 successes out of 100 runs, so it seems that
-lexicase selection provides a significant advantage here.
-
-\subsection{Hey, we won! But how did we get there?}
-
 % This is run 6, lexicase, replace-space-with-newline.
 
-Interestingly enough, lexicase performed very well, but this leaves us with the crucial question of \emph{why}? 
-In order to answer this question, we chose one successful run to explore in more detail. However, it's important to note
-here that we're making no claims that this is a ``representative'' run (whatever that would even
+It's one thing to know that lexicase succeeds 57 out of 100 times on the replace-space-with-newline problem, but that
+leaves us with the crucial question of \emph{why}? In order to answer this question, we chose one successful 
+run to explore in more detail.
+We're making no claims that this is a ``representative'' run (whatever that would even
 mean); it's an \emph{interesting} run, though, and our hope is that by understanding its dynamics
-better we can learn useful things about both the problem and the tools we're applying.
+better we can learn useful things about both the problem and the tools we're applying. Looking at this run in some
+detail certainly unearthed several surprising results, and in Section~\ref{sec:cumulativeData}
+we'll expand our view by looking at some cumulative results across all hundred runs.
+
+\subsection{Hey, we won! But how did we get there?}
 
 \begin{figure}[tp]
 	\begin{center}
@@ -347,7 +358,8 @@ better we can learn useful things about both the problem and the tools we're app
 	\label{fig:winnerAncestors}
 \end{figure}
 
-An obvious place to start analyzing is at the end when the GP system created individuals that solved the problem. So we used Neo4J to find all the ancestors of any ``winning'' individual, i.e., individual with a total error of 
+A natural place to start our analysis of this run is at the end, when the GP system created one or more individuals that 
+solved the problem. So we used Neo4J to find all the ancestors of any ``winning'' individual, i.e., individual with a total error of 
 on all 200 test cases. Using Cypher%(Neo4J's query language)
 , we can easily ask for this subset
 of the population going back to generation 79 using the query in 
