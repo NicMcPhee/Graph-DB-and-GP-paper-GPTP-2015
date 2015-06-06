@@ -16,7 +16,16 @@
 
 \maketitle
 
-\abstract{Each chapter should be preceded by an abstract (10--15 lines long) that summarizes the content. The abstract will appear \textit{online} at \url{www.SpringerLink.com} and be available with unrestricted access. This allows unregistered users to read the abstract as a teaser for the complete chapter. As a general rule the abstracts will not appear in the printed version of your book unless it is the style of your particular book or that of the series to which your book belongs.}
+\abstract{
+	For both practical reasons and those of habit, most evolutionary computation research is presented in highly summary
+	form that obscures or completely masks the profusion of specific events such as selections, crossovers, and mutations
+	that are ultimately responsible for the aggregate behaviors that we end up discussing. In this chapter we take an almost
+	opposite approach and use the Neo4j graph database system to record and analyze the entire genealogical history of 
+	a set of genetic programming runs. We then explore a few of these runs in some detail, discovering some important
+	properties of lexicase selection that may help us better understand the dynamics of lexicase selection and the considerable
+	ways in which it differs from tournament selection. More broadly, we illustrate the value of recording and analyzing this
+	level of detail, both as a means of understanding the dynamics of particular runs, and as a way of generating questions
+	and ideas for subsequent, broader study.}
 
 \begin{keywords}
 keywords to your chapter, these words should also be indexed
@@ -1201,6 +1210,10 @@ impact these hyper-selected individuals have on their runs.
 \marginpar{Connect the following back to Section~\ref{sec:surprisingFecundity}.}
 
 \marginpar{Talk about scaling, and SPARQL}
+
+\marginpar{Talk about this as a new kind of ``lab bench'' instrumentation. It won't take the place of the kind
+	of summary statistical results that are the bread and butter of scientific research, but it does give us the
+	ability to see new things and ask new questions, suggesting avenues for subsequent, more traditional, studies.}
 
 Lexicase selection \citep{Helmuth:2015:ieeeTEC} was designed in significant part with the intent of 
 increasing and maintaining diversity. The key assumption was that it would distribute the selection 
