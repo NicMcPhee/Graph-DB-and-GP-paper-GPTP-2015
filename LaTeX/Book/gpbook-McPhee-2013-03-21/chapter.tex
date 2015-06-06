@@ -1056,72 +1056,70 @@ of tournament selection becomes incredibility more complex and branches out exte
 generations back, there were approximately three times the number of contributing parents in 
 tournament as lexicase. 
 
-\begin{table}[t]
-	%\sidecaption[t]
-	\caption{The number of parents contributing to a winning individual $n$ generations away.}
-	\label{table:branching}
-	\begin{center}
-	\begin{tabular}{rrr}
-		Gens Away From Winner & $\quad$ \# of Tournament Parents & $\quad$ \# of Lexicase Parents  \\
-		\hline\noalign{\smallskip}
-		18 & 297 & 58\\
-		17 & 236 & 52\\
-		16 & 180 & 46\\
-		15 & 152 & 49\\
-		14 & 209 & 45\\
-		13 & 212 & 46\\
-		12 & 146 & 41\\
-		11 & 97 & 29\\
-		10 & 63 & 22\\
-		9 & 42  & 14\\
-		8 & 33  & 14\\
-		7 & 30  & 10\\
-		6 & 20  & 9\\
-		5 & 13  & 7\\
-		4 & 10  & 6\\
-		3 & 6  & 7\\		
-		2 & 4  & 6\\
-		1 & 2  & 4\\
-	\end{tabular}
-	\end{center}
+\begin{table}%
+	\centering
+	\caption{Two examples of the impact of selection on evolutionary dynamics in the two explored runs. The table in \subref{table:branching} lists the number of parents contributing to a winning individual $n$ generations away for both the 
+		lexicase and tournament runs explored in this paper. The top row, for example, indicates that in the lexicase run
+		there were 58 distinct ancestors of a winning individual 18 generations before the discovery of a winner, and in
+		the tournament run there were 297 distinct ancestors 18 generations before the discovery of a winner. 
+		The table in~\subref{table:numChildren} lists the 20 most fecund individuals across the entirity of each of the lexicase and tournament selection runs.}
+	\label{tab:big}
+	\subtable[]{
+		\label{table:branching}%
+		\begin{tabular}{rrr}
+			& \multicolumn{2}{c}{Number of ancestors} \\
+			$n$ & $\quad$ Lexicase & $\quad$ Tournament \\
+			\hline\noalign{\smallskip}
+			18 & 297 & 58 \\
+			17 & 236 & 52 \\
+			16 & 180 & 46 \\
+			15 & 152 & 49 \\
+			14 & 209 & 45 \\
+			13 & 212 & 46 \\
+			12 & 146 & 41 \\
+			11 & 97 & 29 \\
+			10 & 63 & 22 \\
+			9 & 42 & 14 \\
+			8 & 33 & 14 \\
+			7 & 30 & 10 \\
+			6 & 20 & 9 \\
+			5 & 13 & 7 \\
+			4 & 10 & 6 \\
+			3 & 6 & 7 \\
+			2 & 4 & 6 \\
+			1 & 2 & 4 \\
+		\end{tabular}		
+		}
+		\qquad
+	\subtable[]{
+		\label{table:numChildren}
+		\begin{tabular}{rrr}
+			& \multicolumn{2}{c}{Number of children} \\
+			Rank in run & $\quad$ Tournament & $\quad$ Lexicase  \\
+			\hline\noalign{\smallskip}
+			1 & 24 & 934 \\
+			2 & 23 & 657 \\
+			3 & 23 & 594 \\
+			4 & 21 & 590 \\
+			5 & 20 & 433 \\
+			6 & 20 & 326 \\
+			7 & 19 & 297 \\
+			8 & 19 & 294 \\
+			9 & 19 & 285 \\
+			10 & 18 & 283 \\
+			11 & 18 & 279 \\
+			12 & 18 & 271 \\
+			13 & 18 & 234 \\
+			14 & 18 & 220 \\
+			15 & 18 & 212 \\
+			16 & 18 & 205 \\
+			17 & 18 & 203 \\
+			18 & 17 & 202 \\
+			19 & 17 & 200 \\
+			20 & 17 & 189 \\
+		\end{tabular}
+		}%
 \end{table}
-
-
-
-\begin{table}[t]
-	%\sidecaption[t]
-	\caption{The top twenty children producing parents in tournament and lexicase throughout the entire run.}
-	\label{table:numChildren}
-	\begin{center}
-	\begin{tabular}{rrr}
-		Top 20 Parents & $\quad$ Tournament (Children Produced) & $\quad$ Lexicase (Children Produced)  \\
-		\hline\noalign{\smallskip}
-		1 & 24 & 934 \\
-		2 & 23 & 657 \\
-		3 & 23 & 594 \\
-		4 & 21 & 590 \\
-		5 & 20 & 433 \\
-		6 & 20 & 326 \\
-		7 & 19 & 297 \\
-		8 & 19 & 294 \\
-		9 & 19 & 285 \\
-		10 & 18 & 283 \\
-		11 & 18 & 279 \\
-		12 & 18 & 271 \\
-		13 & 18 & 234 \\
-		14 & 18 & 220 \\
-		15 & 18 & 212 \\
-		16 & 18 & 205 \\
-		17 & 18 & 203 \\
-		18 & 17 & 202 \\
-		19 & 17 & 200 \\
-		20 & 17 & 189 \\
-	\end{tabular}
-	\end{center}
-\end{table}
-
-
-
 
 Another major difference was the selection pressure of the two selection mechanisms. In lexicase 
 selection, one parent can dominate the selection if it performs well for a majority of the test 
