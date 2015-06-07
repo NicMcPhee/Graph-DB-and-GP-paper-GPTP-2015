@@ -313,7 +313,7 @@ The replace-space-with-newline problem is an introductory programming benchmark 
 from~\citep{Helmuth:2015:GECCO}. In this problem the program is given an input string and required to
 both (a) print the string with all the spaces replaced by newlines and (b) return an integer that
 is the number of non-space characters in the input string. There are 100 different training instances 
-for this problem, each of which generates two test cases: One is the Levenshtein distances between
+for this problem, each of which generates two error values: One is the Levenshtein distances between
 the printed output and the target print string, and the other is the absolute difference between
 whatever value is on the top of the \texttt{integer} stack and the expected return value. A penalty
 value of 1,000 is assigned for test cases that were expecting a return value but found the
@@ -321,7 +321,7 @@ value of 1,000 is assigned for test cases that were expecting a return value but
 
 For tournament selection runs, all 200 of these error values were added together to form the
 total error, which was used as the fitness for the individuals. For lexicase selection the errors
-were kept separate which, as we shall see, frequently allowed individuals to be selected who did 
+were kept separate in an error vector of 200 values; this, as we shall see, frequently allowed individuals to be selected who did 
 well on some test cases, but very poorly on others.
 
 \subsection{Our data}
@@ -509,8 +509,8 @@ than 100 offspring, and thus had a fairly dominate role in shaping the generatio
 If we look at the total error in of the individuals in Figure~\ref{fig:winnerAncestors}, we again
 find some significant surprises that tell us quite a lot about lexicase selection. In particular, if
 we look at the total error for each individual along the dashed path from 80:220 through
-82:447 to 86:261, the fitness of the first five
-individuals in the chain aren't too surprising. One (individual 82:447) has the best total error in
+82:447 to 86:261, the total errors of the first five
+individuals in the chain are reasonably low. One (individual 82:447) has the best total error in
 that generation and all but 81:691 (the individual with only 17 offspring) are in the top fifth of the 
 population when ranked by total fitness. The fitnesses 
 of the last two (the grandparent and parent of \emph{every} one of the 45 solutions), however, 
@@ -1012,20 +1012,6 @@ cases within the time limit without changing the value returned.
 \section{How is tournament selection different?}
 \label{sec:tournamentRun}
 
-%logs/log30.txt
-%logs/log41.txt
-%logs/log50.txt
-%logs/log52.txt
-%logs/log60.txt
-%logs/log62.txt
-%logs/log64.txt
-%logs/log68.txt
-%logs/log6.txt
-%logs/log74.txt
-%logs/log82.txt
-%logs/log94.txt
-%logs/log96.txt
-
 \begin{sidewaysfigure}
 	\vspace{0.6\columnwidth}
 	\includegraphics[width=\columnwidth]{figures/ancestors_of_winner_rswn_tourney_run74_9gens.pdf}
@@ -1053,10 +1039,10 @@ generation 145 because of an interesting property of tournaments. Table~\ref{tab
 the number of parents n generations away that contributed to the development of the winning individuals. 
 The further away from the winning individual, the number of parents that contributed to the winner 
 in tournament selection increased rapidly. In contrast, lexicase grew much more slowly, presumably 
-due to the fact that parents produce a surprisingly amount of children. This means that the ancestry 
-of tournament selection becomes incredibility more complex and branches out extensively. At 10 
-generations back, there were approximately three times the number of contributing parents in 
-tournament as lexicase. 
+due in part to the fact that in lexicase some parents produced a surprisingly large number of children; 
+at 10 generations back, there were approximately three times the number of contributing parents in 
+tournament as lexicase. Another possible contribution to this asymmetry is a difference in the role of
+mutations under lexicase; that question is beyond the scope of this chapter, however.
 
 \begin{table}%
 	\centering
@@ -1136,9 +1122,9 @@ selections. This also helps explain the observation that the ancestry tree in th
 run branched out more quickly, leading to a larger number of ancestor of the winning individual. 
 
 Beside selection pressure, we noticed another crucial difference between the types of individuals 
-selected for reproduction. With tournament selection, there is a bias towards individuals that 
+selected for reproduction. With tournament selection, the primary bias is towards individuals that 
 have the lowest total error. However, this is not the case in lexicase.  As long as an individual 
-performs extremely well for many cases but not all, it is still possible to be selected for 
+performs extremely well for some cases (but not necessarily all), it is still possible to be selected for 
 reproduction. In Table~\ref{table:winnerFitnesses}, individual 85:086 has an error of 100,000. 
 This late into the run, it would be very unlikely that tournament would select this individual to 
 reproduce. In fact, we see this in the tournament run, where every ancestor of the winner in the
@@ -1149,10 +1135,11 @@ there were as few as one and at most five distinct total errors within each gene
 \marginpar{awkward wording... table?}\marginpar{Yeah, I think that would be good.}
 \marginpar{I still need to get to this.}
 This suggests that tournament selection keeps
-slamming the best individuals together until it miraculously produces an improved child better, whereas 
-lexicase identifies qualities that solve different test cases and utilizes those 
-to construct improved offspring. This might contribute to the fact that lexicase had many more 
-successes than tournament selection.
+mutating and recombining the best individuals together until it manages, essentially by accident, to produce an improved 
+child. Lexicase, on the other hand, maintains a much more diverse population and appears to somehow leverage that
+diversity to continue to discover improvements. One possibility (which needs additional exploration) is that under lexicase 
+the system is able to combine components of programs that solve different test cases in a way that allows it
+to construct improved offspring.
 
 \begin{itemize}
 	\item Tournament winner was produced with alternation and uniform-mutation (mutation could have possibly caused the problem to be solved)
