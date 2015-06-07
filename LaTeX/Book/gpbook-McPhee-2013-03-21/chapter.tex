@@ -37,18 +37,17 @@ keywords to your chapter, these words should also be indexed
 \section{Introduction}
 \label{sec:introduction}
 
-It is common practice in most empirical evolutionary computation (EC) 
-research\marginpar{It would be nice to scrape, say, the GECCO 2014 proceedings and get some 
-	numbers to back this up.} to perform numerous (possibly hundreds) of runs, and then simply 
-report a handful of aggregate statistics at the end that are expected to summarize and represent 
-the (hopefully) complex interactions and dynamics of those many runs. Tables present values such 
+It is common practice in empirical evolutionary computation (EC) 
+research to perform a substantial number of runs, and then 
+report a handful of aggregate statistics at the end that summarize and (hopefully) represent 
+the complex interactions and dynamics of those many runs. Tables present values such 
 as mean or median best fitnesses at the end of runs, collapsing the complexities of dozens or 
 hundreds of runs into a single number, possibly with a standard deviation or (even better) a 
-confidence interval to give a sense of the distribution. Often more informative are plots, which can, 
-for example, show how these numbers change over time during the runs, possibly giving a sense of 
-the system dynamics. These plots, however, often aggregate runs in a way that obscure important 
-moments that, if explored, might reveal valuable insight into the evolutionary dynamics being 
-reported.
+confidence interval to give a sense of the distribution. Plots can often be more informative, 
+showing, for example, how these numbers change over time during the runs, possibly giving a sense of 
+the system dynamics and the range of behaviors. These plots, however, are typically still aggregate representations that
+that obscure or completely hide important moments that, if explored, might reveal valuable insight into the 
+evolutionary dynamics being reported.
 
 An alternative would be to collect, store, and analyze at least some of the rich panoply of 
 evolutionary and genealogical events that make up the vital low-details details of these runs. 
@@ -62,7 +61,7 @@ can be an effective tool for analyzing complex genetic programming (GP) dynamics
 to a proposed change to standard sub-tree crossover in tree-based GP, \citep{mcphee:GECCO15}.
 Here we will use the open source Neo4J graph database tool\footnote{\url{http://neo4j.com/}} 
 to explore data from a
-collection of PushGP runs on several problems drawn from a benchmark collection of introductory 
+collection of PushGP runs \citep{Helmuth:2015:GPTP} on several problems drawn from a benchmark collection of introductory 
 programming problems \citep{Helmuth:2015:GECCO}.
 
 Note that this is \emph{not} going to be a presentation of ``traditional hypothesis-driven 
@@ -75,14 +74,23 @@ subsequent exploration. We are not presenting a tidy, sterile summary of our adv
 the messier (but we think more informative in this context) journal of what Pickering might call
 our ``mangle of practice'' \citep{smith2008mangle, pickering:AJS:1993}.
 
-Because we're going to be focusing on the use of a graph database to explore this data, there will
+Here we explore the impact of lexicase \citep{Helmuth:2015:ieeeTEC} and tournament selection 
+on a dynamics of runs whose aim is to solve a basic software synthesis problem. 
+In the process of this ``mangle'' we are able to discover surprising and likely important properties of
+lexicase that suggest areas of additional, broader (more ``statistical'') exploration and indicate reasons
+for the substantially better performance seen when using lexicase on a variety of software synthesis 
+problems \citep{Helmuth:2015:GECCO}.
+
+Because we're going to focus on the use of a graph database to explore this data, there will
 on occasion be avenues of exploration that we won't pursue here because they would properly involve
 different tools. This exploration raises obvious and important questions about the relationships between,
 for example, parent and child genomes. These would be best addressed using things like 
 difference-merge tools from software engineering, or sequence alignment tools from genomics.
 Entire papers could be written on the use of those tools in this context, but we'll consider that
-beyond the scope of this paper. Our queries in the graph database will, however, provide a much more 
-focused collection of comparisons to make using those other tools, allowing us to concentrate on the
+beyond the scope of this chapter. Our queries in the graph database will, however, help us identify key moments
+and individuals in the course of a run, pointing out particular places where we should focus those tools. There are thousands
+of potential genome comparisons to make in a single run, for example, but our graph databases analysis helps identify
+some of the critical individuals, crossovers, and mutations in the run, allowing us to concentrate on the
 steps that are likely to have mattered most in the success of a evolutionary run.
 
 \emph{More stuff would have to be added here, including a roadmap.}
@@ -1219,6 +1227,9 @@ the thousands of runs we have from \citep{Helmuth:2015:GPTP}.
 \begin{acknowledgement}
 	\marginpar{We need to make this real.}
 	Thanks to all the cool people! CI-Lab, Tozier, NSF, Kirbie, etc.
+	
+	Thanks to William Tozier for all manner of suggestions and feedback, and in particular for helping us understand
+	the connection between our work and the Pickering's idea of the ``mangle of practice''.
 \end{acknowledgement}
 
 \bibliographystyle{spbasic}
