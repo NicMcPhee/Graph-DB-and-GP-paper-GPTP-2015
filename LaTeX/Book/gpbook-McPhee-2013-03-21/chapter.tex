@@ -108,8 +108,10 @@ Consider the job of a paleontologist, who regularly reconstructs not just indivi
 species and entire phylogenetic trees on the basis of handful of teeth and bones, or even just
 impressions left in prehistoric mud. They rarely have DNA, so any evolutionary relationship is
 inherently speculative, subject to constant debate and revision. Even with detailed DNA sequences,
-the construction of phylogenetic trees for existing species is a challenge.\marginpar{A reference
-	for all of this phylogenetic reconstruction stuff would be useful.}
+the construction of phylogenetic trees for existing species is a challenge.
+
+%\marginpar{A reference
+%	for all of this phylogenetic reconstruction stuff would be useful.}
 
 In evolutionary computation, however, we have access to \emph{everything}, at least in principle. Every
 selection, every mating, every mutation, and every crossover happens in our code and on our watch.
@@ -118,8 +120,9 @@ plots, completely failing to take advantage of our privileged position, a positi
 paleontologists would presumably eye with considerable envy. Not only does this seem an inherent
 waste, these aggregations typically obscure critical moments in the dynamics of runs which might
 speak volumes if explored.
-\marginpar{Perhaps include a sample plot and show how it hides things? One of Tom's 
-	diversity or cluster plots? A synthetic plot? Maybe that's just not necessary?}
+
+%\marginpar{Perhaps include a sample plot and show how it hides things? One of Tom's 
+%	diversity or cluster plots? A synthetic plot? Maybe that's just not necessary?}
 
 While this sort of aggregate reporting is often valuable, allowing for important comparative
 analysis of, for example, the impact of different genetic operators, it typically fails to provide
@@ -372,11 +375,13 @@ Query~\ref{query:winnerAncestors}.\footnote{We could certainly
 	have gone back farther in time, but the graph would have become impossible to read as the
 	number of nodes would have ballooned from a few dozen to hundreds or thousands. We went
 	back to generation 79 because that was the most recent generation that had more than 10
-	distinct ancestors of a winning individual.}\marginpar{Should all the query details go in
-	an appendix that eventually becomes a tech report or some such? I'm not sure if they aren't
-	just a distraction here.}\marginpar{We need the crazy \texttt{p->c->w} thing in 
-	Query~\ref{query:numChildren} to extract 
-	single edges, but I don't know if we want to talk about that.}
+	distinct ancestors of a winning individual.}
+\marginpar{I think we'll remove the specific queries.}
+%\marginpar{Should all the query details go in
+%	an appendix that eventually becomes a tech report or some such? I'm not sure if they aren't
+%	just a distraction here.}\marginpar{We need the crazy \texttt{p->c->w} thing in 
+%	Query~\ref{query:numChildren} to extract 
+%	single edges, but I don't know if we want to talk about that.}
 
 \begin{Query}
 	\smallskip
@@ -1142,6 +1147,7 @@ has a total error of either 83 or 132. Additionally, across all individuals chos
 as parents in the last 20 generations (regardless of whether they were an ancestor of the winner), 
 there were as few as one and at most five distinct total errors within each generation. 
 \marginpar{awkward wording... table?}\marginpar{Yeah, I think that would be good.}
+\marginpar{I still need to get to this.}
 This suggests that tournament selection keeps
 slamming the best individuals together until it miraculously produces an improved child better, whereas 
 lexicase identifies qualities that solve different test cases and utilizes those 
