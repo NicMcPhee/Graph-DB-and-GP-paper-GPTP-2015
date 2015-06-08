@@ -1046,11 +1046,11 @@ mutations under lexicase; that question is beyond the scope of this chapter, how
 
 \begin{table}%
 	\centering
-	\caption{Two examples of the impact of selection on evolutionary dynamics in the two explored runs. The table in \subref{table:branching} lists the number of parents contributing to a winning individual $n$ generations away for both the 
+	\caption{Two examples of the impact of selection on evolutionary dynamics in the two explored runs. Table~\subref{table:branching} lists the number of parents contributing to a winning individual $n$ generations away for both the 
 		lexicase and tournament runs explored in this paper. The top row, for example, indicates that in the lexicase run
 		there were 58 distinct ancestors of a winning individual 18 generations before the discovery of a winner, and in
 		the tournament run there were 297 distinct ancestors 18 generations before the discovery of a winner. 
-		The table in~\subref{table:numChildren} lists the 20 most fecund individuals across the entirity of each of the lexicase and tournament selection runs.}
+		Table~\subref{table:numChildren} lists the 18 most fecund individuals across the entirity of each of the lexicase and tournament selection runs.}
 	\label{tab:big}
 	\subtable[]{
 		\label{table:branching}%
@@ -1058,24 +1058,24 @@ mutations under lexicase; that question is beyond the scope of this chapter, how
 			& \multicolumn{2}{c}{Number of ancestors} \\
 			$n$ & $\quad$ Lexicase & $\quad$ Tournament \\
 			\hline\noalign{\smallskip}
-			18 & 297 & 58 \\
-			17 & 236 & 52 \\
-			16 & 180 & 46 \\
-			15 & 152 & 49 \\
-			14 & 209 & 45 \\
-			13 & 212 & 46 \\
-			12 & 146 & 41 \\
-			11 & 97 & 29 \\
-			10 & 63 & 22 \\
-			9 & 42 & 14 \\
-			8 & 33 & 14 \\
-			7 & 30 & 10 \\
-			6 & 20 & 9 \\
-			5 & 13 & 7 \\
-			4 & 10 & 6 \\
-			3 & 6 & 7 \\
-			2 & 4 & 6 \\
-			1 & 2 & 4 \\
+			18 & 58 & 297 \\
+			17 & 52 & 236 \\
+			16 & 46 & 180 \\
+			15 & 49 & 152 \\
+			14 & 45 & 209 \\
+			13 & 46 & 212 \\
+			12 & 41 & 146 \\
+			11 & 29 & 97 \\
+			10 & 22 & 63 \\
+			9 & 14 & 42 \\
+			8 & 14 & 33 \\
+			7 & 10 & 30 \\
+			6 & 9 & 20 \\
+			5 & 7 & 13 \\
+			4 & 6 & 10 \\
+			3 & 7 & 6 \\
+			2 & 6 & 4 \\
+			1 & 4 & 2 \\
 		\end{tabular}		
 		}
 		\qquad
@@ -1083,28 +1083,28 @@ mutations under lexicase; that question is beyond the scope of this chapter, how
 		\label{table:numChildren}
 		\begin{tabular}{rrr}
 			& \multicolumn{2}{c}{Number of children} \\
-			Rank in run & $\quad$ Tournament & $\quad$ Lexicase  \\
+			Rank in run & $\quad$ Lexicase & $\quad$ Tournament \\
 			\hline\noalign{\smallskip}
-			1 & 24 & 934 \\
-			2 & 23 & 657 \\
-			3 & 23 & 594 \\
-			4 & 21 & 590 \\
-			5 & 20 & 433 \\
-			6 & 20 & 326 \\
-			7 & 19 & 297 \\
-			8 & 19 & 294 \\
-			9 & 19 & 285 \\
-			10 & 18 & 283 \\
-			11 & 18 & 279 \\
-			12 & 18 & 271 \\
-			13 & 18 & 234 \\
-			14 & 18 & 220 \\
-			15 & 18 & 212 \\
-			16 & 18 & 205 \\
-			17 & 18 & 203 \\
-			18 & 17 & 202 \\
-			19 & 17 & 200 \\
-			20 & 17 & 189 \\
+			1 & 934 & 24 \\
+			2 & 657 & 23 \\
+			3 & 594 & 23 \\
+			4 & 590 & 21 \\
+			5 & 433 & 20 \\
+			6 & 326 & 20 \\
+			7 & 297 & 19 \\
+			8 & 294 & 19 \\
+			9 & 285 & 19 \\
+			10 & 283 & 18 \\
+			11 & 279 & 18 \\
+			12 & 271 & 18 \\
+			13 & 234 & 18 \\
+			14 & 220 & 18 \\
+			15 & 212 & 18 \\
+			16 & 205 & 18 \\
+			17 & 203 & 18 \\
+			18 & 202 & 17 \\
+%			19 & 200 & 17 \\
+%			20 & 189 & 17 \\
 		\end{tabular}
 		}%
 \end{table}
@@ -1115,11 +1115,10 @@ cases as we saw in section~\ref{sec:surprisingFecundity} where individual 86:261
 all but 76 individuals in the final generation. However, tournament selection never 
 can have this level of selection pressure. Throughout the entire run,
 the most a single parent in the tournament selection run ever produced was 24 children 
-(see Table~\ref{table:numChildren}), and all of the 20 most prolific parents produced between 17
-and 24 offspring. Compare this to lexicase selection, where 19 of the 20 top parents produced over 
-200 or more children. This is an extreme difference in selection pressure between the two types of 
-selections. This also helps explain the observation that the ancestry tree in the tournament selection
-run branched out more quickly, leading to a larger number of ancestor of the winning individual. 
+(see Table~\ref{table:numChildren}), and all of the 18 most prolific parents produced between 17
+and 24 offspring. Compare this to lexicase selection, where all of the 18 top parents produced over 
+200. This extreme difference in selection pressure may also help explain the observation that the 
+differences in the branching factor of the two ancestry trees.
 
 Beside selection pressure, we noticed another crucial difference between the types of individuals 
 selected for reproduction. With tournament selection, the primary bias is towards individuals that 
