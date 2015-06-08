@@ -1093,6 +1093,18 @@ error over 3,000 and would have been \emph{extremely} unlikely to ever be chosen
 again we see a substantial difference between the dynamics of lexicase and tournament selection, especially given the
 impact these hyper-selected individuals have on their runs.
 
+Finally, looking at all 200 runs makes it clear that lexicase and tournament selection differ considerably in the 
+likelihood of discovering multiple ``winning'' individuals in the same generation. Over the 100 runs of the 
+replace-space-with-newline with tournament selection, only 13 runs found a solution with zero total error, and only one
+of those runs had more than one solution in the final generation (there were two). Of the 57 successful lexicase runs, 
+however, 30 (so just over had) had multiple solutions. Many were only a few (6 runs just had 2 solutions), but 6 runs had
+over 30 solutions, including runs with 69 and 74 solutions. This strongly suggests that when tournament discovered a
+winning individual, that discovery was fairly random and therefore had a low probability. The prevalence of multiple
+solutions in the lexicase runs, however, indicates that the discovery of those solutions had a much higher probability.
+What's less clear is whether that increased probability was driven by lexicase's hyper-selection in the last generation,
+or whether lexicase selection throughout the run had led to Push program structures that were easier to combine/mutate
+into winning individuals.
+
 \section{So what did we learn in all this?}
 \label{sec:whatDidWeLearn}
 
