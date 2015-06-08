@@ -925,28 +925,29 @@ cases within the time limit without changing the value returned.
 \end{sidewaysfigure}
 
 In addition to studying lexicase selection, we wanted to collect data from replace-space-with-new-line 
-with tournament selection in order to compare lexicase versus tournament. As previously noted in 
+with tournament selection in order to compare with our earlier lexicase results. As previously noted in 
 Section~\ref{sec:lexicaseRun}, lexicase  produced at least one individual with an error of zero in 
-55 of 100 runs while tournament selection only produced 13 of 100 successful runs. Of these 13 
-successful tournament runs, we selected one run to study.
+57 of 100 runs while tournament selection only produced 13 of 100 successful runs. In this section
+we'll explore one of these 13 successful tournament runs in a little more detail.
 
 An immediate difference that we notice between the lexicase and tournament runs was the number of 
 individuals that solved the problem in the final generation. In lexicase, there were 45 different 
 individuals that solved the problem while there was only a single individual in the tournament 
 run that had an total error of zero across all the test cases.
 
-Figure \ref{fig:winnerAncestorsTourneyRun74} shows the ancestry of the winning individual from 
-generation 150 back to generation 145. It was not possible to show individuals farther back than 
-generation 145 because of an interesting property of tournaments. Table~\ref{table:branching} shows 
-the number of parents n generations away that contributed to the development of the winning individuals. 
-The further away from the winning individual, the number of parents that contributed to the winner 
-in tournament selection increased rapidly. In contrast, lexicase grew much more slowly, presumably 
-due in part to the fact that in lexicase some parents produced a surprisingly large number of children; 
+Figure~\ref{fig:winnerAncestorsTourneyRun74} shows the ancestry of the winning individual from 
+generation 150 (when the winner was discovered) back to generation 145. It's clear that the branching
+factor in this ancestor is much higher than with lexicase in Figure~\ref{fig:winnerAncestors}. 
+Table~\ref{table:branching} shows 
+the number of ancestors $n$ generations back that contributed the winning individual, and we can
+see that the number of ancestors increases much more quickly for tournament than lexicase; 
 at 10 generations back, there were approximately three times the number of contributing parents in 
-tournament as lexicase. Another possible contribution to this asymmetry is a difference in the role of
-mutations under lexicase; that question is beyond the scope of this chapter, however.
+tournament as lexicase. This is likely
+due in part to the fact that in lexicase some parents produced a surprisingly large number of children.
+Another possible contribution to this asymmetry is a difference in the role of
+mutations under lexicase, but we haven't yet explored that in any detail.
 
-\begin{table}%
+\begin{table}[tb]%
 	\centering
 	\caption{Two examples of the impact of selection on evolutionary dynamics in the two explored runs. Table~\subref{table:branching} lists the number of parents contributing to a winning individual $n$ generations away for both the 
 		lexicase and tournament runs explored in this paper. The top row, for example, indicates that in the lexicase run
@@ -1011,48 +1012,32 @@ mutations under lexicase; that question is beyond the scope of this chapter, how
 		}%
 \end{table}
 
-Another major difference was the selection pressure of the two selection mechanisms. In lexicase 
-selection, one parent can dominate the selection if it performs well for a majority of the test 
-cases as we saw in section~\ref{sec:surprisingFecundity} where individual 86:261 was a parent for 
-all but 76 individuals in the final generation. However, tournament selection can never 
+Another major difference was the selection pressure exerted by the two selection mechanisms. 
+As we saw earlier, in lexicase 
+selection one parent can dominate the selection if it performs well for a significant number of test 
+cases. However, tournament selection can never 
 impose such a strong selection pressure. Throughout the entire run,
 the most a single parent in the tournament selection run ever produced was 24 children 
 (see Table~\ref{table:numChildren}), and all of the 18 most prolific parents produced between 17
 and 24 offspring. Compare this to lexicase selection, where all of the 18 top parents produced over 
-200. This extreme difference in selection pressure may also help explain the observation that the 
+200 offspring. This extreme difference in selection pressure may also help explain the 
 differences in the branching factor of the two ancestry trees.
 
-Beside selection pressure, we noticed another crucial difference between the types of individuals 
+We also noticed another crucial difference between the types of individuals 
 selected for reproduction. With tournament selection, the primary bias is towards individuals that 
-have the lowest total error. However, this is not the case in lexicase.  As long as an individual 
-performs extremely well for some cases (but not necessarily all), it is still possible to be selected for 
-reproduction. In Table~\ref{table:winnerFitnesses}, individual 85:086 has an error of 100,000. 
-This late into the run, it would be very unlikely that tournament would select this individual to 
-reproduce. In fact, we see this in the tournament run, where every ancestor of the winner in the
+have the lowest total error. However, this is not the case in lexicase, where as long as an individual 
+performs extremely well for enough cases, it is still possible to be selected for 
+reproduction, even if it has substantial errors on other test cases.
+In this tournament run, for example, every ancestor of the winner in the
 last six generations of the
-has a total error of either 83 or 132. Additionally, across all individuals chosen
+has a total error of either 83 or 132, which is in marked contrast to the diversity of total errors
+in the lexicase run (see Table~\ref{table:winnerFitnesses}). Additionally, across all individuals chosen
 as parents in the last 20 generations (regardless of whether they were an ancestor of the winner), 
 there were as few as one and at most five distinct total errors within each generation. 
-This suggests that tournament selection keeps
-mutating and recombining the best individuals together until it manages, essentially by accident, to produce an improved 
-child. Lexicase, on the other hand, maintains a much more diverse population and appears to somehow leverage that
-diversity to continue to discover improvements. One possibility (which needs additional exploration) is that under lexicase 
-the system is able to combine components of programs that solve different test cases in a way that allows it
-to construct improved offspring.
-
-\marginpar{Deal with these bullets.}
-\begin{itemize}
-	\item Tournament winner was produced with alternation and uniform-mutation (mutation could have possibly caused the problem to be solved)
-	\item Many alternations and mutations in the last generations along the winning ancestry produced children that had 0 error difference from the better parent. 
-\end{itemize}
-
-
-%Crossover mutation events get us to end?
-
-%Branching
-
-%Table of 20 with most offspring for both 
-%more various numbers in table
+This suggests that tournament selection kept
+mutating and recombining a small set of behaviors until it managed, essentially by accident, to produce an improved 
+child. Lexicase, on the other hand, maintained a much more diverse population and appeared to somehow leverage that
+diversity to continue to discover improvements.
 
 \section{A few cumulative results}
 \label{sec:cumulativeResults}
@@ -1092,6 +1077,18 @@ than a few dozen times). On the other end of the spectrum, however, 7 of these 7
 error over 3,000 and would have been \emph{extremely} unlikely to ever be chosen using tournament selection. So here
 again we see a substantial difference between the dynamics of lexicase and tournament selection, especially given the
 impact these hyper-selected individuals have on their runs.
+
+Finally, looking at all 200 runs makes it clear that lexicase and tournament selection differ considerably in the 
+likelihood of discovering multiple ``winning'' individuals in the same generation. Over the 100 runs of the 
+replace-space-with-newline with tournament selection, only 13 runs found a solution with zero total error, and only one
+of those runs had more than one solution in the final generation (there were two). Of the 57 successful lexicase runs, 
+however, 30 (so just over had) had multiple solutions. Many were only a few (6 runs just had 2 solutions), but 6 runs had
+over 30 solutions, including runs with 69 and 74 solutions. This strongly suggests that when tournament discovered a
+winning individual, that discovery was fairly random and therefore had a low probability. The prevalence of multiple
+solutions in the lexicase runs, however, indicates that the discovery of those solutions had a much higher probability.
+What's less clear is whether that increased probability was driven by lexicase's hyper-selection in the last generation,
+or whether lexicase selection throughout the run had led to Push program structures that were easier to combine/mutate
+into winning individuals.
 
 \section{So what did we learn in all this?}
 \label{sec:whatDidWeLearn}
