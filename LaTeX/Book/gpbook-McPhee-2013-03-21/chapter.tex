@@ -2,8 +2,6 @@
 %
 %%%%%%%%%%%%%%%% Springer %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\newfloat{Query}{tbp}{lop}
-
 \title*{Using Graph Databases to Explore the Dynamics of Genetic Programming Runs}
 % Use \titlerunning{Short Title} for an abbreviated version of
 % your contribution title if the original one is too long
@@ -388,68 +386,23 @@ Figure~\ref{fig:winnerAncestors},
 however, only tells us how many offspring an individual had that were themselves either a winner
 or an ancestor of a winner, as no other nodes are displayed. One
 might, however, wonder how many total offspring an individual has
-regardless of whether they were a winner or not. Query~\ref{query:numChildren} identifies the most
-fecund ancestors of winners in these last nine generations. That reveals several results that were
-quite surprising to at least some of the authors, the most remarkable being that individual 86:261 
+regardless of whether they were a winner or not. Using a Cypher query to identify the most
+fecund ancestors of winners in these last nine generations, reveals several things that were
+quite surprising (at least to some of the authors). The most remarkable of these was that individual 86:261 
 was a parent of 934 of the 1,000 individuals in generation 87! Given that lexicase selection was
-designed in significant part of spread selection events out across the population, this makes it
+designed in significant part to spread selection events out across the population, this makes it
 clear that there are times when lexicase does the opposite, and instead puts nearly all its eggs in
 a single basket. This level of selection focus would simply be impossible using almost any other
 common type of selection such as tournament selection; in most uses of tournament selection, 
 for example, no individual can be in more than a relative handful of tournaments, and thus can't be
 a parent terribly often no matter how fit they are.
 
-\begin{Query}
-	\smallskip
-	\begin{verbatim}
-	MATCH (p)-->(c)-[*0..7]->(w {total_error: 0}) 
-	MATCH (p)-->(n) 
-	RETURN DISTINCT id(p), count(DISTINCT n) 
-	ORDER BY count(distinct n) DESC
-	LIMIT 20;
-	\end{verbatim}
-	\caption{Cypher query to find, for each ancestor \texttt{p} of a winner, how many distinct offspring 
-		\texttt{n} that ancestor \texttt{p}, regardless of whether \texttt{n} is itself an
-		ancestor of a winner. The query then sorts by that count, and returns the 20 highest results.}
-	\label{query:numChildren}
-\end{Query}
-
-% Go through ancestors of winners for last 9 generations, counting number of offspring, and returning
-% the ``big'' winners.
-%neo4j-sh (?)$ match (p)-->(c)-[*0..7]->(w {total_error: "0"}) match (p)-->(n) return distinct id(p), count(distinct n) order by count(distinct n) desc limit 20;
-%+---------------------------+
-%| id(p) | count(distinct n) |
-%+---------------------------+
-%| 86261 | 934               |
-%| 82447 | 433               |
-%| 84319 | 279               |
-%| 80220 | 200               |
-%| 85086 | 180               |
-%| 83124 | 170               |
-%| 83619 | 143               |
-%| 83047 | 110               |
-%| 79031 | 63                |
-%| 80287 | 50                |
-%| 79531 | 38                |
-%| 79391 | 34                |
-%| 79313 | 24                |
-%| 82667 | 21                |
-%| 82423 | 20                |
-%| 83664 | 18                |
-%| 80428 | 18                |
-%| 81691 | 17                |
-%| 80943 | 17                |
-%| 80671 | 14                |
-%+---------------------------+
-%20 rows
-%162649 ms
-
 While no other node in Figure~\ref{fig:winnerAncestors} has nearly as many children as 86:261 did,
 there are several that also had very high reproduction rates, putting them well above what would be 
 possible with something like tournament selection. Individual 82:447, for example, had
 443 offspring, including the 5 illustrated in Figure~\ref{fig:winnerAncestors}. In fact there were
 eight individuals in Figure~\ref{fig:winnerAncestors} that have more than 100 offspring; each of
-these is indicated with a diamond shape instead of the standard ellipse. This highlights a particularly
+these is indicated with a diamond shape. This highlights a particularly
 interesting ancestry chain from 80:220 through 81:691, 82:447, 83:124, 84:319, 85:086 to 86:261, marked with
 dashed edges in Figure~\ref{fig:winnerAncestors}. With the exception of 81:691, which ``only'' had 17
 offspring, each of these seven individuals had more
