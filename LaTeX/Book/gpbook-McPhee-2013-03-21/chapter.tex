@@ -16,11 +16,11 @@
 
 \abstract{
 	For both practical reasons and those of habit, most evolutionary computation research is presented in highly summary
-	form. These summaries, however, often obscure or completely mask the profusion of specific events such as selections, crossovers, and mutations
-	that are ultimately responsible for the aggregate behaviors that we're interested in. In this chapter we take an almost
-	opposite approach and use the Neo4j graph database system to record and analyze the entire genealogical history of 
-	a set of genetic programming runs. We then explore a few of these runs in some detail, discovering some important
-	properties of lexicase selection that may help us better understand the dynamics of lexicase selection and the considerable
+	form. These summaries, however, often obscure or completely mask the profusion of specific selections, crossovers, and mutations
+	that are ultimately responsible for the aggregate behaviors we're interested in. In this chapter we take a different
+	approach and use the Neo4j graph database system to record and analyze the entire genealogical history of 
+	a set of genetic programming runs. We then explore a few of these runs in detail, discovering important
+	properties of lexicase selection; these may in turn help us better understand the dynamics of lexicase selection, and the
 	ways in which it differs from tournament selection. More broadly, we illustrate the value of recording and analyzing this
 	level of detail, both as a means of understanding the dynamics of particular runs, and as a way of generating questions
 	and ideas for subsequent, broader study.}
@@ -37,27 +37,26 @@ keywords to your chapter, these words should also be indexed
 
 It is common practice in empirical evolutionary computation (EC) 
 research to perform a substantial number of runs, and then 
-report a handful of aggregate statistics at the end that summarize and (hopefully) represent 
-the complex interactions and dynamics of those many runs. Tables present values such 
+report a handful of aggregate statistics that summarize and (hopefully) represent 
+the complex dynamics of those many runs. Tables present values such 
 as mean or median best fitnesses at the end of runs, collapsing the complexities of dozens or 
-hundreds of runs into a single number, possibly with a standard deviation or (even better) a 
+hundreds of runs into a single number, possibly with a standard deviation or a 
 confidence interval to give a sense of the distribution. Plots can often be more informative, 
-showing, for example, how these numbers change over time during the runs, possibly giving a sense of 
-the system dynamics and the range of behaviors. These plots, however, are typically still aggregate representations that
+showing how these numbers change over time during the runs, possibly giving a sense of 
+the system dynamics and the range of behaviors. These plots, however, are typically still aggregate representations
 that obscure or completely hide important moments that, if explored, might reveal valuable insight into the 
 evolutionary dynamics being reported.
 
 An alternative would be to collect, store, and analyze at least some of the rich panoply of 
-evolutionary and genealogical events that make up the vital low-details details of these runs. 
+evolutionary and genealogical events that make up the low-level details of these runs. 
 Databases provide a natural tool for 
-storing and accessing the data, but traditional relational
-databases are poorly suited for a variety of queries that are important for the genealogical analysis
-we need for exploring the evolutionary dynamics of our EC runs.
+storing and accessing large data sets, but traditional relational
+databases are poorly suited for many of the queries that are important for genealogical analysis.
 In this chapter, we illustrate the use of graph databases as an alternative storage and analysis tool for
 evolutionary computation runs. We have previously demonstrated that graph databases
 can be an effective tool for analyzing complex genetic programming (GP) dynamics \citep{donatuccianalysis}, which led directly
-to a proposed change to standard sub-tree crossover in tree-based GP, \citep{mcphee:GECCO15}.
-Here we will use the open source Neo4J graph database tool\footnote{\url{http://neo4j.com/}} 
+to a proposed change to standard sub-tree crossover in tree-based GP \citep{mcphee:GECCO15}.
+Here we will use the open source Neo4j graph database tool\footnote{\url{http://neo4j.com/}} 
 to explore data from a
 collection of PushGP runs \citep{Helmuth:2015:GPTP} on several problems drawn from a benchmark collection of introductory 
 programming problems \citep{Helmuth:2015:GECCO}.
@@ -72,90 +71,86 @@ subsequent exploration. We are not presenting a tidy, sterile summary of our adv
 the messier (but we think more informative in this context) journal of what Pickering might call
 our ``mangle of practice'' \citep{smith2008mangle, pickering:AJS:1993}.
 
-Here we explore the impact of lexicase \citep{Helmuth:2015:ieeeTEC} and tournament selection 
-on a dynamics of runs whose aim is to solve a basic software synthesis problem. 
-In the process of this ``mangle'' we are able to discover surprising and likely important properties of
-lexicase that suggest areas of additional, broader (more ``statistical'') exploration and indicate reasons
+Here we explore the impact of lexicase \citep{Spector:2012:GECCOcompA} and tournament selection 
+on the dynamics of runs whose aim is to solve a basic software synthesis problem. 
+In the process we are able to discover surprising and likely important properties of
+lexicase that suggest areas of additional exploration and indicate reasons
 for the substantially better performance seen when using lexicase on a variety of software synthesis 
 problems \citep{Helmuth:2015:GECCO}.
 
-Because we're going to focus on the use of a graph database to explore this data, there will
-on occasion be avenues of exploration that we won't pursue here because they would properly involve
-different tools. This exploration raises obvious and important questions about the relationships between,
-for example, parent and child genomes. These would be best addressed using things like 
-difference-merge tools from software engineering, or sequence alignment tools from genomics.
-Entire papers could be written on the use of those tools in this context, but we'll consider that
-beyond the scope of this chapter. Our queries in the graph database will, however, help us identify key moments
-and individuals in the course of a run, pointing out particular places where we should focus those tools. There are thousands
+Because we're going to focus on the use of graph databases, there will
+on occasion be avenues of exploration that we won't pursue because they would properly involve
+different tools. This exploration, for example, raises important questions about the relationships between
+parent and child genomes. These could be addressed using, e.g.,
+difference-merge tools from software engineering, or sequence alignment tools from genomics;
+see, e.g., \citep{Burlacu:2013:GECCOcomp}
+for an excellent example of this kind of analysis. We will, however, consider that
+beyond the scope of this chapter. A key value of our graph database results will be in providing focus
+for our use of those other tools, identifying key moments
+and individuals in the course of a run that deserve additional attention. There are thousands
 of potential genome comparisons to make in a single run, for example, but our graph databases analysis helps identify
 some of the critical individuals, crossovers, and mutations in the run, allowing us to concentrate on the
-steps that are likely to have mattered most in the success of a evolutionary run.
+steps that are likely to have mattered most.
 
 We'll provide expanded motivation for this work in Section~\ref{sec:motivation}, and background on relevant tools
 and concepts in Section~\ref{sec:background}. In Section~\ref{sec:lexicaseRun} we explore in some detail a successful
-lexicase selection run, identifying several interesting properties of lexicase selection that strongly distinguish it from
-other, more traditional selection methods, and in Section~\ref{sec:tournamentRun} we compare those to results of 
-an exploration a successful tournament selection run. After these detailed explorations of individual runs, in
-Section~\ref{sec:cumulativeResults} we step back a little and look at the results of expanding some of our queries
+lexicase selection run, identifying several properties of lexicase selection that distinguish it from
+other, more traditional selection methods. We then explore a successful tournament selection run in
+Section~\ref{sec:tournamentRun}, comparing those results to the earlier lexicase results. 
+In Section~\ref{sec:cumulativeResults} we step back a little and look at the results of expanding some of our queries
 across hundreds of runs, and then wrap up with some conclusions in Section~\ref{sec:whatDidWeLearn}.
 
 \section{Motivation}
 \label{sec:motivation}
 
 Consider the job of a paleontologist, who regularly reconstructs not just individuals but also
-species and entire phylogenetic trees on the basis of handful of teeth and bones, or even just
+species and entire phylogenetic trees on the basis of a handful of teeth and bones, or even just
 impressions left in prehistoric mud. They rarely have DNA, so any evolutionary relationship is
 inherently speculative, subject to constant debate and revision. Even with detailed DNA sequences,
-the construction of phylogenetic trees for existing species is a challenge.
+the construction of phylogenetic trees for existing species is non-trivial.
 
-%\marginpar{A reference
-%	for all of this phylogenetic reconstruction stuff would be useful.}
-
-In evolutionary computation, however, we have access to \emph{everything}, at least in principle. Every
-selection, every mating, every mutation, and every crossover happens in our code and on our watch.
+In evolutionary computation, however, we have access to \emph{everything}, at least in principle. 
+We could gather every
+selection, every mutation, and every crossover as they play out in our systems.
 Yet we typically throw almost all that data away, reporting just aggregate statistics and summary
 plots, completely failing to take advantage of our privileged position, a position most 
 paleontologists would presumably eye with considerable envy. Not only does this seem an inherent
 waste, these aggregations typically obscure critical moments in the dynamics of runs which might
 speak volumes if explored.
 
-%\marginpar{Perhaps include a sample plot and show how it hides things? One of Tom's 
-%	diversity or cluster plots? A synthetic plot? Maybe that's just not necessary?}
-
 While this sort of aggregate reporting is often valuable, allowing for important comparative
-analysis of, for example, the impact of different genetic operators, it typically fails to provide
+analysis, it typically fails to provide
 any sense of the \emph{why}. Yes, Treatment A led to better aggregate performance than 
-Treatment B -- but what happened in the runs that led to that result? Any success at the end of a
-run is ultimately the intricate combination of hundreds or thousands of selections, recombinations
+Treatment B -- but what happened in the runs that led to that result? Any end result
+is ultimately the intricate combination of thousands or millions of of selections, recombinations,
 and mutations, and if Treatment A is in some sense ``better'' than Treatment B, it must ultimately
 be because it affected all those genealogical and genetic events in some significant way, biasing them
-towards events that made success more likely.
+in a way that improved performance.
 
-Unfortunately, published research very rarely includes information that might shed light on 
+Unfortunately, published research rarely includes information that might shed light on 
 these \emph{why} events. We rarely see evolved programs, for example, or any kind of post-run analysis
 of those programs, and there is almost never any data or discussion of the genealogical history that
 might help us understand how a successful program actually came to be. 
 Sometimes these events and details aren't included
 for reasons of space and time; evolved programs, for example, are often extremely large and complex,
 and a meaningful presentation and discussion of such a program could easily take up more space than
-authors have available given the typical space limitations in published work.
-Our suspicion, however, is that another reason this sort of \emph{why} analysis often isn't 
+authors have available.
+We suspect, however, that another reason this sort of \emph{why} analysis often isn't 
 reported is because it isn't done, in no small part because it's hard. As EC researchers we're in the
 ``privileged'' position of being able to collect anything and everything that happens in a run, 
 but that's a potentially huge amount of data, and leaves us with two substantial problems: 
 How to \emph{store} the data, and how to \emph{analyze} the data
 after it's stored. 
-Decreasing data storage costs have done much to mitigate the first problem.
-If, however, one collects a very rich data set it's still easy to quickly generate terabytes of data,
-and even if one has a place to put the data, one still needs reasonable tools to analyze the data.
+Decreasing data storage costs have done much to mitigate the first problem, but one still needs good
+tools to process and explore what could quickly run into terabytes of data.
 
-Assuming one has access to the necessary gigabytes or terabytes of storage, 
-databases are the obvious tool for the collection of the data. Most common database structures and tools,
+Assuming one has access to the necessary storage, 
+databases are the obvious tool for the collection of the data. Most common database tools,
 however,
-don't lend themselves to the kinds of analysis that we want and need in evolutionary computation work. 
+don't lend themselves to the kinds of analysis that we need in evolutionary computation work. 
 Most relational and document-based databases, for example, require complex and expensive 
-recursive joins to trace significant hereditary lines, making this approach increasingly unfeasible.
-In exploring the dynamics of an EC run, it is necessary to
+recursive joins to trace significant hereditary lines.
+In exploring the dynamics of an EC run, it may be necessary to
 make connections across dozens or even hundreds of generations, which simply isn't plausible with a
 relational database \citep{Robinson:GraphDB:Book}. 
 While we use Neo4j as our graph database in this work, there are 
@@ -166,88 +161,83 @@ to have exhaustively explored the range of possible database tools for this sort
 \section{A little background on tools and problems}
 \label{sec:background}
 
-This section provides some background on some of the key subjects of this work:
-\begin{itemize}
-	\item The Neo4J graph database and its query language Cypher
-	\item The PushGP system
-	\item Lexicase selection
-	\item The replace-space-with-newline test problem
-\end{itemize} 
+This section provides some background on some of the key subjects of this work: The Neo4j graph 
+database and its query language Cypher; the PushGP system; lexicase selection; and the 
+replace-space-with-newline test problem.
 
-\subsection{Neo4J and Cypher}
+\subsection{Neo4j and Cypher}
 \label{subsec:Neo4j}
 
 Graph databases \citep{Robinson:GraphDB:Book} are a relatively new database tool, where data is stored 
 as a collection of nodes and relationships in a graph, with a specialized query language that makes 
-it easy to ask questions about complex relationships. In Neo4j, information is stored using
-vertices and edges, commonly referred to as nodes and relationships, 
-respectively. Neo4j also allows properties to be stored in both nodes and edges.
+it easy to ask questions about complex relationships.
 In our work, nodes typically represent individuals, and \texttt{:PARENT\_OF} relationships 
 capture the central genealogical connections. We store important data such as the total error as
 properties of individual nodes, and genetic operators as properties on 
-\texttt{:PARENT\_OF} edges.\footnote{In practice we also include nodes to represent things
-	such as runs and generations, using these to store relevant cumulative information.}
+\texttt{:PARENT\_OF} edges.
 
-The Neo4j query language, Cypher, allows this data to be readily extracted from the Neo4j database.
+The Neo4j query language, Cypher, allows this patterns in this data to be readily extracted.
 A detailed description of Cypher is beyond the scope of this chapter, but Cypher's central feature is
-the ability to describe patterns using ``ASCII art''. The Neo4j engine can then search
-the graph for subgraphs matching these patterns. Cypher also provides the ability to 
+the ability to describe sub-graph patterns. The Neo4j engine can then search
+for subgraphs matching these patterns. Cypher also provides the ability to 
 filter results based on properties in a manner quite similar to more traditional SQL queries.
 
 \subsection{PushGP}
 
 PushGP \citep{spector:2002:GPEM, 1068292} is a stack-based genetic programming system. The details
-of PushGP aren't crucial for this analysis as we're going to focus on the behavioral properties of
-individuals in this work, but it useful to know a few things:
+of PushGP aren't crucial for this analysis, but it is useful to know a few things:
 \begin{itemize}
-	\item PushGP uses a linear genome, which is then converted into a program as described below.
+	\item PushGP uses a linear genome, which is then converted into a program.
 	\item PushGP supports a variety of \emph{typed} stacks, with corresponding typed instructions.
-	The \texttt{string-pop} instruction, for example, pops the top of the \texttt{string} stack,
-	and the \texttt{integer-add} instruction takes the top two items from the \texttt{integer}
+	The \texttt{integer-add} instruction takes the top two items from the \texttt{integer}
 	stack, adds them, and pushes the result back onto the \texttt{integer} stack.
-	\item There is a \texttt{exec} stack which can hold blocks of instructions. This is what allows
+	\item There is an \texttt{exec} stack which can hold blocks of instructions. This is what allows
 	PushGP programs to loop or recurse, as pushing a block of instructions onto the \texttt{exec}
 	causes those instructions to be executed next.
 \end{itemize}
 
-The PushGP system used here uses \emph{Plush genomes}, which are linear genomes consisting of 
-instructions paired with \emph{closed counts}. The close counts are natural numbers 
-indicating how many open code blocks should be closed after this instruction. Several instructions
-that are typically used with blocks of code in human programming, such as conditionals and loops,
+The runs explored here used \emph{Plush genomes}, which are linear genomes consisting of 
+instructions paired with \emph{close counts}. The close counts are natural numbers 
+indicating how many open code blocks should be closed after a given instruction. Several instructions
+that humans typically use with code blocks, such as conditionals and loops,
 have an implicit ``open block'' that is translated into an explicit ``open block'' when the genome
 is converted to a Push program. The close counts, then, are necessary to allow the PushGP
-system to evolve the desired ``end block''s.
+system to evolve the desired ``end blocks''.
 
-In the runs explored here, there are three genetic operations:
-\begin{itemize}
-	\item alternation
-	\item uniform-mutation
-	\item uniform-close-mutation
-\end{itemize}
+In the runs explored here, there are three genetic operations: Alternation, uniform-mutation, and 
+uniform-close-mutation.
 Alternation is similar to an N-point crossover in genetic algorithms. The two parent genomes
-are traversed from left to right taking instructions from one or the other for the child, with
-a small probability at each instruction of switching which parent is being used as the instruction
-source. When an alternation event happens, there's a small amount of gaussian noise added to the
-instruction location; how much deviation is possible is controlled by an \emph{alignment deviation} 
-parameter.
-
+are traversed from left to right, copying instructions from the source parent to the child. There's
+a small probability at each instruction of an alternation event, which switches which parent is being 
+used as the instruction source. For every alternation event there's a small chance of slightly shifting 
+the instruction location in the source parent; how much deviation is possible is controlled by an 
+\emph{alignment deviation} parameter. 
 Uniform-mutation simply replaces each instruction with a randomly chosen instruction with some
 small probability. Uniform-close-mutation modifies each close count value with some small probability.
 The runs discussed here allowed for \emph{pipelining} of genetic operators, so we might have
 combinations like alternation followed by uniform-mutation.
-
 For additional details and the particular parameters used in these runs see \citep{Helmuth:2015:GECCO}.
 
 \subsection{Lexicase selection}
 
-Pseudocode for the lexicase selection algorithm is outlined in 
-Algorithm~\ref{alg:lexicase}. In each parent selection event, the lexicase selection algorithm 
-first randomly orders the test cases. It then eliminates any individuals in the population 
-that do not have the best performance on the first test case. 
-Assuming that more than one individual remains, it then loops, eliminating any individuals from 
-the remaining candidates that do not have the best performance on the second test case. This 
-process continues until only one individual remains and is selected, or until all test cases 
-have been used, in which case it randomly selects one of the remaining individuals.
+Lexicase selection is a recently developed selection method for evolutionary computation in which 
+individuals are selected by filtering the population according to performance on individual 
+fitness cases, considered in random order \citep{Spector:2012:GECCOcompA}. Lexicase 
+selection, when used as the parent selection method in genetic programming, has been shown to provide 
+significant improvements in terms of problem-solving power \citep{Helmuth:2015:ieeeTEC, Helmuth:2015:GECCO}. 
+
+For each parent selection event, lexicase selection (Algorithm~\ref{alg:lexicase})
+randomly orders the test cases and then removes any individuals  
+that do not have the best performance on the first case. 
+If more than one individual remains, then those that do not have the best performance 
+\emph{among those that remain} on the second case are 
+also removed. This 
+continues until only one individual remains and is selected, or until all cases 
+have been used, in which case a random member of the set of remaining individuals is selected.
+Key properties of lexicase selection are (a) it avoids combining all  errors into a single
+value, (b) because of the random ordering of test cases, every test case will be
+most important (first to be considered) at least occasionally, and (c) similarly, each pair of test cases, 
+and each triple, etc., will be most important now and then. 
 
 \begin{algorithm}[tb]
 	\begin{algorithmic}
@@ -260,33 +250,21 @@ have been used, in which case it randomly selects one of the remaining individua
 		\ENDWHILE
 		\RETURN random individual from \texttt{candidates}
 	\end{algorithmic}
-	\caption{Psuedocode for the lexicase selection algorithm. The use of $\min$ when computing 
-		\texttt{best\_performance} assumes that the goal is to minimize on each test case, which
-		is true in the work presented here, where the goal for all test cases is to minimize error.
-		This can be easily generalized to other settings.}
+	\caption{Psuedocode for the lexicase selection algorithm, for the context in which the goal for all test cases is to minimize error.}
 	\label{alg:lexicase}
 \end{algorithm}
-
-The central properties of lexicase selection are that (a) it doesn't combine all the errors into a single
-fitness value and (b) because of the random ordering of test cases, every test case is likely to be
-most important (first to be considered) at least occasionally. With a population of 1,000 individuals
-and a problem with 200 test cases, for example, we would expect each test case to be first several
-times in each generation. The hope, then, is that this ensures some diversity in the population, with
-different (groups of) individuals being rewarded for their ability to perform well on different test
-cases.
 
 \subsection{Replace-space-with-newline}
 
 The replace-space-with-newline problem is an introductory programming benchmark problem taken
-from~\citep{Helmuth:2015:GECCO}. In this problem the program is given an input string and required to
+from~\citep{Helmuth:2015:GECCO}. Here the program is given an input string and required to
 both (a) print the string with all the spaces replaced by newlines and (b) return an integer that
 is the number of non-space characters in the input string. There are 100 different training instances 
-for this problem, each of which generates two error values: One is the Levenshtein distance between
-the printed output and the target print string, and the other is the absolute difference between
+for this problem, each of which generates two error values: (a) the Levenshtein distance between
+the printed output and the target print string, and (b) the absolute difference between
 whatever value is on the top of the \texttt{integer} stack and the expected return value. A penalty
 value of 1,000 is assigned for test cases that were expecting a return value but found the
 \texttt{integer} stack empty.
-
 For tournament selection runs, all 200 of these error values were added together to form the
 total error, which was used as the fitness for the individuals. For lexicase selection the errors
 were kept separate in an error vector of 200 values; this, as we shall see, frequently allowed individuals to be selected who did 
@@ -295,17 +273,16 @@ well on some test cases, but very poorly on others.
 \subsection{Our data}
 \label{sec:ourData}
 
-The data we explored in this paper is a subset of the data collected for \citep{Helmuth:2015:GPTP}. In particular
-we have the full genealogical records for one hundred runs of the replace-space-with-newline problem using each 
-of lexicase selection and tournament
+In this chapter we explore a subset of the data collected for \citep{Helmuth:2015:GPTP}. In particular
+we have the full genealogical records for 100 runs of replace-space-with-newline using 
+lexicase selection, and 100 runs using tournament
 selection with tournament size 7. In those
-runs, 57 of the 100 lexicase runs succeeded in the sense that an individual was discovered that had zero
-error on all 200 of the training cases. Tournament selection with tournament size 7 only
-had 13 successes out of 100 runs, so it seems that
+runs, 57 of the 100 lexicase runs succeeded, i.e., an individual was discovered that had zero
+error on all 200 of the training cases. Tournament selection only
+had 13 successes out of 100 runs, so
 lexicase selection provides a significant advantage on this problem. Similar results in \citep{Helmuth:2015:GECCO}
-indicate that lexicase is in fact generally much more successful across a broad range of
-software synthesis problems than either tournament selection and implicit fitness
-sharing and tournaments.
+indicate that lexicase is in fact generally much more successful than tournament selection across a broad range of
+software synthesis problems.
 
 \section{Lexicase, meet Replace-space-with-newline}
 \label{sec:lexicaseRun}
@@ -313,44 +290,41 @@ sharing and tournaments.
 % This is run 6, lexicase, replace-space-with-newline.
 
 It's one thing to know that lexicase succeeds 57 out of 100 times on the replace-space-with-newline problem, but that
-leaves us with the crucial question of \emph{why}? In order to answer this question, we chose one successful 
+leaves us with the crucial question of \emph{why}? In order to study this question, we chose one successful 
 run to explore in more detail.
 We're making no claims that this is a ``representative'' run (whatever that would even
 mean); it's an \emph{interesting} run, though, and our hope is that by understanding its dynamics
 better we can learn useful things about both the problem and the tools we're applying. Looking at this run in some
 detail certainly unearthed several surprising results, and in Section~\ref{sec:cumulativeResults}
-we'll expand our view by looking at some cumulative results across all hundred runs.
+we'll expand our view by looking at some cumulative results across all 100 lexicase runs.
 
-\subsection{Hey, we won! But how did we get there?}
+\subsection{Working backwards}
 
 \begin{figure}[tp]
 	\begin{center}
 	\includegraphics[width=0.9\textwidth]{figures/ancestors_of_winners_colons.pdf}
 	\end{center}
-	\caption{Ancestry of the 45 ``winners'' from run 6 of lexicase, replace-space-with-newline. Nodes
-		with diamonds instead of ellipses had an unusually large number of offspring. Shaded nodes
-		had an unusual number of offspring that were ancestors of winners. The dashed lines highlight
-		individuals that had an unusually large number of distinct ancestry paths down to a winner.
-		See the text for more details}
+	\caption{Ancestry of the 45 ``winners'' from a successful run of replace-space-with-newline using
+		lexicase. Diamond-shaped nodes
+		had an unusually large number of offspring (over 100 each). Shaded nodes
+		had at least five offspring that were ancestors of winners.}
 	\label{fig:winnerAncestors}
 \end{figure}
 
-A natural place to start our analysis of this run is at the end, when the GP system created one or more individuals that 
-solved the problem. So we used Neo4J to find all the ancestors of any ``winning'' individual, i.e., an individual with a total error of 
-on all 200 test cases. Using Cypher, we can easily ask for this subset
-of the population going back to generation 79.\footnote{We could certainly 
+A natural place to start our analysis is at the end of the run, when the GP system created one or more individuals that 
+solved the problem. So we used Neo4j to find all the ancestors of any ``winning'' individual, i.e., an individual 
+with a total error of zero
+on all 200 test cases.
+Figure~\ref{fig:winnerAncestors} shows the ancestry of all of the winners from generation 87 
+(when we first found a winner in this run) back to generation 79.\footnote{We could certainly 
 	have gone back farther in time, but the graph would have become impossible to read as the
 	number of nodes would have ballooned from a few dozen to hundreds or thousands. We went
 	back to generation 79 because that was the most recent generation that had more than 10
 	distinct ancestors of a winning individual.}
-
-Figure~\ref{fig:winnerAncestors} shows the ancestry of all of the winners from generation 87 
-(when we first found a winner in this run) back to generation 79.
 Each node in the graph represents an individual, and each directed edge indicates a parent-child
 relationship, with the edge going from the parent to the child. The numbers inside the nodes are
-Neo4J internal IDs; we'll use these as ``names'' for the individuals as we tell the stories 
-we uncover.\footnote{We actually assign each individual a UUID so we can combine multiple runs, but
-	the Neo4J IDs are shorter and easier to use in our story telling.} Each ID has two parts:
+Neo4j internal IDs; we'll use these as ``names'' for the individuals as we tell the stories 
+we uncover. Each ID has two parts:
 the part before the colon is that individual's generation, and the part after is effectively
 just a random three digit identifier.
 
@@ -368,9 +342,7 @@ we can observe right away:
 	single node labeled ``42 Other Winners''.
 	\item The number of ancestors of winners doesn't grow quickly as we move back in time. We have to
 	go back to generation 80 to find 10 individuals (or 1\% of the population) that are ancestors of
-	winners, and in generation 79 there are still only 14 ancestors of winners. In fact, we have to
-	go trace the ancestry all the way to generation 63 to find a time where over 100 individuals (or over 10\% of 
-	the population) were ancestors of a winning individual.
+	winners, and go all the way to generation 63 before over 100 individuals were ancestors of a winning individual.
 \end{itemize}
 
 \subsection{Surprising fecundity (especially given that total error)}
@@ -385,10 +357,10 @@ Figure~\ref{fig:winnerAncestors} with a shaded diamond.
 Figure~\ref{fig:winnerAncestors},
 however, only tells us how many offspring an individual had that were themselves either a winner
 or an ancestor of a winner, as no other nodes are displayed. One
-might, however, wonder how many total offspring an individual has
-regardless of whether they were a winner or not. Using a Cypher query to identify the most
-fecund ancestors of winners in these last nine generations, reveals several things that were
-quite surprising (at least to some of the authors). The most remarkable of these was that individual 86:261 
+might wonder how many total offspring an individual has
+regardless of whether they led to a winner. Using a Cypher query to identify the most
+fecund ancestors of winners in these last nine generations reveals several things that were
+quite surprising. The most remarkable of these was that individual 86:261 
 was a parent of 934 of the 1,000 individuals in generation 87! Given that lexicase selection was
 designed in significant part to spread selection events out across the population, this makes it
 clear that there are times when lexicase does the opposite, and instead puts nearly all its eggs in
@@ -406,10 +378,10 @@ these is indicated with a diamond shape. This highlights a particularly
 interesting ancestry chain from 80:220 through 81:691, 82:447, 83:124, 84:319, 85:086 to 86:261, marked with
 dashed edges in Figure~\ref{fig:winnerAncestors}. With the exception of 81:691, which ``only'' had 17
 offspring, each of these seven individuals had more
-than 100 offspring, and thus had a fairly dominate role in shaping the generation that followed them. 
+than 100 offspring, and thus had a fairly dominate role in shaping that part of the evolutionary process
 
 If we look at the total error in of the individuals in Figure~\ref{fig:winnerAncestors}, we again
-find some significant surprises that tell us quite a lot about lexicase selection. In particular, if
+find some surprises that tell us quite a lot about lexicase selection. In particular, if
 we look at the total error for each individual along the dashed path from 80:220 through
 82:447 to 86:261, the total errors of the first five
 individuals in the chain are reasonably low. One (individual 82:447) has the best total error in
@@ -441,16 +413,16 @@ it below $3/4$ of the population in its generation by that aggregate measure.
 	\end{center}
 \end{table}
 
-So how could individuals with such terrible total fitness end up being selected so often as parents?
+How could individuals with such terrible total fitness end up being selected so often as parents?
 Exploring the specific test case errors reveals that individual 85:086 is perfect on half of the test
-cases (all those that involve printing), but gets a penalty error of 1,000 on the other half, presumably
+cases (all those that involve printing), but gets a penalty error of 1,000 on the other half
 because it never actually returns a value. Every one of its ancestors in 
 Table~\ref{table:winnerFitnesses}, however, has at least a few non-zero errors on the printing
 test cases, meaning that any lexicase ordering that places a few key printing test cases before
 any of the ``return'' test cases would likely select individual 85:086.
 
-What about individual 86:261, with it's 934 offspring? It is perfect (has error zero) on 194 of the 200
-test cases, with it's total error of 4,034 coming from the remaining 6 test cases. On four of these it,
+What about individual 86:261, with it's 934 offspring? It has error zero on 194 of the 200
+test cases. On 4 of the remaining 6 test cases it,
 like individual 85:086, fails to return a value and gets the penalty of 1,000; it has an error of 17 on
 the other two. Thus it gets 97\% of the test cases correct, but happens to be \emph{heavily} penalized
 for its behavior on 4 of the 6 it gets wrong. In a system that aggregates the errors, its rank of 765
@@ -566,7 +538,7 @@ the success of their offspring was due more to the good fortune of mating with 8
 Now that we know quite a lot about who gave rise to those 45 winners, what genetic operations
 brought them about? The largest group was 18 of the 45 which came about through 
 uniform-close-mutation alone, \emph{all} of which were mutations of individual 86:261. This indicates
-that success can be achieved via a fairly simple modification to 86:261's genome that only modifies 
+that success could be achieved via a fairly simple modification to 86:261's genome that only modifies 
 where some code blocks end.
 
 The other large group was 17 winners that arose via alternation followed by uniform-mutation. 14 of
@@ -576,13 +548,13 @@ groups of winners, 6 which were the result of alternation alone (all self-crosse
 from uniform-mutation alone applied to 86:261.
 
 An obvious question then is what changed in moving from 86:261 to the final solutions. The genomes and
-programs involved are fairly complex (over 200 instructions), and as mentioned in
-the introduction, a full analysis of the genomes and behaviors of the the individuals involved is 
-beyond the scope of this paper. It is possible, however, and our graph database analysis has clearly
+programs involved are fairly complex (over 200 instructions) and, as mentioned earlier, 
+a full analysis of the genomes and behaviors of the the individuals involved is 
+beyond the scope of this chapter. Such an analysis is possible, however, and our graph database work has clearly
 identified individuals whose genomes and programs deserve additional study. 
 
-Based on our graph database work, we can also propose a hypothesis that this additional study could
-explore. 86:261's total error of 4,034 comes in large part from failing to return a value on four 
+Based on this exploration, we can also propose a hypothesis for further exploration.
+86:261's total error of 4,034 comes in large part from failing to return a value on four 
 test cases. A distinct possibility is that 86:261 simply times out on those
 four test cases. The efficacy of uniform-close-mutation suggests that there might be some sequence of 
 instructions that are being executed repeatedly via a loop or recursion, and there are 
@@ -925,32 +897,31 @@ cases within the time limit without changing the value returned.
 \end{sidewaysfigure}
 
 In addition to studying lexicase selection, we wanted to collect data from replace-space-with-new-line 
-with tournament selection in order to compare with our earlier lexicase results. As previously noted in 
+with tournament selection in order to compare with our earlier lexicase results. As noted in 
 Section~\ref{sec:lexicaseRun}, lexicase  produced at least one individual with an error of zero in 
 57 of 100 runs while tournament selection only produced 13 of 100 successful runs. In this section
 we'll explore one of these 13 successful tournament runs in a little more detail.
 
-An immediate difference that we notice between the lexicase and tournament runs was the number of 
-individuals that solved the problem in the final generation. In lexicase, there were 45 different 
-individuals that solved the problem while there was only a single individual in the tournament 
-run that had an total error of zero across all the test cases.
+An immediate difference between the lexicase and tournament runs is that there was only one solution
+discovered in the tournament selection run, in contrast to the 45 different 
+individuals that solved the problem in the lexicase run.
 
 Figure~\ref{fig:winnerAncestorsTourneyRun74} shows the ancestry of the winning individual from 
 generation 150 (when the winner was discovered) back to generation 145. It's clear that the branching
-factor in this ancestor is much higher than with lexicase in Figure~\ref{fig:winnerAncestors}. 
+factor in this ancestry is much higher than with lexicase in Figure~\ref{fig:winnerAncestors}. 
 Table~\ref{table:branching} shows 
-the number of ancestors $n$ generations back that contributed the winning individual, and we can
+the number of ancestors $n$ generations back that contributed to the winning individual, and we can
 see that the number of ancestors increases much more quickly for tournament than lexicase; 
 at 10 generations back, there were approximately three times the number of contributing parents in 
-tournament as lexicase. This is likely
-due in part to the fact that in lexicase some parents produced a surprisingly large number of children.
+tournament as in lexicase. This is likely partially
+due to the fact that in lexicase some parents produced a surprisingly large number of children.
 Another possible contribution to this asymmetry is a difference in the role of
 mutations under lexicase, but we haven't yet explored that in any detail.
 
 \begin{table}[tb]%
 	\centering
 	\caption{Two examples of the impact of selection on evolutionary dynamics in the two explored runs. Table~\subref{table:branching} lists the number of parents contributing to a winning individual $n$ generations away for both the 
-		lexicase and tournament runs explored in this paper. The top row, for example, indicates that in the lexicase run
+		lexicase and tournament runs explored in this chapter. The top row, for example, indicates that in the lexicase run
 		there were 58 distinct ancestors of a winning individual 18 generations before the discovery of a winner, and in
 		the tournament run there were 297 distinct ancestors 18 generations before the discovery of a winner. 
 		Table~\subref{table:numChildren} lists the 18 most fecund individuals across the entirity of each of the lexicase and tournament selection runs.}
@@ -1025,14 +996,14 @@ differences in the branching factor of the two ancestry trees.
 
 We also noticed another crucial difference between the types of individuals 
 selected for reproduction. With tournament selection, the primary bias is towards individuals that 
-have the lowest total error. However, this is not the case in lexicase, where as long as an individual 
+have the lowest total error. However, this is not the case in lexicase where, as long as an individual 
 performs extremely well for enough cases, it is still possible to be selected for 
 reproduction, even if it has substantial errors on other test cases.
 In this tournament run, for example, every ancestor of the winner in the
-last six generations of the
+last six generations
 has a total error of either 83 or 132, which is in marked contrast to the diversity of total errors
 in the lexicase run (see Table~\ref{table:winnerFitnesses}). Additionally, across all individuals chosen
-as parents in the last 20 generations (regardless of whether they were an ancestor of the winner), 
+as parents in the last 20 generations of the tournament run (regardless of whether they were an ancestor of the winner), 
 there were as few as one and at most five distinct total errors within each generation. 
 This suggests that tournament selection kept
 mutating and recombining a small set of behaviors until it managed, essentially by accident, to produce an improved 
@@ -1048,7 +1019,7 @@ databases scales, we also created two larger cumulative databases, each containi
 100 runs on replace-space-with-newline using, respectively, lexicase and tournament selection. Given these cumulative 
 databases, we were then able to do broad queries against those collections of runs. These were typically inspired by 
 observations from the explorations of individual runs, with the broader queries helping us understand to what degree an 
-observation in an individual run was representative of behavior in other runs.
+observation in an individual run was representative or an outlier.
 
 An obvious question, for example, is how unusual is the individual we discovered in Section~\ref{sec:surprisingFecundity} 
 that had 934 offspring? Was that an aberration, or are these kinds of hyper-selected and hyper-fecund individuals a
@@ -1061,13 +1032,13 @@ offspring, respectively, after being selected over 1,600 times each.
 
 These 71 individuals clearly represent a very small fraction of the over 18 million nodes encapsulated in our 100 lexicase
 runs. 50 of
-the 100 runs, however, had at least one of these hyper-selected individuals with over 900 selections, so this kind of 
-hyper-selection is clearly a common component of the dynamics of these lexicase runs. This sort of hyper-selection 
+the 100 runs, however, had at least one individual with over 900 selections, so this kind of 
+hyper-selection is clearly common in the dynamics of these lexicase runs. This sort of hyper-selection 
 has a profound impact on the dynamics of a run, as almost every individual in the subsequent generation is a child of
 the hyper-selected individual, and due to self-crosses that individual is often the \emph{only} parent of those children. Thus
 the genetics of that individual are likely to have an enormous influence on the make-up of the next generation, creating
-what is in effect a substantial population bottleneck. So while those 71 individuals only represent a tiny proportion of
-the cumulative population, they're likely to have a tremendous impact on the run dynamics, so the ability to indentify and
+a substantial population bottleneck. So while those 71 individuals only represent a tiny proportion of
+the cumulative population, they're likely to have a tremendous impact on the run dynamics; thus the ability to indentify and
 examine these individuals is potentially very informative.
 
 One of the other surprises from our earlier exploration is how ``unfit'' some of those highly selected individuals were when
@@ -1082,7 +1053,7 @@ Finally, looking at all 200 runs makes it clear that lexicase and tournament sel
 likelihood of discovering multiple ``winning'' individuals in the same generation. Over the 100 runs of the 
 replace-space-with-newline with tournament selection, only 13 runs found a solution with zero total error, and only one
 of those runs had more than one solution in the final generation (there were two). Of the 57 successful lexicase runs, 
-however, 30 (so just over had) had multiple solutions. Many were only a few (6 runs just had 2 solutions), but 6 runs had
+however, 30 (so just over half) had multiple solutions. Many were only a few (6 runs just had 2 solutions), but 6 runs had
 over 30 solutions, including runs with 69 and 74 solutions. This strongly suggests that when tournament discovered a
 winning individual, that discovery was fairly random and therefore had a low probability. The prevalence of multiple
 solutions in the lexicase runs, however, indicates that the discovery of those solutions had a much higher probability.
@@ -1105,23 +1076,23 @@ successful than runs using tournament selection. A key goal in the original desi
 shows, does appear to be the case, with lexicase generally leading to more diversity
 than either tournament selection or implicit fitness sharing. One would, however, typically consider hyper-selection
 and the consequent population bottlenecks to be the enemy of diversity, so our discovery of a pattern of
-individuals being selected hundreds, and sometimes even \emph{thousands}, of times was at the very least noteworthy
+individuals being selected hundreds, and sometimes even \emph{thousands}, of times was at the very least striking
 and worthy of further study.
 
-A key risk in this sort of narrow examination of the details of runs is that one might mistake a single or small
-number of observations for a pattern. Thus there will always be a need for the summary results provided by tables, 
-plots, and other statistical tools. The kind of exploration we've demonstrated here will ultimately have
+A key risk in this sort of narrow examination is that one might mistake an observation for a pattern. 
+Thus there will always be a need for broader summary statistical analysis. 
+The kind of exploration we've demonstrated here will ultimately have
 to be used in conjunction with those statistical tools; discoveries in ``digs'' such as these can raise questions 
 and suggest hypotheses that can then be supported or refuted through the use of more ``traditional'' studies.
 
-One other concern is how well our use of graph databases can scale. Databases for individual runs are quite tractable,
+One other concern is how to scale our use of graph databases. Databases for individual runs are quite tractable,
 and can be populated and explored using basic off-the-shelf computers. Combing multiple runs, however, presents a
 number of challenges. The database containing the 100 lexicase runs, for example, contained over 18 million nodes 
 and over 25 million edges, with the full Neo4j database weighing in at 18GB. The database combining the 100 tournament
 runs was even larger because most of the runs went the full 300 generations: over 28 million nodes, over 48 million edges,
 and a database of over 31GB. That said, these databases runs reasonably on stock desktop 
-hardware, which is how all the results presented here were generated. We'd quickly start to need more specialized
-infrastructure to scale up further if, for example, we wanted to combine the 
+hardware, which is how all the results presented here were generated. To scale up further, however, 
+we'd quickly start to need more specialized infrastructure to, for example, combine the 
 lexicase and tournament selection runs into a single database containing the history of those 200 runs, or combining
 the results of runs on multiple problems. We have data from thousands of runs \citep{Helmuth:2015:GPTP}, but bringing
 that together in a single database is clearly infeasible using these tools. An alternative to this approach would be
@@ -1133,7 +1104,7 @@ and could potentially be used to run queries across large distributed datasets.
 \begin{acknowledgement}
 	Thanks to the members of the Hampshire College Computational Intelligence Lab and M. Kirbie Dramdahl
 	at the University of Minnesota, Morris, for discussions that 
-	helped to improve the work described in this paper. Thanks also to Josiah Erikson for systems support, and to 
+	helped to improve the work described in this chapter. Thanks also to Josiah Erikson for systems support, and to 
 	Hampshire College for support for the Hampshire College Institute for Computational Intelligence. 
 	This material is based upon work supported by the National Science Foundation under Grants No. 1017817, 
 	1129139, and 1331283. Any opinions, findings, and conclusions or recommendations expressed in this 
@@ -1149,6 +1120,9 @@ and could potentially be used to run queries across large distributed datasets.
 	explore fully. Finally, thanks to the GPTP organizers; without their hard work none of those other valuable
 	conversations would have occurred.
 \end{acknowledgement}
+
+\marginpar{Remove editors from long lists.}
+\marginpar{Remove URLs}
 
 \bibliographystyle{spbasic}
 \bibliography{gp-bibliography,chapter}
