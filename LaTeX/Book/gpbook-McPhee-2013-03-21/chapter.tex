@@ -200,13 +200,13 @@ PushGP \citep{spector:2002:GPEM, 1068292} is a stack-based genetic programming s
 of PushGP aren't crucial for this analysis as we're going to focus on the behavioral properties of
 individuals in this work, but it useful to know a few things:
 \begin{itemize}
-	\item PushGP uses a linear genome which is converted into a linear program via as described below.
+	\item PushGP uses a linear genome, which is then converted into a program as described below.
 	\item PushGP supports a variety of \emph{typed} stacks, with corresponding typed instructions.
 	The \texttt{string-pop} instruction, for example, pops the top of the \texttt{string} stack,
 	and the \texttt{integer-add} instruction takes the top two items from the \texttt{integer}
 	stack, adds them, and pushes the result back onto the \texttt{integer} stack.
-	\item There is a \texttt{code} stack which can hold blocks of instructions. This is what allows
-	PushGP programs to loop or recurse, as pushing a block of instructions onto the \texttt{code}
+	\item There is a \texttt{exec} stack which can hold blocks of instructions. This is what allows
+	PushGP programs to loop or recurse, as pushing a block of instructions onto the \texttt{exec}
 	causes those instructions to be executed next.
 \end{itemize}
 
