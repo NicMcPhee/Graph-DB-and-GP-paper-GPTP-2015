@@ -179,52 +179,22 @@ This section provides some background on some of the key subjects of this work:
 \subsection{Neo4J and Cypher}
 \label{subsec:Neo4j}
 
-Graph databases \citep{Robinson:GraphDB:Book} are a relatively new type of database tool, where data is stored 
+Graph databases \citep{Robinson:GraphDB:Book} are a relatively new database tool, where data is stored 
 as a collection of nodes and relationships in a graph, with a specialized query language that makes 
-it easy to ask questions about complex relationships. This section further describes Neo4j, its query 
-language Cypher, and the various advantages they hold over relational databases in recording and 
-accessing information that relies heavily on recursion.
-
-Neo4j is a form of data management system based upon a graph. Information is stored by means of 
+it easy to ask questions about complex relationships. In Neo4j, information is stored using
 vertices and edges, commonly referred to as nodes and relationships, 
-respectively. In our work, nodes represent individuals, and relationships represent the 
-transformations between individuals. As a GP system generates individuals, new nodes and 
-relationships can be added to the database for later analysis.
+respectively. Neo4j also allows properties to be stored in both nodes and edges.
+In our work, nodes typically represent individuals, and \texttt{:PARENT\_OF} relationships 
+capture the central genealogical connections. We store important data such as the total error as
+properties of individual nodes, and genetic operators as properties on 
+\texttt{:PARENT\_OF} edges.\footnote{In practice we also include nodes to represent things
+	such as runs and generations, using these to store relevant cumulative information.}
 
-Cypher allows this data to be readily extracted from the Neo4j database. There are three 
-fundamental elements to queries in Cypher. The \texttt{START} clause specifies a starting location 
-in the database, indicating the node or nodes where the query will begin. The \texttt{RETURN} 
-clause specifies which nodes, relationships, or properties should be returned to the user. 
-The \texttt{MATCH} clause is the main section of a query, specifying what patterns in the 
-graph the query will discover. To write the \texttt{MATCH} clause, nodes and relationships 
-are drawn with ASCII characters. A node is indicated by parenthesis \texttt{( )}, directed 
-relationships are indicated with \texttt{-->} or \texttt{<--} depending on the direction of 
-the relationship, and undirected relationships are indicated with \texttt{--}. 
-Brackets \texttt{[ ]} between the dashes can be used to specify relationship names prefixed 
-by a colon. In the example in Query~\ref{query:example}, the \texttt{START} clause indicates 
-that the query should start with node 43, which we call \texttt{parent} so we can refer to it
-elsewhere in the query. The \texttt{MATCH} clause finds all nodes that are children of the 
-starting node \texttt{parent}, and the \texttt{RETURN} clause returns \texttt{parent} paired with
-all its child nodes. This is graphically represented in Figure~\ref{fig:exampleQuery}; the actual
-return is a text table with columns for all the different values in the \texttt{RETURN} clause.
-
-\begin{Query}[t]
-	\smallskip
-	\begin{verbatim}
-	    START parent=node(43)
-	    MATCH (parent)-[:PARENTOF]->(child)
-	    RETURN parent, child;
-	\end{verbatim}
-	\caption{An example Cypher query that finds all children of the node with ID 43.}
-	\label{query:example}
-\end{Query}
-
-\begin{figure}[tb]
- \sidecaption[t]
- \includegraphics[width=0.8\textwidth]{figures/sample_neo4j_query.pdf}
- \caption{Graphical representation of the results of a sample Cypher query in Query~\ref{query:example}.}
- \label{fig:exampleQuery}
-\end{figure}
+The Neo4j query language, Cypher, allows this data to be readily extracted from the Neo4j database.
+A detailed description of Cypher is beyond the scope of this chapter, but Cypher's central feature is
+the ability to describe patterns using ``ASCII art''. The Neo4j engine can then search
+the graph for subgraphs matching these patterns. Cypher also provides the ability to 
+filter results based on properties in a manner quite similar to more traditional SQL queries.
 
 \subsection{PushGP}
 
@@ -368,35 +338,13 @@ we'll expand our view by looking at some cumulative results across all hundred r
 \end{figure}
 
 A natural place to start our analysis of this run is at the end, when the GP system created one or more individuals that 
-solved the problem. So we used Neo4J to find all the ancestors of any ``winning'' individual, i.e., individual with a total error of 
-on all 200 test cases. Using Cypher%(Neo4J's query language)
-, we can easily ask for this subset
-of the population going back to generation 79 using the query in 
-Query~\ref{query:winnerAncestors}.\footnote{We could certainly 
+solved the problem. So we used Neo4J to find all the ancestors of any ``winning'' individual, i.e., an individual with a total error of 
+on all 200 test cases. Using Cypher, we can easily ask for this subset
+of the population going back to generation 79.\footnote{We could certainly 
 	have gone back farther in time, but the graph would have become impossible to read as the
 	number of nodes would have ballooned from a few dozen to hundreds or thousands. We went
 	back to generation 79 because that was the most recent generation that had more than 10
 	distinct ancestors of a winning individual.}
-\marginpar{I think we'll remove the specific queries.}
-%\marginpar{Should all the query details go in
-%	an appendix that eventually becomes a tech report or some such? I'm not sure if they aren't
-%	just a distraction here.}\marginpar{We need the crazy \texttt{p->c->w} thing in 
-%	Query~\ref{query:numChildren} to extract 
-%	single edges, but I don't know if we want to talk about that.}
-
-\begin{Query}
-	\smallskip
-	\begin{verbatim}
-	MATCH (p)-->(c)-[*0..7]->(w {total_error: 0}) 
-	RETURN DISTINCT id(p), id(c);
-	\end{verbatim}
-	\caption{Cypher query to find all the ancestors of ``winners'' in the last 9 generations of a run.
-		The pattern \texttt{(w \{total\_error: 0\})} matches nodes with total error 0, i.e., 
-		``winners''. The pattern \texttt{(c)-[*0..7]->(w)} matches any path from some node \texttt{c} to
-		a winning node \texttt{w} that has between 0 and 7 edges.
-		}
-	\label{query:winnerAncestors}
-\end{Query}
 
 Figure~\ref{fig:winnerAncestors} shows the ancestry of all of the winners from generation 87 
 (when we first found a winner in this run) back to generation 79.
