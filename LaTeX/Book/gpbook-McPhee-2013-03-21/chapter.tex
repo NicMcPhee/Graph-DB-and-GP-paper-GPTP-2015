@@ -18,8 +18,8 @@
 
 \abstract{
 	For both practical reasons and those of habit, most evolutionary computation research is presented in highly summary
-	form that obscures or completely masks the profusion of specific events such as selections, crossovers, and mutations
-	that are ultimately responsible for the aggregate behaviors that we end up discussing. In this chapter we take an almost
+	form. These summaries, however, often obscure or completely mask the profusion of specific events such as selections, crossovers, and mutations
+	that are ultimately responsible for the aggregate behaviors that we're interested in. In this chapter we take an almost
 	opposite approach and use the Neo4j graph database system to record and analyze the entire genealogical history of 
 	a set of genetic programming runs. We then explore a few of these runs in some detail, discovering some important
 	properties of lexicase selection that may help us better understand the dynamics of lexicase selection and the considerable
@@ -97,7 +97,7 @@ We'll provide expanded motivation for this work in Section~\ref{sec:motivation},
 and concepts in Section~\ref{sec:background}. In Section~\ref{sec:lexicaseRun} we explore in some detail a successful
 lexicase selection run, identifying several interesting properties of lexicase selection that strongly distinguish it from
 other, more traditional selection methods, and in Section~\ref{sec:tournamentRun} we compare those to results of 
-an exploration a successful tournament selection run. After these detailed explorations of individual runs, iin
+an exploration a successful tournament selection run. After these detailed explorations of individual runs, in
 Section~\ref{sec:cumulativeResults} we step back a little and look at the results of expanding some of our queries
 across hundreds of runs, and then wrap up with some conclusions in Section~\ref{sec:whatDidWeLearn}.
 
@@ -155,15 +155,15 @@ Assuming one has access to the necessary gigabytes or terabytes of storage,
 databases are the obvious tool for the collection of the data. Most common database structures and tools,
 however,
 don't lend themselves to the kinds of analysis that we want and need in evolutionary computation work. 
-Most relational and document-based databases, for example require things like complex and expensive 
+Most relational and document-based databases, for example, require complex and expensive 
 recursive joins to trace significant hereditary lines, making this approach increasingly unfeasible.
-In exploring the dynamics of an EC run, we're going to want to be able to
+In exploring the dynamics of an EC run, it is necessary to
 make connections across dozens or even hundreds of generations, which simply isn't plausible with a
 relational database \citep{Robinson:GraphDB:Book}. 
 While we use Neo4j as our graph database in this work, there are 
 numerous other 
-graph databases that could potentially be effective tools \citep{wiki:GraphDB}, and we make no claims at having
-exhaustively explored the range of possible database tools for this sort of work.
+graph databases that could potentially be effective tools \citep{wiki:GraphDB}. We make no claims
+to have exhaustively explored the range of possible database tools for this sort of work.
 
 \section{A little background on tools and problems}
 \label{sec:background}
@@ -233,7 +233,7 @@ of PushGP aren't crucial for this analysis as we're going to focus on the behavi
 individuals in this work, but it useful to know a few things:
 \begin{itemize}
 	\item PushGP uses a linear genome which is converted into a linear program via as described below.
-	\item PushGP supports a variety of \emph{typed} stacked, with corresponding typed instructions.
+	\item PushGP supports a variety of \emph{typed} stacks, with corresponding typed instructions.
 	The \texttt{string-pop} instruction, for example, pops the top of the \texttt{string} stack,
 	and the \texttt{integer-add} instruction takes the top two items from the \texttt{integer}
 	stack, adds them, and pushes the result back onto the \texttt{integer} stack.
@@ -313,7 +313,7 @@ The replace-space-with-newline problem is an introductory programming benchmark 
 from~\citep{Helmuth:2015:GECCO}. In this problem the program is given an input string and required to
 both (a) print the string with all the spaces replaced by newlines and (b) return an integer that
 is the number of non-space characters in the input string. There are 100 different training instances 
-for this problem, each of which generates two error values: One is the Levenshtein distances between
+for this problem, each of which generates two error values: One is the Levenshtein distance between
 the printed output and the target print string, and the other is the absolute difference between
 whatever value is on the top of the \texttt{integer} stack and the expected return value. A penalty
 value of 1,000 is assigned for test cases that were expecting a return value but found the
@@ -329,14 +329,15 @@ well on some test cases, but very poorly on others.
 
 The data we explored in this paper is a subset of the data collected for \citep{Helmuth:2015:GPTP}. In particular
 we have the full genealogical records for one hundred runs of the replace-space-with-newline problem using each 
-of lexicase selection, tournament
-selection with tournament size 7, and implicit fitness sharing (IFS) with tournaments of size 7. In those
-runs 57 of the 100 lexicase runs succeeded in the sense that an individual was discovered that had zero
+of lexicase selection and tournament
+selection with tournament size 7. In those
+runs, 57 of the 100 lexicase runs succeeded in the sense that an individual was discovered that had zero
 error on all 200 of the training cases. Tournament selection with tournament size 7 only
-had 13 successes out of 100 runs, and IFS with tournament size 7 only had 17 successes out of 100 runs, so it seems that
+had 13 successes out of 100 runs, so it seems that
 lexicase selection provides a significant advantage on this problem. Similar results in \citep{Helmuth:2015:GECCO}
-indicate that lexicase is in fact generally much more successful than tournament or IFS across a broad range of
-software synthesis problems.
+indicate that lexicase is in fact generally much more successful across a broad range of
+software synthesis problems than either tournament selection and implicit fitness
+sharing and tournaments.
 
 \section{Lexicase, meet Replace-space-with-newline}
 \label{sec:lexicaseRun}
@@ -1112,8 +1113,8 @@ mutations under lexicase; that question is beyond the scope of this chapter, how
 Another major difference was the selection pressure of the two selection mechanisms. In lexicase 
 selection, one parent can dominate the selection if it performs well for a majority of the test 
 cases as we saw in section~\ref{sec:surprisingFecundity} where individual 86:261 was a parent for 
-all but 76 individuals in the final generation. However, tournament selection never 
-can have this level of selection pressure. Throughout the entire run,
+all but 76 individuals in the final generation. However, tournament selection can never 
+impose such a strong selection pressure. Throughout the entire run,
 the most a single parent in the tournament selection run ever produced was 24 children 
 (see Table~\ref{table:numChildren}), and all of the 18 most prolific parents produced between 17
 and 24 offspring. Compare this to lexicase selection, where all of the 18 top parents produced over 
@@ -1156,7 +1157,7 @@ to construct improved offspring.
 \section{A few cumulative results}
 \label{sec:cumulativeResults}
 
-The bulk of this chapter has focussed on exploring two specific successful runs on the replace-space-with-newline problem,
+The bulk of this chapter has focused on exploring two specific successful runs on the replace-space-with-newline problem,
 one using lexicase selection, and one using tournament selection. To better understand how well this application of graph
 databases scales, we also created two larger cumulative databases, each containing the complete genealogical record for all 
 100 runs on replace-space-with-newline using, respectively, lexicase and tournament selection. Given these cumulative 
@@ -1211,7 +1212,7 @@ than either tournament selection or implicit fitness sharing.
 
 A flip side of that assumption was that individuals probably didn't have disproportionately 
 large numbers of offspring, as the selections are being spread out across these different groups
-of individuals. In exploring one lexicase run on the Replace Space With Newlines problem, however,
+of individuals. In exploring one lexicase run on the replace-space-with-newline problem, however,
 we discovered that while in general this story held true, there were moments in the course of the run
 where the reality was \emph{wildly} different.
 
