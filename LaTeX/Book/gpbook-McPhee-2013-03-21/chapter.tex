@@ -81,8 +81,8 @@ problems \citep{Helmuth:2015:GECCO}.
 We're not the first people to recognize the potential value of exploring lineages and ancestry graphs. 
 The HeuristicLab team has been
 working for several years on a set of tools to analyze at least small genealogical run histories 
-\citep{Burlacu:2013:GECCOcomp, Burlacu:CIEES:2015}; hopefully these exciting features will be in 
-an upcoming release. \citep{Burlacu:2013:GECCOcomp} also has an excellent survey of a variety of work
+\citep{Burlacu:2013:GECCOcomp:new, Burlacu:CIEES:2015}; hopefully these exciting features will be in 
+an upcoming release. \citep{Burlacu:2013:GECCOcomp:new} also has an excellent survey of a variety of work
 that uses genealogical information in EC work; none of this, however, appears to save and analyze full 
 genealogical histories, but instead tends to use local ancestry information for purposes such as diversity
 promotion. Recent work \citep{kuber2014ancestral} applies network theory to ancestry graphs, looking
@@ -94,7 +94,7 @@ on occasion be avenues of exploration that we won't pursue because they would pr
 different tools. This exploration, for example, raises important questions about the relationships between
 parent and child genomes. These could be addressed using, e.g.,
 difference-merge tools from software engineering, or sequence alignment tools from genomics;
-see, e.g., \citep{Burlacu:2013:GECCOcomp}
+see, e.g., \citep{Burlacu:2013:GECCOcomp:new}
 for an excellent example of this kind of analysis. We will, however, consider that
 beyond the scope of this chapter. A key value of our graph database results will be in providing focus
 for our use of those other tools, identifying key moments
@@ -195,7 +195,7 @@ filter results based on properties in a manner quite similar to more traditional
 
 \subsection{PushGP}
 
-PushGP \citep{spector:2002:GPEM, 1068292} is a stack-based genetic programming system. The details
+PushGP \citep{spector:2002:GPEM, 1068292:new} is a stack-based genetic programming system. The details
 of PushGP aren't crucial for this analysis, but it is useful to know a few things:
 \begin{itemize}
 	\item PushGP uses a linear genome, which is then converted into a program.
@@ -213,11 +213,12 @@ instructions paired with \emph{close counts}.
 The Plush genomes are manipulated by genetic operators, but are translated into Push programs prior to execution.
 During translation, any instruction that uses code from the \texttt{exec} stack implicitly opens a code block; the close counts are natural numbers 
 indicating how many open code blocks should be closed after a given instruction.
-% The close counts, then, are necessary to allow the PushGP system to evolve the desired ``end blocks''.
 
 In the runs explored here, there are three genetic operations: Alternation, uniform-mutation, and 
 uniform-close-mutation.
-Alternation is similar to an N-point crossover in genetic algorithms. The two parent genomes
+Alternation is based on the earlier ULTRA operator \citep{Spector:2013:GPTP:new}, 
+and is similar to an N-point crossover in 
+genetic algorithms. The two parent genomes
 are traversed from left to right, copying instructions from the source parent to the child. There's
 a small probability at each instruction of an alternation event, which switches which parent is being 
 used as the instruction source. For every alternation event there's a small chance of slightly shifting 
@@ -1131,9 +1132,6 @@ and could potentially be used to run queries across large distributed datasets.
 	explore fully. Finally, thanks to the GPTP organizers; without their hard work none of those other valuable
 	conversations would have occurred.
 \end{acknowledgement}
-
-\marginpar{Remove editors from long lists.}
-\marginpar{Remove URLs}
 
 \bibliographystyle{spbasic}
 \bibliography{gp-bibliography,chapter}
