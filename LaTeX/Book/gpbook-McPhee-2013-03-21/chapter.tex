@@ -78,6 +78,17 @@ lexicase that suggest areas of additional exploration and indicate reasons
 for the substantially better performance seen when using lexicase on a variety of software synthesis 
 problems \citep{Helmuth:2015:GECCO}.
 
+We're not the first people to recognize the potential value of exploring lineages and ancestry graphs. 
+The HeuristicLab team has been
+working for several years on a set of tools to analyze at least small genealogical run histories 
+\citep{Burlacu:2013:GECCOcomp, Burlacu:CIEES:2015}; hopefully these exciting features will be in 
+an upcoming release. \citep{Burlacu:2013:GECCOcomp} also has an excellent survey of a variety of work
+that uses genealogical information in EC work; none of this, however, appears to save and analyze full 
+genealogical histories, but instead tends to use local ancestry information for purposes such as diversity
+promotion. Recent work \citep{kuber2014ancestral} applies network theory to ancestry graphs, looking
+for things like cliques as a way of better understanding EC dynamics; that work is similar in spirit to this
+chapter, but differs in the kinds of graphs that are built and the tools used to analyze them.
+
 Because we're going to focus on the use of graph databases, there will
 on occasion be avenues of exploration that we won't pursue because they would properly involve
 different tools. This exploration, for example, raises important questions about the relationships between
@@ -250,7 +261,7 @@ and each triple, etc., will be most important now and then.
 		\ENDWHILE
 		\RETURN random individual from \texttt{candidates}
 	\end{algorithmic}
-	\caption{Psuedocode for the lexicase selection algorithm, for the context in which the goal for all test cases is to minimize error.}
+	\caption{Pseudocode for the lexicase selection algorithm, for the context in which the goal for all test cases is to minimize error.}
 	\label{alg:lexicase}
 \end{algorithm}
 
