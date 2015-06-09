@@ -26,11 +26,14 @@
 	and ideas for subsequent, broader study.}
 
 \begin{keywords}
-keywords to your chapter, these words should also be indexed
+	graph database, Neo4j, ancestry, genealogy, lexicase selection, tournament selection
 \end{keywords}
-\index{keywords to your chapter}
-\index{these words should also be indexed}
-\\
+\index{graph database}
+\index{Neo4j}
+\index{ancestry}
+\index{genealogy}
+\index{lexicase selection}
+\index{tournament selection}
 
 \section{Introduction}
 \label{sec:introduction}
@@ -78,12 +81,23 @@ lexicase that suggest areas of additional exploration and indicate reasons
 for the substantially better performance seen when using lexicase on a variety of software synthesis 
 problems \citep{Helmuth:2015:GECCO}.
 
+We're not the first people to recognize the potential value of exploring lineages and ancestry graphs. 
+The HeuristicLab team has been
+working for several years on a set of tools to analyze at least small genealogical run histories 
+\citep{Burlacu:2013:GECCOcomp:new, Burlacu:CIEES:2015}; hopefully these exciting features will be in 
+an upcoming release. \citep{Burlacu:2013:GECCOcomp:new} also has an excellent survey of a variety of work
+that uses genealogical information in EC work; none of this, however, appears to save and analyze full 
+genealogical histories, but instead tends to use local ancestry information for purposes such as diversity
+promotion. Recent work \citep{kuber2014ancestral} applies network theory to ancestry graphs, looking
+for things like cliques as a way of better understanding EC dynamics; that work is similar in spirit to this
+chapter, but differs in the kinds of graphs that are built and the tools used to analyze them.
+
 Because we're going to focus on the use of graph databases, there will
 on occasion be avenues of exploration that we won't pursue because they would properly involve
 different tools. This exploration, for example, raises important questions about the relationships between
 parent and child genomes. These could be addressed using, e.g.,
 difference-merge tools from software engineering, or sequence alignment tools from genomics;
-see, e.g., \citep{Burlacu:2013:GECCOcomp}
+see, e.g., \citep{Burlacu:2013:GECCOcomp:new}
 for an excellent example of this kind of analysis. We will, however, consider that
 beyond the scope of this chapter. A key value of our graph database results will be in providing focus
 for our use of those other tools, identifying key moments
@@ -102,6 +116,9 @@ across hundreds of runs, and then wrap up with some conclusions in Section~\ref{
 
 \section{Motivation}
 \label{sec:motivation}
+
+\index{ancestry}
+\index{genealogy}
 
 Consider the job of a paleontologist, who regularly reconstructs not just individuals but also
 species and entire phylogenetic trees on the basis of a handful of teeth and bones, or even just
@@ -168,6 +185,9 @@ replace-space-with-newline test problem.
 \subsection{Neo4j and Cypher}
 \label{subsec:Neo4j}
 
+\index{graph database}
+\index{Neo4j}
+
 Graph databases \citep{Robinson:GraphDB:Book} are a relatively new database tool, where data is stored 
 as a collection of nodes and relationships in a graph, with a specialized query language that makes 
 it easy to ask questions about complex relationships.
@@ -184,7 +204,7 @@ filter results based on properties in a manner quite similar to more traditional
 
 \subsection{PushGP}
 
-PushGP \citep{spector:2002:GPEM, 1068292} is a stack-based genetic programming system. The details
+PushGP \citep{spector:2002:GPEM, 1068292:new} is a stack-based genetic programming system. The details
 of PushGP aren't crucial for this analysis, but it is useful to know a few things:
 \begin{itemize}
 	\item PushGP uses a linear genome, which is then converted into a program.
@@ -196,17 +216,18 @@ of PushGP aren't crucial for this analysis, but it is useful to know a few thing
 	causes those instructions to be executed next.
 \end{itemize}
 
-The runs explored here used \emph{Plush genomes}, which are linear genomes consisting of 
-instructions paired with \emph{close counts}. The close counts are natural numbers 
-indicating how many open code blocks should be closed after a given instruction. Several instructions
-that humans typically use with code blocks, such as conditionals and loops,
-have an implicit ``open block'' that is translated into an explicit ``open block'' when the genome
-is converted to a Push program. The close counts, then, are necessary to allow the PushGP
-system to evolve the desired ``end blocks''.
+While traditionally PushGP has evolved Push programs themselves, the most recent version of PushGP instead evolves linear
+\emph{Plush genomes} consisting of 
+instructions paired with \emph{close counts}.
+The Plush genomes are manipulated by genetic operators, but are translated into Push programs prior to execution.
+During translation, any instruction that uses code from the \texttt{exec} stack implicitly opens a code block; the close counts are natural numbers 
+indicating how many open code blocks should be closed after a given instruction.
 
 In the runs explored here, there are three genetic operations: Alternation, uniform-mutation, and 
 uniform-close-mutation.
-Alternation is similar to an N-point crossover in genetic algorithms. The two parent genomes
+Alternation is based on the earlier ULTRA operator \citep{Spector:2013:GPTP:new}, 
+and is similar to an N-point crossover in 
+genetic algorithms. The two parent genomes
 are traversed from left to right, copying instructions from the source parent to the child. There's
 a small probability at each instruction of an alternation event, which switches which parent is being 
 used as the instruction source. For every alternation event there's a small chance of slightly shifting 
@@ -219,6 +240,8 @@ combinations like alternation followed by uniform-mutation.
 For additional details and the particular parameters used in these runs see \citep{Helmuth:2015:GECCO}.
 
 \subsection{Lexicase selection}
+
+\index{lexicase selection}
 
 Lexicase selection is a recently developed selection method for evolutionary computation in which 
 individuals are selected by filtering the population according to performance on individual 
@@ -250,11 +273,14 @@ and each triple, etc., will be most important now and then.
 		\ENDWHILE
 		\RETURN random individual from \texttt{candidates}
 	\end{algorithmic}
-	\caption{Psuedocode for the lexicase selection algorithm, for the context in which the goal for all test cases is to minimize error.}
+	\caption{Pseudocode for lexicase selection, in the context of error minimization. Here the
+		function $\textrm{perf}(i, p)$ computes the performance of program $p$ on test case $i$.}
 	\label{alg:lexicase}
 \end{algorithm}
 
 \subsection{Replace-space-with-newline}
+
+\index{Replace Space With Newline problem}
 
 The replace-space-with-newline problem is an introductory programming benchmark problem taken
 from~\citep{Helmuth:2015:GECCO}. Here the program is given an input string and required to
@@ -286,6 +312,10 @@ software synthesis problems.
 
 \section{Lexicase, meet Replace-space-with-newline}
 \label{sec:lexicaseRun}
+
+\index{ancestry}
+\index{genealogy}
+\index{lexicase selection}
 
 % This is run 6, lexicase, replace-space-with-newline.
 
@@ -886,6 +916,10 @@ cases within the time limit without changing the value returned.
 \section{How is tournament selection different?}
 \label{sec:tournamentRun}
 
+\index{ancestry}
+\index{genealogy}
+\index{tournament selection}
+
 \begin{sidewaysfigure}
 	\vspace{0.6\columnwidth}
 	\includegraphics[width=\columnwidth]{figures/ancestors_of_winner_rswn_tourney_run74_9gens.pdf}
@@ -1120,9 +1154,6 @@ and could potentially be used to run queries across large distributed datasets.
 	explore fully. Finally, thanks to the GPTP organizers; without their hard work none of those other valuable
 	conversations would have occurred.
 \end{acknowledgement}
-
-\marginpar{Remove editors from long lists.}
-\marginpar{Remove URLs}
 
 \bibliographystyle{spbasic}
 \bibliography{gp-bibliography,chapter}
