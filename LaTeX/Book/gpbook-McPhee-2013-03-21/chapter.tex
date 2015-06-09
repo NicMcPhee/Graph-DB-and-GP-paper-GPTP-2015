@@ -196,13 +196,13 @@ of PushGP aren't crucial for this analysis, but it is useful to know a few thing
 	causes those instructions to be executed next.
 \end{itemize}
 
-The runs explored here used \emph{Plush genomes}, which are linear genomes consisting of 
-instructions paired with \emph{close counts}. The close counts are natural numbers 
-indicating how many open code blocks should be closed after a given instruction. Several instructions
-that humans typically use with code blocks, such as conditionals and loops,
-have an implicit ``open block'' that is translated into an explicit ``open block'' when the genome
-is converted to a Push program. The close counts, then, are necessary to allow the PushGP
-system to evolve the desired ``end blocks''.
+While traditionally PushGP has evolved Push programs themselves, the most recent version of PushGP instead evolves linear
+\emph{Plush genomes} consisting of 
+instructions paired with \emph{close counts}.
+The Plush genomes are manipulated by genetic operators, but are translated into Push programs prior to execution.
+During translation, any instruction that uses code from the \texttt{exec} stack implicitly opens a code block; the close counts are natural numbers 
+indicating how many open code blocks should be closed after a given instruction.
+% The close counts, then, are necessary to allow the PushGP system to evolve the desired ``end blocks''.
 
 In the runs explored here, there are three genetic operations: Alternation, uniform-mutation, and 
 uniform-close-mutation.
