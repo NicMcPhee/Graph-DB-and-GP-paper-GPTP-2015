@@ -1015,8 +1015,8 @@ diversity to continue to discover improvements.
 
 The bulk of this chapter has focused on exploring two specific successful runs on the replace-space-with-newline problem,
 one using lexicase selection, and one using tournament selection. To better understand how well this application of graph
-databases scales, we also created two larger cumulative databases, each containing the complete genealogical record for all 
-100 runs on replace-space-with-newline using, respectively, lexicase and tournament selection. Given these cumulative 
+databases scales, we also created two larger cumulative databases (one for lexicase selection and one for tournament selection), each containing the complete genealogical record for all 
+100 runs on replace-space-with-newline. Given these cumulative 
 databases, we were then able to do broad queries against those collections of runs. These were typically inspired by 
 observations from the explorations of individual runs, with the broader queries helping us understand to what degree an 
 observation in an individual run was representative or an outlier.
@@ -1035,10 +1035,10 @@ runs. 50 of
 the 100 runs, however, had at least one individual with over 900 selections, so this kind of 
 hyper-selection is clearly common in the dynamics of these lexicase runs. This sort of hyper-selection 
 has a profound impact on the dynamics of a run, as almost every individual in the subsequent generation is a child of
-the hyper-selected individual, and due to self-crosses that individual is often the \emph{only} parent of those children. Thus
+the hyper-selected individual, and due to self-crosses and mutations that individual is often the \emph{only} parent of those children. Thus
 the genetics of that individual are likely to have an enormous influence on the make-up of the next generation, creating
 a substantial population bottleneck. So while those 71 individuals only represent a tiny proportion of
-the cumulative population, they're likely to have a tremendous impact on the run dynamics; thus the ability to indentify and
+the cumulative population, they're likely to have a tremendous impact on the run dynamics; thus the ability to identify and
 examine these individuals is potentially very informative.
 
 One of the other surprises from our earlier exploration is how ``unfit'' some of those highly selected individuals were when
