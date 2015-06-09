@@ -26,11 +26,14 @@
 	and ideas for subsequent, broader study.}
 
 \begin{keywords}
-keywords to your chapter, these words should also be indexed
+	graph database, Neo4j, ancestry, genealogy, lexicase selection, tournament selection
 \end{keywords}
-\index{keywords to your chapter}
-\index{these words should also be indexed}
-\\
+\index{graph database}
+\index{Neo4j}
+\index{ancestry}
+\index{genealogy}
+\index{lexicase selection}
+\index{tournament selection}
 
 \section{Introduction}
 \label{sec:introduction}
@@ -114,6 +117,9 @@ across hundreds of runs, and then wrap up with some conclusions in Section~\ref{
 \section{Motivation}
 \label{sec:motivation}
 
+\index{ancestry}
+\index{genealogy}
+
 Consider the job of a paleontologist, who regularly reconstructs not just individuals but also
 species and entire phylogenetic trees on the basis of a handful of teeth and bones, or even just
 impressions left in prehistoric mud. They rarely have DNA, so any evolutionary relationship is
@@ -179,6 +185,9 @@ replace-space-with-newline test problem.
 \subsection{Neo4j and Cypher}
 \label{subsec:Neo4j}
 
+\index{graph database}
+\index{Neo4j}
+
 Graph databases \citep{Robinson:GraphDB:Book} are a relatively new database tool, where data is stored 
 as a collection of nodes and relationships in a graph, with a specialized query language that makes 
 it easy to ask questions about complex relationships.
@@ -232,6 +241,8 @@ For additional details and the particular parameters used in these runs see \cit
 
 \subsection{Lexicase selection}
 
+\index{lexicase selection}
+
 Lexicase selection is a recently developed selection method for evolutionary computation in which 
 individuals are selected by filtering the population according to performance on individual 
 fitness cases, considered in random order \citep{Spector:2012:GECCOcompA}. Lexicase 
@@ -262,11 +273,14 @@ and each triple, etc., will be most important now and then.
 		\ENDWHILE
 		\RETURN random individual from \texttt{candidates}
 	\end{algorithmic}
-	\caption{Pseudocode for the lexicase selection algorithm, for the context in which the goal for all test cases is to minimize error.}
+	\caption{Pseudocode for lexicase selection, in the context of error minimization. Here the
+		function $\textrm{perf}(i, p)$ computes the performance of program $p$ on test case $i$.}
 	\label{alg:lexicase}
 \end{algorithm}
 
 \subsection{Replace-space-with-newline}
+
+\index{Replace Space With Newline problem}
 
 The replace-space-with-newline problem is an introductory programming benchmark problem taken
 from~\citep{Helmuth:2015:GECCO}. Here the program is given an input string and required to
@@ -298,6 +312,10 @@ software synthesis problems.
 
 \section{Lexicase, meet Replace-space-with-newline}
 \label{sec:lexicaseRun}
+
+\index{ancestry}
+\index{genealogy}
+\index{lexicase selection}
 
 % This is run 6, lexicase, replace-space-with-newline.
 
@@ -897,6 +915,10 @@ cases within the time limit without changing the value returned.
 
 \section{How is tournament selection different?}
 \label{sec:tournamentRun}
+
+\index{ancestry}
+\index{genealogy}
+\index{tournament selection}
 
 \begin{sidewaysfigure}
 	\vspace{0.6\columnwidth}
